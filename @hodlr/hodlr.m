@@ -72,13 +72,29 @@ classdef hodlr
                 [obj.U2, obj.V1] = compress(obj, A(rowSplit+1:end, 1:colSplit));
             end
         end
+        
+        function obj = transpose(obj)
+            if isempty(obj.D)
+                copyU2 = obj.U2;
+                copyV1 = obj.V1;
+                obj.U2 = obj.V2.';
+                obj.V1 = obj.U1.';
+
+                obj.U1 = copyV1.';
+                obj.V2 = copyU2.';
+                obj.A11 = transpose(obj.A11);
+                obj.A22 = transpose(obj.A22);
+            else
+                obj.D = obj.D.';
+            end
+        end
 
         function load_params(obj)
-            fprintf(
+            fprintf(...
                 "minimum block size: %d\n", obj.min_block_size);
-            fprintf(
+            fprintf(...
                 "Approximation method: %s\n", obj.method);
-            fprintf(
+            fprintf(...
                 "Approximation threshold: %d\n", obj.threshold);
         end
     end

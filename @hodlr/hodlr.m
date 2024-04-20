@@ -89,35 +89,32 @@ classdef hodlr
             end
         end
 
+        function inv_obj = inverse(obj)
+            if ~issqaure(A)
+                error('Inverse is only applied to a square HODLR matrix.');
+            end
+            
+            if isempty(obj.D)
+                X22 = inverse(obj.D);
+                % X11 = inverse(obj.A11 - );
+            else
+                obj.D = inv(obj.D);
+            end
+        end
+
         function load_params(obj)
             fprintf(...
-                "minimum block size: %d\n", obj.min_block_size);
+                'minimum block size: %d\n', obj.min_block_size);
             fprintf(...
-                "Approximation method: %s\n", obj.method);
+                'Approximation method: %s\n', obj.method);
             fprintf(...
-                "Approximation threshold: %d\n", obj.threshold);
+                'Approximation threshold: %d\n', obj.threshold);
         end
     end
 
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            if min(size(A)) == 0
-                U = zeros(size(A,1),0);
-                V = zeros(0,size(A,2));
-                return;
-            end
-        
-            if strcmp(obj.method, 'svd')
-                [U, S, V] = svd(full(A), 'econ');
-                k = sum(abs(diag(S)) > S(1,1) * obj.threshold);
-                U = U(:,1:k) * S(1:k,1:k);
-		        V = V(:,1:k)';
-            elseif strcmp(obj.method, 'qr')
-                [U, V, P] = qr(A);
-                k = sum(abs(diag(V)) > V(1,1) * obj.threshold);
-                U = U(:, 1:k);
-                V = V(1:k,:)*P;
-            end
+            [U, V] = compress_m(A, obj.method, obj.threshold);
         end
     end
 

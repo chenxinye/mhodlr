@@ -31,7 +31,8 @@ function C = hdot(A, B) % one if left A, the other is right A
         else
             C = A.D * B;
         end
-    else
+
+    elseif isa(B, 'hodlr')
         if isempty(B.D)
             su1 = size(B.U1, 1);
             su2 = size(B.U2, 1);
@@ -58,4 +59,8 @@ function C = hdot(A, B) % one if left A, the other is right A
         else
             C = A * B.D;
         end
+        
+    else
+        C = A * B;
+    end
 end

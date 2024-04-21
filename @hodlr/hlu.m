@@ -1,5 +1,5 @@
 function [L, U] = hlu(A)
-    if ~issqaure(A)
+    if ~issquare(A)
         error('LU factorization is only applied to a square HODLR matrix.');
     end
     

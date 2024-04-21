@@ -89,16 +89,27 @@ classdef hodlr
             end
         end
 
-        function inv_obj = inverse(obj)
-            if ~issqaure(A)
+        function C = inverse(obj)
+            if ~issquare(obj)
                 error('Inverse is only applied to a square HODLR matrix.');
             end
             
-            if isempty(obj.D)
-                X22 = inverse(obj.D);
-                % X11 = inverse(obj.A11 - );
+            if class(obj) == 'hodlr'
+                if isempty(obj.D)
+                    X22 = inverse(obj.A22);
+                    A12 = obj.U1*obj.V2;
+                    A21 = obj.U2*obj.V1;
+                    X11 = inv(hadd(obj.A11, A12 * X22 * A21 ,'-'));
+                    C12 = -X11 * A12 * X22;
+                    C21 = -X22 * A21 * X11;
+                    C22 = X22 + X22 * A21 * X11 * A12 * X22;
+    
+                    C = [X11, C12; C21, C22];
+                else
+                    C = inv(obj.D);
+                end
             else
-                obj.D = inv(obj.D);
+                C = inv(obj);
             end
         end
 

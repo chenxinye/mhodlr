@@ -62,12 +62,12 @@ classdef hodlr
                 level = level + 1;
                 rowSplit = ceil(rowSize / 2);
                 colSplit = ceil(colSize / 2);
-               
+
                 obj.A11 = build_hodlr_mat(obj, A(1:rowSplit, 1:colSplit), ...
                     level);
                 obj.A22 = build_hodlr_mat(obj, A(rowSplit+1:end, colSplit+1:end), ...
                     level);
-
+                    
                 [obj.U1, obj.V2] = compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1] = compress(obj, A(rowSplit+1:end, 1:colSplit));
             end

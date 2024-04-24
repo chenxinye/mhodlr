@@ -52,7 +52,6 @@ classdef hodlr
         function obj =  build_hodlr_mat(obj, A, level)
             [rowSize, colSize] = size(A);
             
-
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size
                 obj.D = A;
                 return;
@@ -89,17 +88,41 @@ classdef hodlr
             end
         end
 
-        function C = inverse(obj)
+
+        function C = inverse_hodlr(obj)
+            if ~issquare(obj)
+                error('Inverse is only applied to a square HODLR matrix.');
+            end
+            
+            C = obj;
+            if isempty(obj.D)
+                X22 = inverse_hodlr(obj.A22);
+                A12 = obj.U1 * obj.V2;
+                A21 = obj.U2 * obj.V1;
+                
+                C.A11  = inverse_hodlr(hadd(obj.A11, hdot(hdot(A12, X22), A21, 'double'), '-'));
+            
+                [C.U1, C.V2] = compress_m(hdot(hdot(C.A11, -A12, 'double'), X22, 'double'), obj.method, obj.threshold);
+                C21 = -hdot(hdot(X22, A21, 'double'), C.A11, 'double');
+                [C.U2, C.V1] = compress_m(C21, obj.method, obj.threshold);
+                XX = hdot(C21 * A12, X22, 'double');
+                C.A22 = hadd(X22, XX, '-');
+            else
+                C.D = inv(obj.D);
+            end
+        end
+        
+        function C = inverse_double(obj)
             if ~issquare(obj)
                 error('Inverse is only applied to a square HODLR matrix.');
             end
             
             if class(obj) == 'hodlr'
                 if isempty(obj.D)
-                    X22 = inverse(obj.A22);
+                    X22 = inverse_double(obj.A22);
                     A12 = obj.U1*obj.V2;
                     A21 = obj.U2*obj.V1;
-                    X11 = inv(hadd(obj.A11, A12 * X22 * A21 ,'-'));
+                    X11 = inv(hadd(obj.A11, A12 * X22 * A21 ,'-', 'matlab_default'));
                     C12 = -X11 * A12 * X22;
                     C21 = -X22 * A21 * X11;
                     C22 = X22 + X22 * A21 * X11 * A12 * X22;

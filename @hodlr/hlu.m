@@ -3,7 +3,7 @@ function [L, U] = hlu(H, epsilon)
         error('LU factorization is only applied to a square HODLR matrix.');
     end
     
-    [m, n, m1, m2, n1, n2] = hsize(H);
+    [m, n] = hsize(H);
     
     if isempty(H.D)
         [L11, U11] = hlu(H.A11, epsilon);

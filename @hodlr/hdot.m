@@ -1,29 +1,33 @@
-function C = hdot(A, B) % one if left A, the other is right A
+function C = hdot(A, B, varargin) % one if left A, the other is right A
     if isa(A, 'hodlr') & isa(B, 'hodlr')
         error('Please enter correct types of inputs.');
     end
-    
+
+    if nargin == 2 
+        oformat = 'hodlr';
+    else
+        if strcmp(varargin{1}, 'hodlr')
+            oformat = 'hodlr';
+        else
+            oformat = 'matlab_default';
+        end
+    end
+
     if isa(A, 'hodlr')
         if isempty(A.D)
-            su1 = size(A.U1, 1);
-            su2 = size(A.U2, 1);
-            sv1 = size(A.V1, 2);
-            sv2 = size(A.V2, 2);
-        
-            mHRows = su1 + su2;
-            nHCols = sv1 + sv2;
+            [mA, nA, su1, su2, sv1, sv2] = hsize(A);
             
-            [mRows, nCols] = size(B);
+            [mB, nB] = size(B);
             
-            if nHCols ~= mRows
+            if nA ~= mB
                 error('Please enter the inputs with correct dimensions.');
             end
         
-            C = zeros(mHRows, nCols);
-            y1 = hdot(A.A11, B(1:su1, :));
+            C = zeros(mA, nB);
+            y1 = hdot(A.A11, B(1:su1, :), 'double');
             y2 = A.U1 * A.V2 * B(su1+1:end, :);
             y3 = A.U2 * A.V1 * B(1:su1, :);
-            y4 = hdot(A.A22, B(su1+1:end, :));
+            y4 = hdot(A.A22, B(su1+1:end, :), 'double');
             
         
             C(1:su1, :) = y1 + y2;
@@ -34,25 +38,19 @@ function C = hdot(A, B) % one if left A, the other is right A
 
     elseif isa(B, 'hodlr')
         if isempty(B.D)
-            su1 = size(B.U1, 1);
-            su2 = size(B.U2, 1);
-            sv1 = size(B.V1, 2);
-            sv2 = size(B.V2, 2);
-        
-            mHRows = su1 + su2;
-            nHCols = sv1 + sv2;
+            [mB, nB, su1, su2, sv1, sv2] = hsize(B);
             
-            [mRows, nCols] = size(A);
+            [mA, nA] = size(A);
             
-            if nCols ~= mHRows
+            if nA ~= mB
                 error('Please enter the inputs with correct dimensions.')
             end
         
-            C = zeros(mRows, nHCols);
-            y1 = hdot(A(:, 1:su1), B.A11);
+            C = zeros(mA, nB);
+            y1 = hdot(A(:, 1:su1), B.A11, 'double');
             y2 = A(:, su1+1:end) * B.U2 * B.V1;
             y3 = A(:, 1:su1) * B.U1 * B.V2;
-            y4 = hdot(A(:, su1+1:end), B.A22);
+            y4 = hdot(A(:, su1+1:end), B.A22, 'double');
             
             C(:, 1:su1) = y1 + y2;
             C(:, su1+1:end) = y3 + y4;
@@ -63,4 +61,9 @@ function C = hdot(A, B) % one if left A, the other is right A
     else
         C = A * B;
     end
+    
+    if strcmp(oformat, 'hodlr')
+        C = hodlr(C);
+    end
+    
 end

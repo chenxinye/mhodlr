@@ -8,6 +8,7 @@ function ch = issquare(A)
         m = su1 + su2;
         n = sv1 + sv2;
         ch = m == n;
+        
     elseif class(A) == 'double' or 'single'
         [m, n] = size(A);
         ch = m == n;

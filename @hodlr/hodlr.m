@@ -15,6 +15,7 @@ classdef hodlr
 
     properties(Access=private)
         min_block_size
+        max_level
         method
         threshold
     end
@@ -25,21 +26,32 @@ classdef hodlr
                 obj.method = 'svd';
                 obj.threshold = 1.0e-12;
                 obj.min_block_size = 2;
+                obj.max_level = 9999;
 
             elseif nargin == 2
                 obj.method = varargin{2};
                 obj.threshold = 1.0e-12;
                 obj.min_block_size = 2;
+                obj.max_level = 9999;
 
             elseif nargin == 3
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = 2;
+                obj.max_level = 9999;
 
             elseif nargin == 4
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = varargin{4};
+                obj.max_level = 9999;
+
+            elseif nargin == 5
+                obj.method = varargin{2};
+                obj.threshold = varargin{3};
+                obj.min_block_size = varargin{4};
+                obj.max_level = varargin{5};
+
             else 
                 disp(['Please enter the correct number or type of' ...
                     ' parameters.']);
@@ -100,12 +112,12 @@ classdef hodlr
                 A12 = obj.U1 * obj.V2;
                 A21 = obj.U2 * obj.V1;
                 
-                C.A11  = inverse_hodlr(hadd(obj.A11, hdot(hdot(A12, X22), A21, 'double'), '-'));
+                C.A11  = inverse_hodlr(hadd(obj.A11, hdot_double(hdot(A12, X22), A21), '-'));
             
-                [C.U1, C.V2] = compress_m(hdot(hdot(C.A11, -A12, 'double'), X22, 'double'), obj.method, obj.threshold);
-                C21 = -hdot(hdot(X22, A21, 'double'), C.A11, 'double');
+                [C.U1, C.V2] = compress_m(hdot_double(hdot_double(C.A11, -A12), X22), obj.method, obj.threshold);
+                C21 = -hdot_double(hdot_double(X22, A21), C.A11);
                 [C.U2, C.V1] = compress_m(C21, obj.method, obj.threshold);
-                XX = hdot(C21 * A12, X22, 'double');
+                XX = hdot_double(C21 * A12, X22);
                 C.A22 = hadd(X22, XX, '-');
             else
                 C.D = inv(obj.D);
@@ -122,7 +134,7 @@ classdef hodlr
                     X22 = inverse_double(obj.A22);
                     A12 = obj.U1*obj.V2;
                     A21 = obj.U2*obj.V1;
-                    X11 = inv(hadd(obj.A11, A12 * X22 * A21 ,'-', 'matlab_default'));
+                    X11 = inv(hadd_partial_double(obj.A11, A12 * X22 * A21 ,'-'));
                     C12 = -X11 * A12 * X22;
                     C21 = -X22 * A21 * X11;
                     C22 = X22 + X22 * A21 * X11 * A12 * X22;

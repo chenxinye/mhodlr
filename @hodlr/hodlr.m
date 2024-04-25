@@ -11,6 +11,7 @@ classdef hodlr
            
         D
         level
+        type
     end
 
     properties(Access=private)
@@ -27,30 +28,42 @@ classdef hodlr
                 obj.threshold = 1.0e-12;
                 obj.min_block_size = 2;
                 obj.max_level = 9999;
+                obj.type = 'dense';
 
             elseif nargin == 2
                 obj.method = varargin{2};
                 obj.threshold = 1.0e-12;
                 obj.min_block_size = 2;
                 obj.max_level = 9999;
+                obj.type = 'dense';
 
             elseif nargin == 3
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = 2;
                 obj.max_level = 9999;
+                obj.type = 'dense';
 
             elseif nargin == 4
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = varargin{4};
                 obj.max_level = 9999;
+                obj.type = 'dense';
 
             elseif nargin == 5
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = varargin{4};
                 obj.max_level = varargin{5};
+                obj.type = 'dense';
+            
+            elseif nargin == 6
+                obj.method = varargin{2};
+                obj.threshold = varargin{3};
+                obj.min_block_size = varargin{4};
+                obj.max_level = varargin{5};
+                obj.type = varargin{6};
 
             else 
                 disp(['Please enter the correct number or type of' ...

@@ -1,62 +1,47 @@
 classdef hodlr
     properties(Access=public)
-        A11
+
+        U1 {mustBeNonNan, mustBeFinite, mustBeNumeric}
+        V2 {mustBeNonNan, mustBeFinite, mustBeNumeric}
+
+        U2 {mustBeNonNan, mustBeFinite, mustBeNumeric}
+        V1 {mustBeNonNan, mustBeFinite, mustBeNumeric}
+           
+        D {mustBeNonNan, mustBeFinite, mustBeNumeric}
+
+        A11 
         A22
         
-        U1
-        V2
-
-        U2
-        V1
-           
-        D
-        level
-        type
+        level {mustBeInteger} = 0
+        type {mustBeText} = 'dense'
     end
 
     properties(Access=private)
-        min_block_size
-        max_level
-        method
-        threshold
+        min_block_size {mustBeInteger} = 2
+        max_level {mustBeInteger} = 9999
+        method {mustBeText} = 'svd'
+        threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
     end
 
     methods(Access=public)
         function obj = hodlr(varargin)
-            if nargin == 1
-                obj.method = 'svd';
-                obj.threshold = 1.0e-12;
-                obj.min_block_size = 2;
-                obj.max_level = 9999;
-                obj.type = 'dense';
-
-            elseif nargin == 2
+            if nargin == 2
                 obj.method = varargin{2};
-                obj.threshold = 1.0e-12;
-                obj.min_block_size = 2;
-                obj.max_level = 9999;
-                obj.type = 'dense';
 
             elseif nargin == 3
                 obj.method = varargin{2};
-                obj.threshold = varargin{3};
-                obj.min_block_size = 2;
-                obj.max_level = 9999;
-                obj.type = 'dense';
 
             elseif nargin == 4
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = varargin{4};
                 obj.max_level = 9999;
-                obj.type = 'dense';
 
             elseif nargin == 5
                 obj.method = varargin{2};
                 obj.threshold = varargin{3};
                 obj.min_block_size = varargin{4};
                 obj.max_level = varargin{5};
-                obj.type = 'dense';
             
             elseif nargin == 6
                 obj.method = varargin{2};
@@ -65,7 +50,7 @@ classdef hodlr
                 obj.max_level = varargin{5};
                 obj.type = varargin{6};
 
-            else 
+            elseif nargin > 6
                 disp(['Please enter the correct number or type of' ...
                     ' parameters.']);
             end

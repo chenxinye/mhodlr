@@ -1,4 +1,25 @@
 function C = hadd(varargin)
+%% The function is calculation of add or minus for HODLR matrix A and B.
+%
+% Parameters
+% --------------------
+% A - hodlr | double
+%     Input matrix - hodlr class / double tyle.
+%  
+% B - hodlr | double
+%     Input matrix - hodlr class / double tyle.
+%  
+% operator - str, default = '+'
+%     The operator of add ('+') or minus ('-'), string type.
+%
+% oformat - str, default = 'hodlr'
+%     The format of returns
+% 
+% Returns
+% --------------------
+% C - hodlr | double
+%     Return matrix in hodlr class or double array.
+% 
 
     if nargin == 2
         operator = '+';

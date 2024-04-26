@@ -99,6 +99,55 @@ classdef hodlr
             end
         end
 
+        function C = inverse(obj, varargin)
+            %% The function is to return the inverse of HOLDR matrix.
+            %
+            % Parameters
+            % --------------------
+            % H - hodlr
+            %     Matrix in HODLR format - hodlr class.
+            % 
+            % algorithm - int, default=1
+            %     The algorithm to implement inverse
+            % 
+            % oformat - str, default = 'hodlr'
+            %     The format of returns.
+            % 
+            % Returns
+            % --------------------
+            % C - hodlr | double
+            %     Return matrix in hodlr class or double array.
+            % 
+            
+            switch nargin
+                case 1 
+                    algorithm = 1;
+                    oformat = 'hodlr';
+
+                case 2
+                    algorithm = varargin{1};
+                    oformat = 'hodlr';
+
+                case 3 
+                    algorithm = varargin{1};
+                    oformat = varargin{2};
+            end
+
+            if algorithm == 1
+                if algorithm == 'hodlr'
+                    C = inverse_hodlr(obj);
+                else
+                    C = inverse_double(obj);
+                end
+            else
+                if algorithm == 'hodlr'
+                    C = inverse_nonrecursive_hodlr(obj);
+                else
+                    C = inverse_nonrecursive_double(obj);
+                end
+            end
+        end 
+
         function C = inverse_nonrecursive_hodlr(obj)
             %% This member method implement inverse of hodlr matrix in nonrecursive manner
             [m, n] = hsize(obj);
@@ -127,8 +176,6 @@ classdef hodlr
             C = hodlr(C, md, td, mbs, ml, tp);
         end
 
-
-
         function C = inverse_nonrecursive_double(obj)
             %% This member method implement inverse of hodlr matrix in nonrecursive manner
             [m, n] = hsize(obj);
@@ -138,8 +185,8 @@ classdef hodlr
             end
             
             if isempty(obj.D)
-                C1 = inverse_double(obj.A11);
-                C2 = inverse_double(obj.A22);
+                C1 = inverse_nonrecursive_double(obj.A11);
+                C2 = inverse_nonrecursive_double(obj.A22);
                 
                 A12 = obj.U1 * obj.V2;
                 A21 = obj.U2 * obj.V1;
@@ -209,7 +256,7 @@ classdef hodlr
             % --------------------
             % verbose - boolean, default=1
             %       Whether or not print the parameter settings. 
-            
+
             if nargin == 2
                 if varargin{1} == 1
                     fprintf(...

@@ -13,7 +13,7 @@ function C = hadd(varargin)
 %     The operator of add ('+') or minus ('-'), string type.
 %
 % oformat - str, default = 'hodlr'
-%     The format of returns
+%     The format of returns.
 % 
 % Returns
 % --------------------

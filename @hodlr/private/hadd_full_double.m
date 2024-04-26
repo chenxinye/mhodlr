@@ -1,4 +1,6 @@
 function C = hadd_full_double(A, B, operator)
+% Output double format when inputs A, B are HODLR matrix.
+% 
     [m, n, m1, m2] = hsize(A);
     [mb, nb] = hsize(B);
     C = zeros(mb, nb);

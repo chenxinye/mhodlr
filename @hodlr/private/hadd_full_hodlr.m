@@ -1,4 +1,6 @@
 function C = hadd_full_hodlr(A, B, operator)
+% Output hodlr format when inputs A, B are HODLR matrix.
+% 
     [m, n] = hsize(A);
     [mb, nb] = hsize(B);
     C = A;

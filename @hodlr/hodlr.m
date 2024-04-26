@@ -17,10 +17,11 @@ classdef hodlr
     end
 
     properties(Access=private)
-        min_block_size {mustBeInteger} = 2
-        max_level {mustBeInteger} = 9999
         method {mustBeText} = 'svd'
         threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
+        min_block_size {mustBeInteger} = 2
+        max_level {mustBeInteger} = 9999
+
     end
 
     methods(Access=public)
@@ -98,6 +99,61 @@ classdef hodlr
             end
         end
 
+        function C = inverse_nonrecursive_hodlr(obj)
+            %% This member method implement inverse of hodlr matrix in nonrecursive manner
+            [m, n] = hsize(obj);
+
+            if m ~= n
+                error('Inverse is only applied to a square HODLR matrix.');
+            end
+
+            if isempty(obj.D)
+                C1 = inverse_double(obj.A11);
+                C2 = inverse_double(obj.A22);
+                
+                A12 = obj.U1 * obj.V2;
+                A21 = obj.U2 * obj.V1;
+                X = blkoffdiag(C1 * A12, C2* A21);
+                [U, D, V] = svd(X);
+
+                L = eye(m) - U * inv(inv(D) + V' * U) * V';
+                R = blkdiag(C1, C2);
+                C = L * R;
+            else
+                C = inv(obj.D);
+            end
+
+            [md, td, mbs, ml, tp] = load_params(obj, 0);
+            C = hodlr(C, md, td, mbs, ml, tp);
+        end
+
+
+
+        function C = inverse_nonrecursive_double(obj)
+            %% This member method implement inverse of hodlr matrix in nonrecursive manner
+            [m, n] = hsize(obj);
+
+            if m ~= n
+                error('Inverse is only applied to a square HODLR matrix.');
+            end
+            
+            if isempty(obj.D)
+                C1 = inverse_double(obj.A11);
+                C2 = inverse_double(obj.A22);
+                
+                A12 = obj.U1 * obj.V2;
+                A21 = obj.U2 * obj.V1;
+                X = blkoffdiag(C1 * A12, C2* A21);
+                [U, D, V] = svd(X);
+
+                L = eye(m) - U * inv(inv(D) + V' * U) * V';
+                R = blkdiag(C1, C2);
+                C = L * R;
+            else
+                C = inv(obj.D);
+            end
+            
+        end
 
         function C = inverse_hodlr(obj)
             if ~issquare(obj)
@@ -146,13 +202,34 @@ classdef hodlr
             end
         end
 
-        function load_params(obj)
-            fprintf(...
-                'minimum block size: %d\n', obj.min_block_size);
-            fprintf(...
-                'Approximation method: %s\n', obj.method);
-            fprintf(...
-                'Approximation threshold: %d\n', obj.threshold);
+        function [varargout] = load_params(obj, varargin)
+            %% Load parameters of HODLR matrix
+            %% 
+            % Parameters
+            % --------------------
+            % verbose - boolean, default=1
+            %       Whether or not print the parameter settings. 
+            
+            if nargin == 2
+                if varargin{1} == 1
+                    fprintf(...
+                        'minimum block size: %d\n', obj.min_block_size);
+                    fprintf(...
+                        'Approximation method: %s\n', obj.method);
+                    fprintf(...
+                        'Approximation threshold: %d\n', obj.threshold);
+                end
+            end
+
+            md = obj.method;
+            td = obj.threshold;
+            mbs = obj.min_block_size;
+            ml = obj.max_level;
+            tp = obj.type;
+
+            if nargout > 1
+                varargout = {md, td, mbs, ml, tp};
+            end
         end
     end
 

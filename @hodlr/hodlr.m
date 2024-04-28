@@ -13,7 +13,7 @@ classdef hodlr
         A22 % HODLR format
         
         level {mustBeInteger} = 0
-        type {mustBeText} = 'dense'
+        type {mustBeText} = 'dense' % TO DO
     end
 
     properties(Access=private)

@@ -9,8 +9,8 @@ classdef hodlr
            
         D {mustBeNonNan, mustBeFinite, mustBeNumeric}
 
-        A11 
-        A22
+        A11 % HODLR format
+        A22 % HODLR format
         
         level {mustBeInteger} = 0
         type {mustBeText} = 'dense'

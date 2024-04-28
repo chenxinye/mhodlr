@@ -1,4 +1,23 @@
 function [L, U] = hlu(H, epsilon)
+%% Compute LU factorization for HODLR matrix H.
+%
+% Parameters
+% --------------------
+% H - hodlr
+%     Matrix in HODLR format - hodlr class.
+% 
+% epsilon - double
+%     The threshold for recompression.
+%
+%
+% Returns
+% --------------------
+% L - double
+%     The upper triangular matrix L is computed such that L * U = H. 
+% U - double
+%     The upper triangular matrix U is computed such that L * U = H. 
+%
+
     if ~issquare(H)
         error('LU factorization is only applied to a square HODLR matrix.');
     end

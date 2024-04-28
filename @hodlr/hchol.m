@@ -17,12 +17,15 @@ function R = hchol(H, varargin)
 % 
     if nargin < 2
         epsilon = 1.0e-12;
-
+    else 
+        epsilon = varargin{1};
+    end
+    
     if isempty(H.D)
         [m, n, m1, m2, n1, n2] = hsize(H);
-        R11 = hchol(H.A11);
+        R11 = hchol(H.A11, epsilon);
         R12 = mldivide(R11', H.U1 * H.V2);
-        R22 = hchol(hrank_update(H.A22, -R12', R12, epsilon));
+        R22 = hchol(hrank_update(H.A22, -R12', R12, epsilon), epsilon);
         
         R = [R11, R12; zeros(m2, n1), R22];
     else

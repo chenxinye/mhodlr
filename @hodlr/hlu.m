@@ -1,4 +1,4 @@
-function [L, U] = hlu(H, epsilon)
+function [L, U] = hlu(H, varargin)
 %% Compute LU factorization for HODLR matrix H.
 %
 % Parameters
@@ -21,6 +21,12 @@ function [L, U] = hlu(H, epsilon)
     if ~issquare(H)
         error('LU factorization is only applied to a square HODLR matrix.');
     end
+    
+    if nargin == 1
+        epsilon = 10^(-10);
+    else 
+        epsilon = varargin{1};
+    end 
     
     [m, n] = hsize(H);
     

@@ -1,8 +1,6 @@
 # hodlr
 
-<h3 align="left">
   Matrix computation in HODLR representation
-</h3>
 
 -------------
 

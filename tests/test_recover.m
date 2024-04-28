@@ -1,4 +1,4 @@
-function b = test_recover(varargin)
+function verbose = test_recover(varargin)
     if nargin == 0
         eps = 1.0e-8;
     else
@@ -10,16 +10,16 @@ function b = test_recover(varargin)
     hA2 = hodlr(A(:, :, 2));
     hA3 = hodlr(A(:, :, 3));
 
-    b = 1;
+    verbose = 1;
     if norm(recover(hA1) - A(:, :, 1), 2) > eps
-        b = 0;
+        verbose = 0;
     end
 
     if norm(recover(hA2) - A(:, :, 2), 2) > eps
-        b = 0;
+        verbose = 0;
     end
 
     if norm(recover(hA3) - A(:, :, 3), 2) > eps
-        b = 0;
+        verbose = 0;
     end
 end

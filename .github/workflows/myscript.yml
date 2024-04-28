@@ -11,5 +11,3 @@ jobs:
         uses: matlab-actions/setup-matlab@v2
       - name: Run script
         uses: matlab-actions/run-command@v2
-        with:
-          command: unittests

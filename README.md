@@ -14,9 +14,21 @@ We consider computation on the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix
 Setup
 -------
 
-Simply download this repo, and run the command below
+Simply download this repository via
+```bash
+git clone https://github.com/chenxinye/mhodlr.git
+```
+and run the command below:
 ```bash
 cd mhodlr
+```
+
+Then, one can try this simply example to verify its functionality:
+```matlab
+A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
+hA = hodlr(A); % Convert A to HODLR format
+RA = recover(A); % Reconstruct hA into dense matrix
+disp(norm(recover(full(RA - A)),2)); % Test error
 ```
 
 Support functions

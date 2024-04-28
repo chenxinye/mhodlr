@@ -10,6 +10,6 @@ function verbose = unittests()
     if ~test_lu()
         error('Do not pass test 1.')
     end
-    
-    return 1;
+
+    verbose = true;
 end

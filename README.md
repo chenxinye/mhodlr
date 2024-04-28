@@ -10,7 +10,6 @@ Differential equations often result in rank-structured matrices, most of whose o
 
 We consider computation on the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix. HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. In this repository, we implement HODLR computations in MATLAB, which is aimed for convenient API for HODLR operations. 
 
--------------
 
 Setup
 -------

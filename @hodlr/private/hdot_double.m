@@ -29,7 +29,6 @@ function C = hdot_double(A, B)
     elseif isa(A, 'hodlr')
         if isempty(A.D)
             [mA, nA, su1, su2, sv1, sv2] = hsize(A);
-            
             [mB, nB] = size(B);
             
             if nA ~= mB
@@ -37,12 +36,11 @@ function C = hdot_double(A, B)
             end
         
             C = zeros(mA, nB);
-            y1 = hdot(A.A11, B(1:su1, :), 'double');
-            y2 = A.U1 * A.V2 * B(su1+1:end, :);
-            y3 = A.U2 * A.V1 * B(1:su1, :);
-            y4 = hdot(A.A22, B(su1+1:end, :), 'double');
+            y1 = hdot(A.A11, B(1:sv1, :), 'double');
+            y2 = A.U1 * A.V2 * B(sv1+1:end, :);
+            y3 = A.U2 * A.V1 * B(1:sv1, :);
+            y4 = hdot(A.A22, B(sv1+1:end, :), 'double');
             
-        
             C(1:su1, :) = y1 + y2;
             C(su1+1:end, :) = y3 + y4;
         else
@@ -52,7 +50,6 @@ function C = hdot_double(A, B)
     elseif isa(B, 'hodlr')
         if isempty(B.D)
             [mB, nB, su1, su2, sv1, sv2] = hsize(B);
-            
             [mA, nA] = size(A);
             
             if nA ~= mB
@@ -65,8 +62,8 @@ function C = hdot_double(A, B)
             y3 = A(:, 1:su1) * B.U1 * B.V2;
             y4 = hdot(A(:, su1+1:end), B.A22, 'double');
             
-            C(:, 1:su1) = y1 + y2;
-            C(:, su1+1:end) = y3 + y4;
+            C(:, 1:sv1) = y1 + y2;
+            C(:, sv1+1:end) = y3 + y4;
         else
             C = A * B.D;
         end

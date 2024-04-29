@@ -23,6 +23,7 @@ and run the command below:
 cd mhodlr
 ```
 
+
 Then, one can try this simply example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
@@ -30,6 +31,9 @@ hA = hodlr(A); % Convert A to HODLR format
 RA = recover(A); % Reconstruct hA into dense matrix
 disp(norm(recover(full(RA - A)),2)); % Test error
 ```
+
+We refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for in detail.
+
 
 Support functions
 ---------------

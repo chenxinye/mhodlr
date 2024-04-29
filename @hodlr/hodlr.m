@@ -63,7 +63,7 @@ classdef hodlr
         function obj =  build_hodlr_mat(obj, A, level)
             [rowSize, colSize] = size(A);
             
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | obj.level >= level
                 obj.D = A;
                 return;
             else

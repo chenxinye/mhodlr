@@ -32,7 +32,7 @@ RA = recover(A); % Reconstruct hA into dense matrix
 disp(norm(recover(full(RA - A)),2)); % Test error
 ```
 
-We refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for in detail.
+We refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for usage in detail.
 
 
 Support functions

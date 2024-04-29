@@ -7,8 +7,8 @@ function verbose = test_recover(varargin)
 
     A = rand(5,6,3);
     hA1 = hodlr(A(:, :, 1));
-    hA2 = hodlr(A(:, :, 2));
-    hA3 = hodlr(A(:, :, 3));
+    hA2 = hodlr(A(:, :, 2), 'qr', 1.0e-8, 2);
+    hA3 = hodlr(A(:, :, 3), 'qr', 1.0e-8, 2, 3);
 
     verbose = 1;
     if norm(recover(hA1) - A(:, :, 1), 2) > eps

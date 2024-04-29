@@ -38,6 +38,13 @@ We refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source
 Support functions
 ---------------
 
+|  Matrix computations | API|
+|  ----  | ----  |
+| Matrix transpose   | ``hodlr().transpose()`` |
+| Matrix inversion   | ``hodlr().inverse()`` |
+| Matrix (vector) multiplication | ``hdot`` |
+| LU factorization   | ``hlu`` |
+| Cholesky factorization  | ``hchol`` |
 
 Acknowledgement
 ---------------

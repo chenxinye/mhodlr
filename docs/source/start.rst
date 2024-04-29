@@ -5,8 +5,8 @@ Simply construct HODLR representation for array A via
 
 .. code:: matlab
 
-   A = spdiags(ones(n, 1) * [1 5  -1],  -1:1, 100, 100);
-   hA = hodlr(A, 'qr', 1.0e-8, 2, 3); % or simply use ``hA = hodlr(A)`` by leaving other parameters as default
+   A = spdiags(ones(10, 1) * [1 5  -1],  -1:1, 10, 10);
+   hA = hodlr(A, 'svd', 1.0e-8, 2, 3); % or simply use ``hA = hodlr(A)`` by leaving other parameters as default
 
 .. admonition:: Note
 

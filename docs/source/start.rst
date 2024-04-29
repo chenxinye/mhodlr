@@ -12,8 +12,8 @@ Then you can recover your representation by
 
 .. code:: matlab
 
-   RA = recover(hA)
-   norm(full(RA - A),2)
+   RA = recover(hA);
+   norm(full(RA - A),2) % check how much error it arises
 
 
 .. admonition:: Note

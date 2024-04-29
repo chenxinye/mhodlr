@@ -14,9 +14,9 @@ We consider computation on the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix
 Setup
 -------
 
-Simply download this repository via
+One can fork this repository, and simply download this repository via
 ```bash
-git clone https://github.com/chenxinye/mhodlr.git
+git clone https://github.com/<username>/mhodlr.git
 ```
 and run the command below:
 ```bash

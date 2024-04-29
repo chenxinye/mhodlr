@@ -48,4 +48,4 @@ Support functions
 
 Acknowledgement
 ---------------
-This repository is maintained by InEXASCALE team at Charles University. 
+This repository is maintained by [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale) team at Charles University. 

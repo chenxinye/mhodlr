@@ -1,3 +1,5 @@
+addpath('tests');
+
 function verbose = unittests()
     if ~test_recover
         error('Do not pass test 1.')

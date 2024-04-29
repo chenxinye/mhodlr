@@ -40,11 +40,11 @@ Support functions
 
 |  Matrix computations | API|
 |  ----  | ----  |
-| Matrix transpose   | ``hodlr().transpose()`` |
-| Matrix inversion   | ``hodlr().inverse()`` |
-| Matrix (vector) multiplication | ``hdot`` |
-| LU factorization   | ``hlu`` |
-| Cholesky factorization  | ``hchol`` |
+| Matrix transpose   | [``hodlr().transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) |
+| Matrix inversion   | [``hodlr().inverse()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) |
+| Matrix (vector) multiplication | [``hdot``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hdot.m) |
+| LU factorization   | [``hlu``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hlu.m) |
+| Cholesky factorization  | [``hchol``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m) |
 
 Acknowledgement
 ---------------

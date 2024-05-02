@@ -64,11 +64,11 @@ Support functions
 
 |  Matrix computations | API|
 |  ----  | ----  |
-| Matrix transpose   | [``hodlr().transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) |
-| Matrix inversion   | [``hodlr().inverse()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) |
-| Matrix (vector) multiplication | [``hdot``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hdot.m) |
-| LU factorization   | [``hlu``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hlu.m) |
-| Cholesky factorization  | [``hchol``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m) |
+| Matrix transpose   | [``hodlr().transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) [``mphodlr().transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m)|
+| Matrix inversion   | [``hodlr().inverse()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) ``mphodlr().inverse()``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m)|
+| Matrix (vector) multiplication | [``hdot``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hdot.m) [``mphdot``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphdot.m)|
+| LU factorization   | [``hlu``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hlu.m) [``mphlu``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphlu.m) |
+| Cholesky factorization  | [``hchol``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m) [``mphchol``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphchol.m)|
 
 Acknowledgement
 ---------------

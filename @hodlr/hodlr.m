@@ -17,38 +17,38 @@ classdef hodlr
     end
 
     properties(Access=private)
+        max_level {mustBeInteger} = 9999
+        min_block_size {mustBeInteger} = 2
         method {mustBeText} = 'svd'
         threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
-        min_block_size {mustBeInteger} = 2
-        max_level {mustBeInteger} = 9999
 
     end
 
     methods(Access=public)
         function obj = hodlr(varargin)
             if nargin == 2
-                obj.method = varargin{2};
+                obj.max_level = varargin{2};
 
             elseif nargin == 3
-                obj.method = varargin{2};
+                obj.max_level = varargin{2};
+                obj.min_block_size = varargin{3};
 
             elseif nargin == 4
-                obj.method = varargin{2};
-                obj.threshold = varargin{3};
-                obj.min_block_size = varargin{4};
-                obj.max_level = 9999;
+                obj.max_level = varargin{2};
+                obj.min_block_size = varargin{3};
+                obj.method = varargin{4};
 
             elseif nargin == 5
-                obj.method = varargin{2};
-                obj.threshold = varargin{3};
-                obj.min_block_size = varargin{4};
-                obj.max_level = varargin{5};
+                obj.max_level = varargin{2};
+                obj.min_block_size = varargin{3};
+                obj.method = varargin{4};
+                obj.threshold = varargin{5};
             
             elseif nargin == 6
-                obj.method = varargin{2};
-                obj.threshold = varargin{3};
-                obj.min_block_size = varargin{4};
-                obj.max_level = varargin{5};
+                obj.max_level = varargin{2};
+                obj.min_block_size = varargin{3};
+                obj.method = varargin{4};
+                obj.threshold = varargin{5};
                 obj.type = varargin{6};
 
             elseif nargin > 6
@@ -63,7 +63,7 @@ classdef hodlr
         function obj =  build_hodlr_mat(obj, A, level)
             [rowSize, colSize] = size(A);
             
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | obj.level >= level
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level >= obj.max_level
                 obj.D = A;
                 return;
             else

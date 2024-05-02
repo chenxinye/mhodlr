@@ -29,8 +29,31 @@ Then, one can try this simply example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
 hA = hodlr(A); % Convert A to HODLR format
-RA = recover(A); % Reconstruct hA into dense matrix
-disp(norm(recover(full(RA - A)),2)); % Test error
+rA = recover(A); % Reconstruct hA into dense matrix
+disp(norm(recover(full(rA - A)),2)); % Test error
+```
+
+Also, simulating adaptive precisions for each level of compression is allowed, please use the @mphodlr for low precision HODLR simulation. Users may compare the following code for usage guidance:
+```matlab
+rng(0);
+A = rand(15,15); % Generate 15 by 15 random matrix
+
+% Create precisions for each level; Level 1 use precision u1, level 2 use precision u2, ...
+u1 = precision('q52');
+u2 = precision('q52');
+u3 = precision('h');
+u_chain = prec_chain(u1, u2, u3);
+
+% Usual call for full working precision 
+hA = hodlr(A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
+rA = recover(hA)
+norm(full(rA - A),2)  % Compute the error
+
+% Call mixed precision HODLR representation
+mphA = mphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
+mprA = recover(hA)
+norm(full(mprA - A),2) % Compute the error
+
 ```
 
 We refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for usage in detail.

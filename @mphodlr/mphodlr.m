@@ -15,43 +15,44 @@ classdef mphodlr
         level {mustBeInteger} = 0
         type {mustBeText} = 'dense' % TO DO
         prec_settings
+        shape {mustBeNumeric} = []
+        max_level {mustBeInteger} = 9999
     end
 
     properties(Access=private)
-        max_level {mustBeInteger} = 9999
         min_block_size {mustBeInteger} = 2
         method {mustBeText} = 'svd'
         threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
     end
 
     methods(Access=public)
-        function obj = mphodlr(precs, varargin)
+        function obj = mphodlr(precs, A, varargin)
             obj.prec_settings = precs;
 
             if nargin == 3
-                obj.max_level = varargin{2};
+                obj.max_level = varargin{1};
 
             elseif nargin == 4
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
 
             elseif nargin == 5
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
-                obj.method = varargin{4};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
 
             elseif nargin == 6
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
-                obj.method = varargin{4};
-                obj.threshold = varargin{5};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
+                obj.threshold = varargin{4};
             
             elseif nargin == 7
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
-                obj.method = varargin{4};
-                obj.threshold = varargin{5};
-                obj.type = varargin{6}
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
+                obj.threshold = varargin{4};
+                obj.type = varargin{5};
 
             elseif nargin > 7
                 disp(['Please enter the correct number or type of' ...
@@ -59,7 +60,17 @@ classdef mphodlr
             end
             
             obj.level = 1;
-            obj = build_hodlr_mat(obj, varargin{1}, obj.level);
+            obj.shape(1) = size(A, 1); obj.shape(2) = size(A, 2);
+            
+            min_size = min(obj.shape);
+            [~, exponent] = log2(abs(min_size));
+            
+            if exponent < obj.max_level + 1
+                obj.max_level = exponent - 1;
+            end
+            
+            obj.check_exception();
+            obj = build_hodlr_mat(obj, A, obj.level);
         end
         
         function obj =  build_hodlr_mat(obj, A, level)
@@ -91,6 +102,7 @@ classdef mphodlr
             end
         end
         
+
         function obj = transpose(obj)
             if isempty(obj.D)
                 copyU2 = obj.U2;
@@ -287,7 +299,7 @@ classdef mphodlr
             end
         end
     end
-
+   
     methods(Access=private)
         function [U, V] = compress(obj, A)
             [U, V] = compress_m(A, obj.method, obj.threshold);
@@ -295,6 +307,15 @@ classdef mphodlr
 
         function [U, V] = mp_compress(obj, A)
             [U, V] = mp_compress_m(A, obj.method, obj.threshold);
+        end
+        
+        function check_exception(obj)
+
+            if length(obj.prec_settings) < obj.max_level
+                warning(['The number of precisions used are less than ' ...
+                    'the maximum tree level that can achieve. The remaining' ...
+                    ' level will use the working precision for compresion.']); 
+            end 
         end
     end
 

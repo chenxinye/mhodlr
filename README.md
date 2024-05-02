@@ -56,7 +56,10 @@ norm(full(mprA - A),2) % Compute the error
 
 ```
 
-We refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for usage in detail.
+
+For customized precision, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definition. 
+
+Also, we refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for usage in detail.
 
 
 Support functions

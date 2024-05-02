@@ -1,13 +1,13 @@
 classdef precision
     properties
-        t = 11;
-        emax = 15;
-        round = 1;
-        subnormal = 1;
-        explim = 1;
-        prob = 0.5;
-        flip = 0;
-        randfunc = @(n) rand(n, 1);
+        t {mustBeInteger} = 11
+        emax {mustBeInteger} = 15
+        round {mustBeInteger} = 1
+        subnormal = 1
+        explim = 1
+        prob {mustBeNonNan, mustBeFinite, mustBeNumeric} = 0.5
+        flip = 0
+        randfunc = @(n) rand(n, 1)
     end
 
     methods
@@ -106,8 +106,12 @@ classdef precision
         
             if nargin >= 1
                 if strcmp(class(varargin{1}), 'double')
-                    if length(varargin{1}) <= 1
+                    if length(varargin{1}) < 1 | length(varargin{1}) > 2
                         error('Please enter an valid value.');
+                    else
+                        obj.t = varargin{1};
+                        obj.emax = 15;
+                        return 
                     end
         
                     obj.t = varargin{1}(1);

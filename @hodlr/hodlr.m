@@ -14,10 +14,12 @@ classdef hodlr
         
         level {mustBeInteger} = 0
         type {mustBeText} = 'dense' % TO DO
+        shape {mustBeNumeric} = []
+        max_level {mustBeInteger} = 9999
     end
 
     properties(Access=private)
-        max_level {mustBeInteger} = 9999
+        
         min_block_size {mustBeInteger} = 2
         method {mustBeText} = 'svd'
         threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
@@ -25,31 +27,31 @@ classdef hodlr
     end
 
     methods(Access=public)
-        function obj = hodlr(varargin)
+        function obj = hodlr(A, varargin)
             if nargin == 2
-                obj.max_level = varargin{2};
+                obj.max_level = varargin{1};
 
             elseif nargin == 3
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
 
             elseif nargin == 4
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
-                obj.method = varargin{4};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
 
             elseif nargin == 5
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
-                obj.method = varargin{4};
-                obj.threshold = varargin{5};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
+                obj.threshold = varargin{4};
             
             elseif nargin == 6
-                obj.max_level = varargin{2};
-                obj.min_block_size = varargin{3};
-                obj.method = varargin{4};
-                obj.threshold = varargin{5};
-                obj.type = varargin{6};
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
+                obj.threshold = varargin{4};
+                obj.type = varargin{5};
 
             elseif nargin > 6
                 disp(['Please enter the correct number or type of' ...
@@ -57,7 +59,16 @@ classdef hodlr
             end
             
             obj.level = 1;
-            obj = build_hodlr_mat(obj, varargin{1}, obj.level);
+            obj.shape(1) = size(A, 1); obj.shape(2) = size(A, 2);
+
+            min_size = min(obj.shape);
+            [~, exponent] = log2(abs(min_size));
+            
+            if exponent < obj.max_level + 1
+                obj.max_level = exponent - 1;
+            end
+            
+            obj = build_hodlr_mat(obj, A, obj.level);
         end
         
         function obj =  build_hodlr_mat(obj, A, level)

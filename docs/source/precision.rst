@@ -10,7 +10,7 @@ The precision is defined by class ``precision``, you can simply use a few letter
 
 .. code:: bash
 
-  $ ans = 
+  >> ans = 
   
     precision with properties:
   

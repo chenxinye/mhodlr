@@ -24,8 +24,10 @@ and run the command below:
 cd mhodlr
 ```
 
+Example
+-----------
 
-Then, one can try this simply example to verify its functionality:
+After get software downloaded, one can try this simply example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
 hA = hodlr(A); % Convert A to HODLR format
@@ -55,6 +57,35 @@ mprA = recover(hA)
 norm(mprA - A,2) % Compute the error
 
 ```
+
+Regarding matrix computation, currently ``mhodlr`` supports matrix inversion, matrix transpose, matrix dot product, LU factorization, and Cholesky factorization.  
+The matrix dot product (``hdot`` and ``mphdot``) supports inputs of hodlr class, array, or their mixed type. We showcase the matrix dot product below:
+
+```matlab
+A = rand(15,15);
+
+hA = hodlr(A, 3, 2, 'svd'); 
+
+C_appr1 = hdot(hA, A, 'double'); % output array format
+C_appr2 = hdot(hA, hA); % output HODLR format
+C_true = A * A;
+
+norm(C_appr1 - A,2)
+norm(recover(C_appr2) - A,2)
+```
+
+Simular, for mixed precision operation, 
+
+```matlab
+mphA = mphodlr(u_chain, A, 3, 2, 'svd');
+
+mp_C_appr1 = mphdot(mphA, A, 'double'); % output array format
+mp_C_appr2 = mphdot(mphA, mphA); % output HODLR format
+
+norm(mp_C_appr1 - C_true,2)
+norm(recover(mp_C_appr2) - C_true,2) 
+```
+
 
 
 For customized precision, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definition. 

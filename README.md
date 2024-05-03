@@ -75,4 +75,11 @@ Support functions
 
 Acknowledgement
 ---------------
-This repository is maintained by [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale) team at Charles University. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerListz) 
+This repository is maintained by [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale) team at Charles University. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerListz) .
+
+
+
+License
+----------------
+
+This project is licensed under the terms of the [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause).

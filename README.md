@@ -74,7 +74,7 @@ norm(C_appr1 - A,2)
 norm(recover(C_appr2) - A,2)
 ```
 
-Simular, for mixed precision operation, 
+Similarly, for mixed precision operation, each level of the computation will follow the array ``u_chain`` precision settings:
 
 ```matlab
 mphA = mphodlr(u_chain, A, 3, 2, 'svd');

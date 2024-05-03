@@ -1,20 +1,21 @@
 function R = hchol(H, varargin)
-%% Compute Cholesky factorization for symmetric positive-definite HODLR matrix H.
-%
-% Parameters
-% --------------------
-% H - hodlr
-%     Matrix in HODLR format - hodlr class.
-% 
-% epsilon - double
-%     The threshold for recompression.
-%
-%
-% Returns
-% --------------------
-% R - double
-%     The upper triangular matrix R is computed such that R' * R = H. 
-% 
+%{
+    Compute Cholesky factorization for symmetric positive-definite HODLR matrix H.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    epsilon - double
+        The threshold for recompression.
+
+
+    Returns
+    --------------------
+    R - double
+        The upper triangular matrix R is computed such that R' * R = H.  
+%}
     if nargin < 2
         epsilon = 1.0e-12;
     else 
@@ -33,9 +34,9 @@ function R = hchol(H, varargin)
     end
 end
 
-%{  
+{  
 
-% Compare below
+ Compare below
 
 function R = hchol(H, varargin)
 
@@ -56,5 +57,5 @@ end
 
 
 
- %}
+ }
 

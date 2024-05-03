@@ -138,10 +138,10 @@ function y = roundit(x)
     if opt.flip
         
        temp = rand(size(y));
-       k = find(temp <= opt.p); 
+       k = find(temp <= opt.prob); 
        if ~isempty(k)
           u = abs(y(k));
-          b = randi(opt.params(1)-1,size(u,1),size(u,2));
+          b = randi(opt.probarams(1)-1,size(u,1),size(u,2));
           u = bitxor(u,2.^(b-1));
           y(k) = default_sign(y(k)).*u; 
        end

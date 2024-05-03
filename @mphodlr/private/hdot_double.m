@@ -13,17 +13,17 @@ function C = hdot_double(A, B)
             B12 = B.U1 * B.V2;
             B21 = B.U2 * B.V1;
                 
-            C11 = hdot_double(A.A11, B.A11, 'double') + A12 * B21;
-            C12 = hdot_double(A.A11, B12, 'double') + hdot_double(A12, B.A22, 'double');
-            C21 = hdot_double(A21, B.A11, 'double') + hdot_double(A.A22, B21, 'double');
-            C22 = A21 * B12 + hdot_double(A.A22, B.A22, 'double');
+            C11 = hdot_double(A.A11, B.A11) + A12 * B21;
+            C12 = hdot_double(A.A11, B12) + hdot_double(A12, B.A22);
+            C21 = hdot_double(A21, B.A11) + hdot_double(A.A22, B21);
+            C22 = A21 * B12 + hdot_double(A.A22, B.A22);
 
             C = [C11, C12; C21, C22];
         
         elseif ~isempty(A.D)
-            C = hdot_double(A.D, B, 'double');
+            C = hdot_double(A.D, B);
         else
-            C = hdot_double(A, B.D, 'double');
+            C = hdot_double(A, B.D);
         end
             
     elseif isa(A, 'hodlr')
@@ -36,10 +36,10 @@ function C = hdot_double(A, B)
             end
         
             C = zeros(mA, nB);
-            y1 = hdot_double(A.A11, B(1:sv1, :), 'double');
+            y1 = hdot_double(A.A11, B(1:sv1, :));
             y2 = A.U1 * A.V2 * B(sv1+1:end, :);
             y3 = A.U2 * A.V1 * B(1:sv1, :);
-            y4 = hdot_double(A.A22, B(sv1+1:end, :), 'double');
+            y4 = hdot_double(A.A22, B(sv1+1:end, :));
             
             C(1:su1, :) = y1 + y2;
             C(su1+1:end, :) = y3 + y4;
@@ -57,10 +57,10 @@ function C = hdot_double(A, B)
             end
         
             C = zeros(mA, nB);
-            y1 = hdot_double(A(:, 1:su1), B.A11, 'double');
+            y1 = hdot_double(A(:, 1:su1), B.A11);
             y2 = A(:, su1+1:end) * B.U2 * B.V1;
             y3 = A(:, 1:su1) * B.U1 * B.V2;
-            y4 = hdot_double(A(:, su1+1:end), B.A22, 'double');
+            y4 = hdot_double(A(:, su1+1:end), B.A22);
             
             C(:, 1:sv1) = y1 + y2;
             C(:, sv1+1:end) = y3 + y4;

@@ -73,10 +73,15 @@ Support functions
 | LU factorization   | [``hlu``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hlu.m)|
 | Cholesky factorization  | [``hchol``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m)|
 
+
 Acknowledgement
 ---------------
-This repository is maintained by [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale) team at Charles University. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerListz) .
+Any forms of contributions are welcomed. Our documents is still under writing, feel free to pull request and submit issues for suggestions. Before contributing code, we suggest contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerListz).
 
+
+Acknowledgement
+---------------
+This repository is maintained by [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale) team at Charles University. 
 
 
 License

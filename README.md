@@ -105,7 +105,7 @@ Support functions
 | Cholesky factorization  | [``hchol``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m)|
 
 
-Acknowledgement
+Contributions
 ---------------
 Any forms of contributions are welcomed. Our documents is still under writing, feel free to pull request and submit issues for suggestions. Before contributing code, we suggest contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerList).
 

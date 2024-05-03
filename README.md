@@ -47,12 +47,12 @@ u_chain = prec_chain(u1, u2, u3);
 % Usual call for full working precision 
 hA = hodlr(A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
 rA = recover(hA)
-norm(full(rA - A),2)  % Compute the error
+norm(rA - A,2)  % Compute the error
 
 % Call mixed precision HODLR representation
 mphA = mphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
 mprA = recover(hA)
-norm(full(mprA - A),2) % Compute the error
+norm(mprA - A,2) % Compute the error
 
 ```
 

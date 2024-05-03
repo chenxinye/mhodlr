@@ -33,8 +33,8 @@ function [L, U] = hlu(H, varargin)
     
     if isempty(H.D)
         [L11, U11] = hlu(H.A11, epsilon);
-        U12 = mldivide(L11, H.U1 * H.V2);  %L11 U12 = A12 = H.U1 * H.V2
-        L21 = mrdivide(H.U2 * H.V1, U11);  %L21 U11 = A21 = H.U2 * H.V1
+         U12 = mldivide(L11, H.U1 * H.V2);  %L11 U12 = A12 = H.U1 * H.V2
+         L21 = mrdivide(H.U2 * H.V1, U11);  %L21 U11 = A21 = H.U2 * H.V1
         U12 = mldivide(L11, H.U1); 
         L21 = mrdivide(H.V1, U11); 
 

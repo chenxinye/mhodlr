@@ -1,4 +1,7 @@
 function T = htril(H)
+%{
+    Return the lower triangular part of HODLR matrix in HODLR format.
+%}
     T = H;
     if isempty(H.D)
         T.D = tril(H.D);

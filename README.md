@@ -76,7 +76,7 @@ Support functions
 
 Acknowledgement
 ---------------
-Any forms of contributions are welcomed. Our documents is still under writing, feel free to pull request and submit issues for suggestions. Before contributing code, we suggest contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerListz).
+Any forms of contributions are welcomed. Our documents is still under writing, feel free to pull request and submit issues for suggestions. Before contributing code, we suggest contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerList).
 
 
 Acknowledgement

@@ -105,7 +105,9 @@ Also, we refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/
 To do
 ---------------
 [1] Adaptive cross approximation for HODLR format
+
 [2] QR computing with HODLR format
+
 [3] Matrix function computing with HODLR format
 
 

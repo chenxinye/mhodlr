@@ -7,7 +7,7 @@ function verbose = test_recover(varargin)
 
     A = rand(5,6,3);
     hA1 = hodlr(A(:, :, 1));
-    hA2 = hodlr(A(:, :, 2), 2, 3, 'qr');
+    hA2 = hodlr(A(:, :, 2), 2, 3, 'svd');
     hA3 = hodlr(A(:, :, 3), 2, 3, 'qr', 1.0e-8);
 
     verbose = 1;

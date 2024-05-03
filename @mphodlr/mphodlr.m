@@ -1,4 +1,49 @@
 classdef mphodlr
+%{
+    Parameters
+    --------------------
+    precs - cell
+        The cell array that contains the precision used for compression of each level. 
+        Each element is a precision class.
+
+    A - double | single
+        Matrix to be converted.
+        
+    max_level - int, default=9999
+        Maximum level for cluster tree.
+
+    min_block_size - int, default=2
+        The minimum size for HODLR blocks.
+
+    method - str, default='svd'
+        The method to perform compression for off-diagonal blocks.
+
+    threshold - double, default=1.0e-12
+        The threshold value used for truncation of low rank approximation.
+
+    type - str, default='dense'
+        Under developed, used for detemine the HODLR matrix type.
+    
+    
+    Properties
+    --------------------
+    U1, V2, U2, V1 - double 
+        The right upper block matrix of each level, we have A12 = U1 * V2 and A21 = U2 * V1.
+
+    A11, A22 - hodlr 
+        The diagonal block matrix in HODLR format (access in the next level). 
+
+    shape - array
+        The shape of input matrix A. 
+
+    level - int
+        The level for cluster tree.
+    
+    max_level - int
+        The maximum level of cluster tree after transformation.
+
+%}
+
     properties(Access=public)
 
         U1 {mustBeNonNan, mustBeFinite, mustBeNumeric}

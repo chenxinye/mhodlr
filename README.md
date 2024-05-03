@@ -10,7 +10,7 @@ This repository contains the code for HODLR matrix as well as its basic matrix c
 Differential equations often result in rank-structured matrices associated with off-diagonal blocks of low rank. These matrices are often represented in hierarchical format, etc., whose operation often results in fast arithmetic, e.g., matrix-vector product.  A hierarchical matrix is a class of dense rank-structured matrices with a hierarchical low-rank structure, which frequently arises from finite element discretization of an elliptic PDE, radial basis function interpolation, boundary integral equations. Technically, a matrix with a low-rank off-diagonal structure can be represented in a hierarchical matrix format.
 
  HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with the computation on the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix; we implement HODLR computations in MATLAB, which is aimed for convenient API for HODLR operations. Besides, we provide mixed precision simulation code for HODLR matrix computing.   
-<img src=docs/demo.png width=800 />
+<img src=docs/demo.png width=300 />
 
 
 Setup

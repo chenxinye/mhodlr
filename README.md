@@ -45,7 +45,7 @@ rng(0);
 A = rand(15,15); % Generate 15 by 15 random matrix
 
 % Create precisions for each level; Level 1 use precision u1, level 2 use precision u2, ...
-u1 = precision('q52');
+u1 = precision('q43');
 u2 = precision('q52');
 u3 = precision('h');
 u_chain = prec_chain(u1, u2, u3);

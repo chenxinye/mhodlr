@@ -57,6 +57,11 @@ mprA = recover(hA)
 norm(mprA - A,2) % Compute the error
 
 ```
+It should noted that we use 3 precisions for the HODLR matrix computation since there are three levels of the cluster tree, if the number of precisions is less than the depth of the cluster tree, the rest of the levels will be performed by working precision. One can perform with a single precision for each level via 
+
+```matlab
+u_chain = prec_chain(u1, u1, u3); % for a hierachical cluster tree with depth of 3
+``` 
 
 Regarding matrix computation, currently ``mhodlr`` supports matrix inversion, matrix transpose, matrix dot product, LU factorization, and Cholesky factorization.  
 The matrix dot product (``hdot`` and ``mphdot``) supports inputs of hodlr class, array, or their mixed type. We showcase the matrix dot product below:

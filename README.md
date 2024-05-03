@@ -24,7 +24,7 @@ and run the command below:
 cd mhodlr
 ```
 
-Example
+Examples
 -----------
 
 After get software downloaded, one can try this simply example to verify its functionality:

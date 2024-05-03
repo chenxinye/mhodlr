@@ -26,7 +26,7 @@ function x = mchop(x)
     x(k_norm) = pow2(roundit(pow2(x(k_norm), opt.t-1-exponent(k_norm))), exponent(k_norm)-(opt.t-1));
 
     if ~isempty(k_sub)
-        t1 = opt.t - max(emin-e(k_sub),0);
+        t1 = opt.t - max(emin-exponent(k_sub),0);
         x(k_sub) = pow2(roundit(pow2(x(k_sub), t1-1-exponent(k_sub))), exponent(k_sub)-(t1-1));
      end
 

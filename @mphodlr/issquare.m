@@ -1,17 +1,20 @@
 function ch = issquare(H)
-%% The function is to check whether HODLR matrix H is square or not.
-%
-% Parameters
-% --------------------
-% H - hodlr
-%     Matrix in HODLR format - hodlr class.
-% 
-%
-% Returns
-% --------------------
-% ch - boolean
-%     `1` indicates H is square matrix, `0` indicates otherwise. 
-% 
+%{
+    The function is to check whether HODLR matrix H is square or not.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+
+    Returns
+    --------------------
+    ch - boolean
+        `1` indicates H is square matrix, `0` indicates otherwise. 
+%}
+ 
+ 
     if class(H) == 'hodlr'
         su1 = size(H.U1, 1);
         su2 = size(H.U2, 1);

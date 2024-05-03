@@ -1,20 +1,21 @@
 function A = recover(H, varargin)
-%% The function is to recover a HODLR format into array format
-%
-% Parameters
-% --------------------
-% H - hodlr
-%     Matrix in HODLR format - hodlr class.
-% 
-% issparse - boolean
-%     `1` indicates returning sparse format, `0` indicates returning full arrary. 
-%
-%
-% Returns
-% --------------------
-% A - double 
-%      Array in sparse or not.
-% 
+%{
+    The function is to recover a HODLR format into array format
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+ 
+    issparse - boolean
+        `1` indicates returning sparse format, `0` indicates returning full arrary. 
+
+
+    Returns
+    --------------------
+    A - double 
+        Array in sparse or not.
+%}
     A = recover_mat(H);
     if nargin > 1
         A = sparse(A);
@@ -22,7 +23,7 @@ function A = recover(H, varargin)
 end
 
 function A = recover_mat(H)
-    if isempty(H.D) % sum(size(H.D)) == 0
+    if isempty(H.D)  sum(size(H.D)) == 0
         su1 = size(H.U1, 1);
         su2 = size(H.U2, 1);
         sv1 = size(H.V1, 2);

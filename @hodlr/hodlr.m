@@ -281,12 +281,12 @@ classdef hodlr
                 error('Inverse is only applied to a square HODLR matrix.');
             end
             
-            if class(obj) == 'hodlr'
+            if strcmp(class(obj), 'hodlr')
                 if isempty(obj.D)
                     X22 = inverse_double(obj.A22);
                     A12 = obj.U1*obj.V2;
                     A21 = obj.U2*obj.V1;
-                    X11 = inv(hadd_partial_double(obj.A11, A12 * X22 * A21 ,'-'));
+                    X11 = inverse_double(hadd_partial_hodlr(obj.A11, A12 * X22 * A21 ,'-'));
                     C12 = -X11 * A12 * X22;
                     C21 = -X22 * A21 * X11;
                     C22 = X22 + X22 * A21 * X11 * A12 * X22;

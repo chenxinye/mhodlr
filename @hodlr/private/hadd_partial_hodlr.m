@@ -1,5 +1,5 @@
 function C = hadd_partial_hodlr(A, B, operator)
-% A must be hodlr format, while B must be double format
+% A must be hodlr format, while B must be dense format
     [mb, nb] = size(B);
     C = A;
 

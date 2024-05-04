@@ -79,8 +79,8 @@ C_appr1 = hdot(hA, A, 'dense'); % output array format
 C_appr2 = hdot(hA, hA); % output HODLR format
 C_true = A * A;
 
-norm(C_appr1 - A,2)
-norm(recover(C_appr2) - A,2)
+norm(C_appr1 - C_true,2)
+norm(recover(C_appr2) - C_true,2)
 ```
 
 Similarly, for mixed precision operation, each level of the computation will follow the array ``u_chain`` precision settings:

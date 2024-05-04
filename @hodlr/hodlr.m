@@ -167,7 +167,7 @@ classdef hodlr
             % Returns
             % --------------------
             % C - hodlr | double
-            %     Return matrix in hodlr class or double array.
+            %     Return matrix in hodlr class or dense array.
             % 
             
             switch nargin
@@ -188,13 +188,13 @@ classdef hodlr
                 if algorithm == 'hodlr'
                     C = inverse_hodlr(obj);
                 else
-                    C = inverse_double(obj);
+                    C = inverse_dense(obj);
                 end
             else
                 if algorithm == 'hodlr'
                     C = inverse_nonrecursive_hodlr(obj);
                 else
-                    C = inverse_nonrecursive_double(obj);
+                    C = inverse_nonrecursive_dense(obj);
                 end
             end
         end 
@@ -208,8 +208,8 @@ classdef hodlr
             end
 
             if isempty(obj.D)
-                C1 = inverse_double(obj.A11);
-                C2 = inverse_double(obj.A22);
+                C1 = inverse_dense(obj.A11);
+                C2 = inverse_dense(obj.A22);
                 
                 A12 = obj.U1 * obj.V2;
                 A21 = obj.U2 * obj.V1;
@@ -227,7 +227,7 @@ classdef hodlr
             C = hodlr(C, md, td, mbs, ml, tp);
         end
 
-        function C = inverse_nonrecursive_double(obj)
+        function C = inverse_nonrecursive_dense(obj)
             %% This member method implement inverse of hodlr matrix in nonrecursive manner
             [m, n] = hsize(obj);
 
@@ -236,8 +236,8 @@ classdef hodlr
             end
             
             if isempty(obj.D)
-                C1 = inverse_nonrecursive_double(obj.A11);
-                C2 = inverse_nonrecursive_double(obj.A22);
+                C1 = inverse_nonrecursive_dense(obj.A11);
+                C2 = inverse_nonrecursive_dense(obj.A22);
                 
                 A12 = obj.U1 * obj.V2;
                 A21 = obj.U2 * obj.V1;
@@ -264,29 +264,29 @@ classdef hodlr
                 A12 = obj.U1 * obj.V2;
                 A21 = obj.U2 * obj.V1;
                 
-                C.A11  = inverse_hodlr(hadd(obj.A11, hdot_double(hdot(A12, X22), A21), '-'));
+                C.A11  = inverse_hodlr(hadd(obj.A11, hdot_dense(hdot(A12, X22), A21), '-'));
             
-                [C.U1, C.V2] = compress_m(hdot_double(hdot_double(C.A11, -A12), X22), obj.method, obj.threshold);
-                C21 = -hdot_double(hdot_double(X22, A21), C.A11);
+                [C.U1, C.V2] = compress_m(hdot_dense(hdot_dense(C.A11, -A12), X22), obj.method, obj.threshold);
+                C21 = -hdot_dense(hdot_dense(X22, A21), C.A11);
                 [C.U2, C.V1] = compress_m(C21, obj.method, obj.threshold);
-                XX = hdot_double(C21 * A12, X22);
+                XX = hdot_dense(C21 * A12, X22);
                 C.A22 = hadd(X22, XX, '-');
             else
                 C.D = inv(obj.D);
             end
         end
         
-        function C = inverse_double(obj)
+        function C = inverse_dense(obj)
             if ~issquare(obj)
                 error('Inverse is only applied to a square HODLR matrix.');
             end
             
             if strcmp(class(obj), 'hodlr')
                 if isempty(obj.D)
-                    X22 = inverse_double(obj.A22);
+                    X22 = inverse_dense(obj.A22);
                     A12 = obj.U1*obj.V2;
                     A21 = obj.U2*obj.V1;
-                    X11 = inverse_double(hadd_partial_hodlr(obj.A11, A12 * X22 * A21 ,'-'));
+                    X11 = inverse_dense(hadd_partial_hodlr(obj.A11, A12 * X22 * A21 ,'-'));
                     C12 = -X11 * A12 * X22;
                     C21 = -X22 * A21 * X11;
                     C22 = X22 + X22 * A21 * X11 * A12 * X22;

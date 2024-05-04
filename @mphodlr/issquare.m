@@ -16,15 +16,21 @@ function ch = issquare(H)
  
  
     if class(H) == 'hodlr'
-        su1 = size(H.U1, 1);
-        su2 = size(H.U2, 1);
-        sv1 = size(H.V1, 2);
-        sv2 = size(H.V2, 2);
-        
-        m = su1 + su2;
-        n = sv1 + sv2;
-        ch = m == n;
-        
+        if isempty(H.D)
+            su1 = size(H.U1, 1);
+            su2 = size(H.U2, 1);
+            sv1 = size(H.V1, 2);
+            sv2 = size(H.V2, 2);
+            
+            m = su1 + su2;
+            n = sv1 + sv2;
+            ch = m == n;
+        else
+            [m, n] = size(H.D);
+            ch = m == n;
+        end
+
+            
     elseif class(H) == 'double' or 'single'
         [m, n] = size(H);
         ch = m == n;

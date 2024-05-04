@@ -71,9 +71,9 @@ function [L, U] = hlu(H, varargin)
         n1 = size(H.V1, 2);
 
         L.U1 = zeros(m1,1);
-        L.V2 = zeros(m2,1)';
+        L.V2 = zeros(1, m2);
         U.U2 = zeros(m2,1);
-        U.V1 = zeros(n1,1)';
+        U.V1 = zeros(1, n1);
         
         if isempty(H.D)
             [L.A11, U.A11] = hlu(H.A11, epsilon);

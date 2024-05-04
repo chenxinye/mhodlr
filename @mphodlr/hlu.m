@@ -7,11 +7,11 @@ function [L, U] = hlu(H, varargin)
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
-    epsilon - double, default=10^(-10)
-        The threshold for recompression.
-
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
+
+    epsilon - double, default=10^(-10)
+        The threshold for recompression.
 
     Returns
     --------------------

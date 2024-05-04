@@ -5,10 +5,10 @@ function C = hadd(varargin)
     Parameters
     --------------------
     A - hodlr | double
-        Input matrix - hodlr class / double tyle.
+        Input matrix - hodlr class / doudense tyle.
   
     B - hodlr | double
-        Input matrix - hodlr class / double tyle.
+        Input matrix - hodlr class / dense tyle.
     
     operator - str, default = '+'
         The operator of add ('+') or minus ('-'), string type.
@@ -19,7 +19,7 @@ function C = hadd(varargin)
     Returns
     --------------------
     C - hodlr | double
-        Return matrix in hodlr class or double array.
+        Return matrix in hodlr class or dense array.
   
 %}
 
@@ -63,11 +63,11 @@ function C = hadd(varargin)
     else
         switch input_number
             case 0
-                C = hadd_full_double(varargin{1}, varargin{2}, operator);
+                C = hadd_full_dense(varargin{1}, varargin{2}, operator);
             case 1
-                C = hadd_partial_double(varargin{1}, varargin{2}, operator);
+                C = hadd_partial_dense(varargin{1}, varargin{2}, operator);
             case 2
-                C = hadd_partial_double(varargin{2}, varargin{1}, operator);
+                C = hadd_partial_dense(varargin{2}, varargin{1}, operator);
             case 3
                 C = varargin{1} + varargin{2};
         end

@@ -5,10 +5,10 @@ function C = mphdot(A, B, varargin)
     Parameters
     --------------------
     A - hodlr | double
-        Matrix in HODLR format or double array.
+        Matrix in HODLR format or dense array.
     
     B - hodlr | double
-        Matrix in HODLR format or double array.
+        Matrix in HODLR format or dense array.
 
     oformat - str, default='hodlr'
     Output format
@@ -25,11 +25,11 @@ function C = mphdot(A, B, varargin)
         if strcmp(varargin{1}, 'hodlr')
             oformat = 'hodlr';
         else
-            oformat = 'double';
+            oformat = 'dense';
         end
     end
 
-    C = mphdot_double(A, B); 
+    C = mphdot_dense(A, B); 
     
     if strcmp(oformat, 'hodlr')
         C = hodlr(C);

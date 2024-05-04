@@ -110,6 +110,8 @@ To do
 
 [3] Matrix function computing with HODLR format
 
+[4] LU solver
+
 
 
 Support functions

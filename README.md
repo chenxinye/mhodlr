@@ -75,7 +75,7 @@ A = rand(15,15);
 
 hA = hodlr(A, 3, 2, 'svd'); 
 
-C_appr1 = hdot(hA, A, 'double'); % output array format
+C_appr1 = hdot(hA, A, 'dense'); % output array format
 C_appr2 = hdot(hA, hA); % output HODLR format
 C_true = A * A;
 

@@ -131,8 +131,10 @@ Any forms of contributions are welcomed. Our documents is still under writing, f
 
 Acknowledgement
 ---------------
-This repository is maintained by [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale) team at Charles University. 
-
+This repository is supported by the European Union (ERC, [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale), 101075632). Views and opinions
+ expressed are those of the authors only and do not necessarily reflect those of the European
+ Union or the European Research Council. Neither the European Union nor the granting
+ authority can be held responsible for them.
 
 License
 ----------------

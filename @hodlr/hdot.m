@@ -31,7 +31,7 @@ function C = hdot(A, B, varargin)
         end
     end
 
-    C = hdot_double(A, B); 
+    C = hdot_dense(A, B); 
     
     if strcmp(oformat, 'hodlr')
         C = hodlr(C);

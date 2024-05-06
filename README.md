@@ -1,18 +1,18 @@
-#   mhodlr: Matrix computation in HODLR representation
+#   mhodlr: Matrix computations in HODLR representation
 
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-lightblue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Run MATLAB Script on GitHub-Hosted Runner](https://github.com/chenxinye/mhodlr/actions/workflows/myscript.yml/badge.svg)](https://github.com/chenxinye/mhodlr/actions/workflows/myscript.yml)
 
 ## Abstract
 
-This repository contains the code for HODLR matrix as well as its basic matrix computation. 
+This repository contains code for HODLR matrix construction as well basic matrix computations with HOLDR matrices. 
 
-Differential equations often result in rank-structured matrices associated with off-diagonal blocks of low rank. These matrices are often represented in hierarchical format, etc., whose operation often results in fast arithmetic, e.g., matrix-vector product.  A hierarchical matrix is a class of dense rank-structured matrices with a hierarchical low-rank structure, which frequently arises from finite element discretization of an elliptic PDE, radial basis function interpolation, boundary integral equations. Technically, a matrix with a low-rank off-diagonal structure can be represented in a hierarchical matrix format.
+Differential equations often result in rank-structured matrices associated with off-diagonal blocks of low rank. These matrices are often represented in hierarchical format, etc., whose operation often results in fast arithmetic, e.g., matrix-vector product.  A hierarchical matrix is a class of dense rank-structured matrices with a hierarchical low-rank structure, which frequently arises from finite element discretization of an elliptic PDE, radial basis function interpolation, and boundary integral equations. Technically, a matrix with a low-rank off-diagonal structure can be represented in a hierarchical matrix format.
 
 
 <img src=docs/demo.png width=300 />
 
-HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with the computation on the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix; we implement HODLR computations in MATLAB, which is aimed for convenient API for HODLR operations. Besides, we provide mixed precision simulation code for HODLR matrix computing.   
+HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with Hierarchical Off-Diagonal Low-Rank (HODLR) matrices; we implement HODLR computations in MATLAB, and aim to provide a convenient API for HODLR operations. We also provide mixed precision simulation code for HODLR matrix computing.   
 
 
 
@@ -31,7 +31,7 @@ cd mhodlr
 Examples
 -----------
 
-After get software downloaded, one can try this simply example to verify its functionality:
+After the software has been downloaded, one can try this simple example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
 hA = hodlr(A); % Convert A to HODLR format
@@ -39,7 +39,7 @@ rA = recover(A); % Reconstruct hA into dense matrix
 disp(norm(recover(full(rA - A)),2)); % Test error
 ```
 
-Also, simulating adaptive precisions for each level of compression is allowed, please use the @mphodlr for low precision HODLR simulation. Users may compare the following code for usage guidance:
+Also, simulating adaptive precisions for each level of compression is allowed; please use the @mphodlr for low precision HODLR simulations. Users may consult the following code for usage guidance:
 ```matlab
 rng(0);
 A = rand(15,15); % Generate 15 by 15 random matrix
@@ -61,13 +61,13 @@ mprA = recover(hA)
 norm(mprA - A,2) % Compute the error
 
 ```
-It should noted that we use 3 precisions for the HODLR matrix computation since there are three levels of the cluster tree, if the number of precisions is less than the depth of the cluster tree, the rest of the levels will be performed by working precision. One can perform with a single precision for each level via 
+It should noted that we use 3 precisions for the HODLR matrix computation since there are three levels of the cluster tree. If the number of precisions is less than the depth of the cluster tree, the rest of the levels will be performed in the working precision. One can compute in a uniform precision for each level via 
 
 ```matlab
 u_chain = prec_chain(u1, u1, u1); % for a hierachical cluster tree with depth of 3
 ``` 
 
-Regarding matrix computation, currently ``mhodlr`` supports matrix inversion, matrix transpose, matrix dot product, LU factorization, and Cholesky factorization.  
+Regarding matrix computations, currently ``mhodlr`` supports matrix inversion, matrix transpose, matrix dot product, LU factorization, and Cholesky factorization.  
 The matrix dot product (``hdot`` and ``mphdot``) supports inputs of hodlr class, array, or their mixed type. We showcase the matrix dot product below:
 
 ```matlab
@@ -83,7 +83,7 @@ norm(C_appr1 - C_true,2)
 norm(recover(C_appr2) - C_true,2)
 ```
 
-Similarly, for mixed precision operation, each level of the computation will follow the array ``u_chain`` precision settings:
+Similarly, for mixed precision operations, each level of the computation will follow the array ``u_chain`` precision settings:
 
 ```matlab
 mphA = mphodlr(u_chain, A, 3, 2, 'svd');
@@ -97,7 +97,7 @@ norm(recover(mp_C_appr2) - C_true,2)
 
 
 
-For customized precision, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definition. 
+For customized precision, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definitions. 
 
 Also, we refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for usage in detail.
 
@@ -128,7 +128,7 @@ Support functions
 
 Contributions
 ---------------
-Any forms of contributions are welcomed. Our documents is still under writing, feel free to pull request and submit issues for suggestions. Before contributing code, we suggest contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerList).
+Any forms of contributions are welcomed. Our documents are still in progress; feel free to pull request and submit issues for suggestions. Before contributing code, we suggest to contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://github.com/chenxinye/mhodlr/blob/main/maintainerList).
 
 
 Acknowledgement

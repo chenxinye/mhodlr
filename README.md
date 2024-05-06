@@ -57,7 +57,7 @@ norm(rA - A,2)  % Compute the error
 
 % Call mixed precision HODLR representation
 mphA = mphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
-mprA = recover(hA)
+mprA = recover(mphA)
 norm(mprA - A,2) % Compute the error
 
 ```

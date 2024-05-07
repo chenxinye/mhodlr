@@ -112,7 +112,7 @@ To do
 
 [4] LU solver
 
-
+[5] Singular value decomposition
 
 Support functions
 ---------------

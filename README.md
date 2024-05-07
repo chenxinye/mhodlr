@@ -95,7 +95,7 @@ norm(mp_C_appr1 - C_true,2)
 norm(recover(mp_C_appr2) - C_true,2) 
 ```
 
-
+For reduced memory used, we suggest use shallow cluster tree for transforming.
 
 For customized precision, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definitions. 
 

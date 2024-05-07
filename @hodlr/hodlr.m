@@ -55,7 +55,7 @@ classdef hodlr
         level {mustBeInteger} = 0
         type {mustBeText} = 'dense' % TO DO
         shape {mustBeNumeric} = []
-        max_level {mustBeInteger} = 9999
+        max_level {mustBeInteger} = 20
     end
 
     properties(Access=private)

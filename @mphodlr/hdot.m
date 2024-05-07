@@ -11,8 +11,8 @@ function C = hdot(A, B, varargin)
         Matrix in HODLR format or double array.
 
     oformat - str, default='hodlr'
-    Output format
-    
+        Output format: 'hodlr' or 'dense'.
+
 
 
     Returns

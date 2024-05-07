@@ -11,7 +11,7 @@ function C = mphdot(A, B, varargin)
         Matrix in HODLR format or dense array.
 
     oformat - str, default='hodlr'
-    Output format
+        Output format: 'hodlr' or 'dense'.
 
     Returns
     --------------------

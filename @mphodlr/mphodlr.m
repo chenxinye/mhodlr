@@ -61,7 +61,7 @@ classdef mphodlr
         type {mustBeText} = 'dense' % TO DO
         prec_settings
         shape {mustBeNumeric} = []
-        max_level {mustBeInteger} = 9999
+        max_level {mustBeInteger} = 20
     end
 
     properties(Access=private)

@@ -22,4 +22,6 @@ function [U, V] = mp_compress_m(A, method, epsilon)
         U = mchop(U(:, 1:rnk));
         V = V(1:rnk,:)*mchop(P);
     end
+    U = sparse(U);
+    V = sparse(V);
 end

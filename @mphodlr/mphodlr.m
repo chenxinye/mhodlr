@@ -295,7 +295,7 @@ classdef mphodlr
                 error('Inverse is only applied to a square HODLR matrix.');
             end
             
-            if class(obj) == 'hodlr'
+            if strcmp(class(obj), 'mphodlr') | strcmp(class(obj), 'hodlr')
                 if isempty(obj.D)
                     X22 = inverse_dense(obj.A22);
                     A12 = obj.U1*obj.V2;

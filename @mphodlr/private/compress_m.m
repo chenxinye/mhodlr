@@ -18,4 +18,6 @@ function [U, V] = compress_m(A, method, epsilon)
         U = U(:, 1:rnk);
         V = V(1:rnk,:)*P;
     end
+    U = sparse(U);
+    V = sparse(V);
 end

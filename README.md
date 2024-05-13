@@ -117,7 +117,7 @@ To do
 Support routines
 ---------------
 
-# Note these routines work for both hodlr and mphodlr class.
+#### Note these routines work for both hodlr and mphodlr class.
 
 |  Matrix computations | API|
 |  ----  | ----  |

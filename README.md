@@ -117,6 +117,8 @@ To do
 Support routines
 ---------------
 
+# Note these routines work for both hodlr and mphodlr class.
+
 |  Matrix computations | API|
 |  ----  | ----  |
 | Matrix transpose   | [``hodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) [``mphodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m)|

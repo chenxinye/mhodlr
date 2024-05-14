@@ -358,7 +358,7 @@ classdef mphodlr
         
         function check_exception(obj)
 
-            if length(obj.prec_settings) < obj.max_level
+            if length(obj.prec_settings) < obj.max_level - 1
                 warning(['The number of precisions used are less than ' ...
                     'the maximum tree level that can achieve. The remaining' ...
                     ' level will use the working precision for compresion.']); 

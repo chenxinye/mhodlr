@@ -105,8 +105,6 @@ classdef mphodlr
             end
             
             obj.level = 1;
-            obj.shape(1) = size(A, 1); obj.shape(2) = size(A, 2);
-            
             min_size = min(obj.shape);
             [~, exponent] = log2(abs(min_size));
             
@@ -120,6 +118,9 @@ classdef mphodlr
         
         function obj =  build_hodlr_mat(obj, A, level)
             [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = size(A, 1); 
+            obj.shape(2) = size(A, 2);
             
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level >= obj.max_level
                 obj.D = A;

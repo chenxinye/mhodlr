@@ -34,7 +34,7 @@ classdef mphodlr
         The diagonal block matrix in HODLR format (access in the next level). 
 
     shape - array
-        The shape of input matrix A. 
+        The shape of object in the current level. 
 
     level - int
         The level for cluster tree.
@@ -105,7 +105,7 @@ classdef mphodlr
             end
             
             obj.level = 1;
-            min_size = min(obj.shape);
+            min_size = min(size(A));
             [~, exponent] = log2(abs(min_size));
             
             if exponent < obj.max_level + 1

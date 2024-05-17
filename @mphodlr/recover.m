@@ -23,7 +23,7 @@ function A = recover(H, varargin)
 end
 
 function A = recover_mat(H)
-    if isempty(H.D)  sum(size(H.D)) == 0
+    if isempty(H.D)
         su1 = size(H.U1, 1);
         su2 = size(H.U2, 1);
         sv1 = size(H.V1, 2);

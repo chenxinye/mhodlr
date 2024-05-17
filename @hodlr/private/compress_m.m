@@ -16,8 +16,9 @@ function [U, V] = compress_m(A, method, epsilon)
         [U, V, P] = qr(A);
         rnk = sum(abs(diag(V)) > V(1,1) * epsilon);
         U = U(:, 1:rnk);
-        V = V(1:rnk,:)*P;
+        V = V(1:rnk,:)*P';
     end
+    
     U = sparse(U);
     V = sparse(V);
 end

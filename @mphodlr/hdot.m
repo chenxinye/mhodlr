@@ -12,7 +12,7 @@ function C = hdot(A, B, varargin)
 
     oformat - str, default='hodlr'
         Output format: 'hodlr' or 'dense'.
-
+    
 
 
     Returns
@@ -27,7 +27,7 @@ function C = hdot(A, B, varargin)
         if strcmp(varargin{1}, 'hodlr')
             oformat = 'hodlr';
         else
-            oformat = 'double';
+            oformat = 'dense';
         end
     end
 

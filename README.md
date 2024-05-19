@@ -127,6 +127,7 @@ Support routines
 | LU factorization   | [``hlu(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hlu.m)|
 | Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m)|
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/htrsu.m)|
+| Linear solver (Ax = b) |[``hlsolve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/htrsu.m)|
 
 Contributions
 ---------------

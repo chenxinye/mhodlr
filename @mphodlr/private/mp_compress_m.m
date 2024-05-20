@@ -12,16 +12,18 @@ function [U, V] = mp_compress_m(A, method, epsilon)
         [U, S, V] = svd(mchop(full(A)), 'econ');
         S = mchop(S);
         rnk = sum(abs(diag(S)) > S(1,1) * epsilon);
-        U = mchop(U(:,1:rnk)) * S(1:rnk,1:rnk);
-        V = mchop(V(:,1:rnk)');
+        U = mchop(U(:,1:rnk));
+        V = S(1:rnk,1:rnk) * mchop(V(:,1:rnk)');
         
     elseif strcmp(method, 'qr')
         [U, V, P] = qr(mchop(A));
         V = mchop(V);
         rnk = sum(abs(diag(V)) > V(1,1) * epsilon);
         U = mchop(U(:, 1:rnk));
-        V = V(1:rnk,:)*mchop(P);
+        V = V(1:rnk,:)*mchop(P');
     end
+    
     U = sparse(U);
     V = sparse(V);
 end
+

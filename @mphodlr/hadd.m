@@ -5,7 +5,7 @@ function C = hadd(varargin)
     Parameters
     --------------------
     A - hodlr | double
-        Input matrix - hodlr class / doudense tyle.
+        Input matrix - hodlr class / dense tyle.
   
     B - hodlr | double
         Input matrix - hodlr class / dense tyle.

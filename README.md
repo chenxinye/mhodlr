@@ -110,9 +110,7 @@ To do
 
 [3] Matrix function computing with HODLR format
 
-[4] LU solver
-
-[5] Singular value decomposition
+[4] Singular value decomposition
 
 Support routines
 ---------------

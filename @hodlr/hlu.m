@@ -79,7 +79,7 @@ function [L, U] = hlu(H, varargin)
             [L.A11, U.A11] = hlu(H.A11, epsilon);
             
             U.U1 = htrsl(L.A11, H.U1);  %L11 U12 = A12 = H.U1 * H.V2
-            L.V1 = htrsu(H.V1, U.A11);  %L21 U11 = A21 = H.U2 * H.V1
+            L.V1 = htrsu(H.V1, U.A11, 1);  %L21 U11 = A21 = H.U2 * H.V1
             [L.A22, U.A22] = hlu(hrank_update(H.A22, -L.U2 * (L.V1 * U.U1), H.V2, epsilon), epsilon); 
     
         else

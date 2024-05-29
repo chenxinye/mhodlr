@@ -161,7 +161,7 @@ classdef precision
                     obj.prob = varargin{6};
                     obj.randfunc = varargin{7};
 
-                case 8
+                otherwise
                     obj.t = 0;
                     obj.emax = 0;
                     obj.round = varargin{2};

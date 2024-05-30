@@ -5,8 +5,14 @@ disp(cond(A, 2));
 
 
 %$ working precision
-epsilon = 0.001;
+epsilon = 0.00001;
 hA = hodlr(A, 5, 20, 'svd', epsilon);
+
+hh = hdot(hA.transpose(), hA, 'hodlr')
+R = hchol(hh, 'hodlr');
+htrsu(hA, R, 0);
+rR = recover(R);
+norm(rR' * rR - recover(hh),2)
 % RA = recover(hA);
 % disp(norm(RA - A, 'fro'));
 disp('Working precision, eps=0.001')

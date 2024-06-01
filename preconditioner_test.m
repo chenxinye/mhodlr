@@ -8,6 +8,7 @@ disp(cond(A, 2));
 epsilon = 0.00001;
 hA = hodlr(A, 5, 20, 'svd', epsilon);
 
+
 hh = hdot(hA.transpose(), hA, 'hodlr')
 R = hchol(hh, 'hodlr');
 htrsu(hA, R, 0);

@@ -15,8 +15,16 @@ aphA = amphodlr(u_chain, A, 5, 2, 'svd', epsilon);
 aprA = recover(aphA);
 norm(aprA - A, 'fro')
 
-n = 100;
-A = rand(n, n);
+phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
+prA = recover(phA);
+norm(prA - A, 'fro')
+
+A = spdiags(ones(n, 1) * [2 3 -1 0.5],  -1:1, n, n); 
+
+aphA = amphodlr(u_chain, A, 5, 2, 'svd', epsilon);
+aprA = recover(aphA);
+norm(aprA - A, 'fro')
+
 phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);
 norm(prA - A, 'fro')

@@ -62,16 +62,16 @@ classdef amphodlr
         prec_settings
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
-        initPrecOrder = false
         normOrder {mustBeNonNan, mustBeFinite, mustBeNumeric}
         precIndex {mustBeNonNan, mustBeFinite, mustBeNumeric}
-        precIndexBool {mustBeNonNan, mustBeFinite}
+        
     end
 
     properties(Access=private)
         min_block_size {mustBeInteger} = 2
         method {mustBeText} = 'svd'
         threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
+        precIndexBool {mustBeNonNan, mustBeFinite}
     end
 
     methods(Access=public)

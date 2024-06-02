@@ -1,17 +1,21 @@
 
 %% mix precision
-u1 = precision('q43');
-u2 = precision('q52');
+u1 = precision('s');
+u2 = precision('h');
 u3 = precision('b');
-u4 = precision('h');
-u5 = precision('s');
+u4 = precision('q52');
+u5 = precision('q43');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
-disp('Precision [q43, q52, b, h, s], eps=0.001')
+u_chain_inv = prec_chain(u5, u4, u3, u2, u1);
+disp('Precision [s, h, b, q52, q43], eps=0.001')
 epsilon = 0.001;
 
-n = 100;
+n = 1000;
 A = rand(n, n);
-aphA = amphodlr(u_chain, A, 5, 2, 'svd', epsilon);
+
+aphA = amphodlr(u_chain, A, 5, 20, 'svd', epsilon); % The precisions fed into   
+                                                    % amphodlr should have
+                                                    % increasing order.
 aprA = recover(aphA);
 norm(aprA - A, 'fro')
 
@@ -19,11 +23,22 @@ phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);
 norm(prA - A, 'fro')
 
-A = spdiags(ones(n, 1) * [2 3 -1 0.5],  -1:1, n, n); 
+phA = mphodlr(u_chain_inv, A, 5, 20, 'svd', epsilon);
+prA = recover(phA);
+norm(prA - A, 'fro')
 
-aphA = amphodlr(u_chain, A, 5, 2, 'svd', epsilon);
+
+A = spdiags(ones(n, 1) * [1 -1 1],  -1:1, n, n); 
+
+aphA = amphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 aprA = recover(aphA);
 norm(aprA - A, 'fro')
+
+
+phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
+prA = recover(phA);
+norm(prA - A, 'fro')
+
 
 phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);

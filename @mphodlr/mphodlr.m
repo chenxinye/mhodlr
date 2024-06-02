@@ -137,7 +137,7 @@ classdef mphodlr
                 obj.A22 = build_hodlr_mat(obj, A(rowSplit+1:end, colSplit+1:end), ...
                     level);
                 
-                if obj.level < length(obj.prec_settings)
+                if obj.level <= length(obj.prec_settings)
                     set_prec(obj.prec_settings{obj.level});
                     [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
                     [obj.U2, obj.V1] = mp_compress(obj, A(rowSplit+1:end, 1:colSplit));

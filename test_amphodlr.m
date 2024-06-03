@@ -3,9 +3,16 @@
 u1 = precision('s');
 u2 = precision('h');
 u3 = precision('b');
-u4 = precision('q52');
-u5 = precision('q43');
-u_chain = prec_chain(u1, u2, u3, u4, u5);
+u4 = precision('q43');
+u5 = precision('q52');
+
+u_chain = prec_chain(u2, u3, u1, u4, u5);
+u_chain_2 = prec_chain(u2, u3, u1, u4, u5); % mix order
+
+srt = cellfun(@(x)x.u, u_chain);
+[a,sortIdx] = sort(srt);
+u_chain = u_chain(sortIdx);
+
 u_chain_inv = prec_chain(u5, u4, u3, u2, u1);
 disp('Precision [s, h, b, q52, q43], eps=0.001')
 epsilon = 0.001;
@@ -13,9 +20,7 @@ epsilon = 0.001;
 n = 1000;
 A = rand(n, n);
 
-aphA = amphodlr(u_chain, A, 5, 20, 'svd', epsilon); % The precisions fed into   
-                                                    % amphodlr should have
-                                                    % increasing order.
+aphA = amphodlr(u_chain_2, A, 5, 20, 'svd', epsilon); 
 aprA = recover(aphA);
 norm(aprA - A, 'fro')
 
@@ -40,6 +45,6 @@ prA = recover(phA);
 norm(prA - A, 'fro')
 
 
-phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
+phA = mphodlr(u_chain_inv, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);
 norm(prA - A, 'fro')

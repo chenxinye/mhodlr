@@ -59,12 +59,11 @@ classdef amphodlr
         
         level {mustBeInteger} = 0
         type {mustBeText} = 'dense' % TO DO
-        prec_settings
+        
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
         normOrder {mustBeNonNan, mustBeFinite, mustBeNumeric}
         precIndex {mustBeNonNan, mustBeFinite, mustBeNumeric}
-        
     end
 
     properties(Access=private)
@@ -72,11 +71,15 @@ classdef amphodlr
         method {mustBeText} = 'svd'
         threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         precIndexBool {mustBeNonNan, mustBeFinite}
+        prec_settings
+        sortIdx
     end
 
     methods(Access=public)
         function obj = amphodlr(precs, A, varargin)
             obj.prec_settings = precs;
+            [~, obj.sortIdx] = sort_by_u(obj, obj.prec_settings);
+            % obj.prec_settings = obj.prec_settings(obj.sortIdx);
 
             if nargin == 3
                 obj.max_level = varargin{1};
@@ -120,17 +123,16 @@ classdef amphodlr
             obj.precIndex = ones(1, obj.max_level);
             obj.precIndexBool = zeros(1, obj.max_level);
 
-            obj.check_exception();
-
             [obj, obj.normOrder] = initialize(obj, A, obj.level, obj.normOrder);
-            [obj, obj.precIndex, obj.precIndexBool]= build_hodlr_mat(obj, A, obj.level, obj.precIndex, obj.precIndexBool);
+            [obj, obj.precIndex, obj.precIndexBool]= build_hodlr_mat(obj, A, obj.level, ...
+                                                    obj.precIndex, obj.precIndexBool);
         end
 
 
         function [obj, normOrder] =  initialize(obj, A, level, normOrder)
             [rowSize, colSize] = size(A);
             
-            obj.shape(1) = rowSize; 
+            obj.shape(1) = rowSize;
             obj.shape(2) = colSize;
             
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
@@ -180,7 +182,11 @@ classdef amphodlr
                             else
                                 precIndex(obj.level) =  precIndex(obj.level-1);
                             end 
-                        else
+
+                        elseif obj.normOrder(obj.level) == obj.normOrder(obj.level-1)
+                            precIndex(obj.level) =  precIndex(obj.level-1);
+
+                        else 
                             if precIndex(obj.level-1) > 1
                                 precIndex(obj.level) =  precIndex(obj.level-1) - 1;
                             else
@@ -199,9 +205,9 @@ classdef amphodlr
                     level, precIndex, precIndexBool);
 
                 if obj.level == 1
-                    set_prec(obj.prec_settings{obj.level});
+                    set_prec(obj.prec_settings{obj.sortIdx(obj.level)});
                 else
-                    set_prec(obj.prec_settings{precIndex(obj.level)});
+                    set_prec(obj.prec_settings{obj.sortIdx(precIndex(obj.level))});
                 end
 
                 [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
@@ -357,7 +363,7 @@ classdef amphodlr
                 error('Inverse is only applied to a square HODLR matrix.');
             end
             
-            if strcmp(class(obj), 'mphodlr') | strcmp(class(obj), 'hodlr')
+            if strcmp(class(obj), 'amphodlr') | strcmp(class(obj), 'hodlr')
                 if isempty(obj.D)
                     X22 = inverse_dense(obj.A22);
                     A12 = obj.U1*obj.V2;
@@ -418,16 +424,11 @@ classdef amphodlr
             [U, V] = mp_compress_m(A, obj.method, obj.threshold);
         end
         
-        function check_exception(obj)
-
-            if length(obj.prec_settings) < obj.max_level - 1
-                warning(['The number of precisions used are less than ' ...
-                    'the maximum tree level that can achieve. The remaining' ...
-                    ' level will use the working precision for compresion.']); 
-            end 
+        function [sortu, sortIdx] = sort_by_u(obj, u_chain)
+            callCellFunc = cellfun(@(x)x.u, u_chain);
+            [sortu, sortIdx] = sort(callCellFunc);
         end
     end
-
 end
 
        

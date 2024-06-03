@@ -76,6 +76,7 @@ classdef precision
         prob {mustBeNonNan, mustBeFinite, mustBeNumeric} = 0.5
         flip = 0
         randfunc = @(n) rand(n, 1)
+        u {mustBeFinite, mustBeNumeric}
     end
 
     methods
@@ -199,6 +200,7 @@ classdef precision
                     error('Please enter an valid value.');
                 end
             end
+            obj.u = 2^(1 - obj.t) / 2; 
         end
     end
 end

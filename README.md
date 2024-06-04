@@ -17,7 +17,7 @@ HODLR matrices are formulated by hierarchically partitioning the matrix in terms
 Our software mainly contains three components
 
 
-|  Class | API|
+|  Class | Description|
 |  ----  | ----  |
 | @hodlr  | [``Compute HODLR matrix``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m)|
 | @mphodlr   | [``Compute HODLR matrix in mixed precision (precisions are defined by the users)``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m) |

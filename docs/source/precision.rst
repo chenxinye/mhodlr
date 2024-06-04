@@ -8,13 +8,11 @@ The precision is defined by class ``precision``, you can simply use a few letter
 
   precision(6, 10, 1, 1, 0.5, 1)
 
-.. code:: bash
-
-
 
 precision with properties:
 
 .. code:: bash
+
   >> ans = 
               t: 6
            emax: 15

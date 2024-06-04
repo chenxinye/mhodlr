@@ -40,9 +40,9 @@ cd mhodlr
 Examples
 -----------
 
-Users may need to be familiar with the precision class if mixed precision routine is needed, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definitions. 
+After the software has been downloaded, users may need to be familiar with the precision class if mixed precision routine is needed, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definitions. 
 
-After the software has been downloaded, one can try this simple example to verify its functionality:
+One can try this simple example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
 hA = hodlr(A); % Convert A to HODLR format

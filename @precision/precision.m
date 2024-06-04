@@ -179,7 +179,7 @@ classdef precision
                 if strcmp(class(varargin{1}), 'double')
                     if length(varargin{1}) < 1 | length(varargin{1}) > 2
                         error('Please enter an valid value.');
-                    else
+                    elseif length(varargin{1}) == 1
                         obj.t = varargin{1};
                         obj.emax = 15;
                         obj.u = 2^(1 - obj.t) / 2; 

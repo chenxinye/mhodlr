@@ -16,7 +16,6 @@ One can simply specify the common floating point format by entering a given name
 .. code:: bash
 
   >> ans = 
-
   precision with properties:
   >> ans = 
             t: 24
@@ -34,10 +33,9 @@ To specify the tuple (t, emax), one can enter the first input as an array like
 
   precision([6, 12], 2, 1, 1, 0.5, 1)
 
-Then, the result is
+Then, the result is:
 
 .. code:: bash
-
   precision with properties:
 
             t: 6
@@ -51,12 +49,12 @@ Then, the result is
             u: 0.0156
 
 
-Or you can leave the ``emax`` empty, use default value for it, then it can be 
+Or you can leave the ``emax`` empty, use default value for it, then it can be: 
 .. code:: matlab
 
   precision(6, 2, 1, 1, 0.5, 1)
 
-the result is similar
+the result is similar:
 .. code:: bash
 
   precision with properties:

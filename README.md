@@ -14,6 +14,15 @@ Differential equations often result in rank-structured matrices associated with 
 
 HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with Hierarchical Off-Diagonal Low-Rank (HODLR) matrices; we implement HODLR computations in MATLAB, and aim to provide a convenient API for HODLR operations. We also provide mixed precision simulation code for HODLR matrix computing.   
 
+Our software mainly contains three components
+
+
+|  Class | API|
+|  ----  | ----  |
+| @hodlr  | [``Compute HODLR matrix``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m)|
+| @mphodlr   | [``Compute HODLR matrix in mixed precision (precisions are defined by the users)``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m) |
+| @amphodlr | [``Compute HODLR matrix in adaptive precision``](https://github.com/chenxinye/mhodlr/blob/main/%40amphodlr/amphodlr.m) |
+
 
 
 Setup

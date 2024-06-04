@@ -32,25 +32,25 @@ Parameters Reference
 
 .. code:: bash
 
-      base - array | str, default='h'
-         For the string type, the arithmetic format supports:
-         'q43', 'fp8-e4m3'       - NVIDIA quarter precision (4 exponent bits,
-                                   3 significand (mantissa) bits),
-         'q52', 'fp8-e5m2'       - NVIDIA quarter precision (5 exponent bits,
-                                   2 significand bits),
-         'b', 'bfloat16'         - bfloat16,
-         'h', 'half', 'fp16'     - IEEE half precision (the default),
-         's', 'single', 'fp32'   - IEEE single precision,
-         'd', 'double', 'fp64'   - IEEE double precision,
-         'c', 'custom'           - custom format.
-        The custom (base 2) format is defined by array (2-element, [t, emax]), 
-        where t is the number of bits in the significand
-        (including the hidden bit) and emax is the maximum value of the
-        exponent.  The minimu exponent is taken to be emin = 1 - emax and
-        the IEEE floating-point number representation is assumed, so that
-        emax and the number of  bits e in the exponent are related by
-        emax = 2^(e-1) - 1. 
-  
+        base - array | str, default='h'
+           For the string type, the arithmetic format supports:
+           'q43', 'fp8-e4m3'       - NVIDIA quarter precision (4 exponent bits,
+                                     3 significand (mantissa) bits),
+           'q52', 'fp8-e5m2'       - NVIDIA quarter precision (5 exponent bits,
+                                     2 significand bits),
+           'b', 'bfloat16'         - bfloat16,
+           'h', 'half', 'fp16'     - IEEE half precision (the default),
+           's', 'single', 'fp32'   - IEEE single precision,
+           'd', 'double', 'fp64'   - IEEE double precision,
+           'c', 'custom'           - custom format.
+          The custom (base 2) format is defined by array (2-element, [t, emax]), 
+          where t is the number of bits in the significand
+          (including the hidden bit) and emax is the maximum value of the
+          exponent.  The minimu exponent is taken to be emin = 1 - emax and
+          the IEEE floating-point number representation is assumed, so that
+          emax and the number of  bits e in the exponent are related by
+          emax = 2^(e-1) - 1. 
+    
       round - int, default=1
          1: round to nearest using round to even last bit to break ties
             (the default);

@@ -10,10 +10,14 @@ The precision is defined by class ``precision``, you can simply use a few letter
 
 .. code:: bash
 
+
+
+precision with properties:
+---------------------------
+
   >> ans = 
   
-    precision with properties:
-  
+
               t: 6
            emax: 15
           round: 10

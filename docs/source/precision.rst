@@ -36,7 +36,7 @@ To specify the tuple (t, emax), one can enter the first input as an array like
 
 Then, the result is
 
-.. code:: matlab
+.. code:: bash
 
   precision with properties:
 
@@ -56,9 +56,7 @@ Or you can leave the ``emax`` empty, use default value for it, then it can be
 
   precision(6, 2, 1, 1, 0.5, 1)
 
-
-precision with properties:
-
+the result is similar
 .. code:: bash
 
   precision with properties:

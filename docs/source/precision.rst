@@ -41,15 +41,15 @@ precision with properties:
 
   precision with properties:
   >> ans = 
-              t: 6
-           emax: 15
-          round: 10
-      subnormal: 1
-         explim: 1
-           prob: 0.5000
-           flip: 1
-       randfunc: @(n)rand(n,1)
-
+            t: 6
+         emax: 15
+        round: 10
+    subnormal: 1
+       explim: 1
+         prob: 1
+         flip: 0.5000
+     randfunc: @(n)rand(n,1)
+            u: 0.0156
 
 
 API Reference

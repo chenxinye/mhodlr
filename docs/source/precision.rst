@@ -6,6 +6,30 @@ The precision is defined by class ``precision``, you can simply use a few letter
 
 We give a few examples to illustrate its usage. 
 
+One can simply specify the common floating point format by entering a given name or abbreviation (for detail, see the API reference as below)
+
+.. code:: matlab
+
+  u = precision('s');
+
+
+.. code:: bash
+
+  >> ans = 
+
+  precision with properties:
+  >> ans = 
+            t: 24
+         emax: 127
+        round: 1
+    subnormal: 1
+       explim: 1
+         prob: 0.5000
+         flip: 0
+     randfunc: @(n)rand(n,1)
+            u: 5.9605e-08
+
+
 .. code:: matlab
 
   precision(6, 10, 1, 1, 0.5, 1)
@@ -15,6 +39,7 @@ precision with properties:
 
 .. code:: bash
 
+  precision with properties:
   >> ans = 
               t: 6
            emax: 15
@@ -27,9 +52,10 @@ precision with properties:
 
 
 
-Parameters Reference
+API Reference
 ---------------------------
-
+        Parameters
+        --------------------
         base - array | str, default='h'
            For the string type, the arithmetic format supports:
            'q43', 'fp8-e4m3'       - NVIDIA quarter precision (4 exponent bits,
@@ -88,3 +114,10 @@ Parameters Reference
           using that function. It should be a function that has a single argument
           for the number of random numbers to generate and returns a vector of
           the random numbers. 
+
+    Properties
+    --------------------
+    Same as parameters, except 
+
+    u - double
+        Unit roundoff computed for current floating point format.

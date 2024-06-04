@@ -13,8 +13,8 @@ classdef precision
        's', 'single', 'fp32'   - IEEE single precision,
        'd', 'double', 'fp64'   - IEEE double precision,
        'c', 'custom'           - custom format.
-      The custom (base 2) format is defined by options.params, which is a
-      2-vector [t,emax] where t is the number of bits in the significand
+      The custom (base 2) format is defined by array (2-element, [t, emax]), 
+      where t is the number of bits in the significand
       (including the hidden bit) and emax is the maximum value of the
       exponent.  The minimu exponent is taken to be emin = 1 - emax and
       the IEEE floating-point number representation is assumed, so that
@@ -64,7 +64,10 @@ classdef precision
 
     Properties
     --------------------
-    Same as parameters. 
+    Same as parameters, except 
+
+    u - double
+        Unit roundoff computed for current floating point format.
 %}
 
     properties
@@ -172,7 +175,6 @@ classdef precision
                     obj.prob = varargin{6};
                     obj.randfunc = varargin{7};
             end
-        
             if nargin >= 1
                 if strcmp(class(varargin{1}), 'double')
                     if length(varargin{1}) < 1 | length(varargin{1}) > 2
@@ -180,6 +182,7 @@ classdef precision
                     else
                         obj.t = varargin{1};
                         obj.emax = 15;
+                        obj.u = 2^(1 - obj.t) / 2; 
                         return 
                     end
         

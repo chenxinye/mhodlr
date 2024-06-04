@@ -17,7 +17,6 @@ One can simply specify the common floating point format by entering a given name
 
   >> ans = 
   precision with properties:
-  >> ans = 
             t: 24
          emax: 127
         round: 1
@@ -38,6 +37,7 @@ Then, the result is:
 
 .. code:: bash
 
+  >> ans = 
   precision with properties:
 
             t: 6

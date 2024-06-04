@@ -166,7 +166,6 @@ classdef amphodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
             
-            delta = obj.prec_settings{1}.u * sqrt(2*obj.max_level) / (obj.threshold);
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 return;
@@ -178,8 +177,8 @@ classdef amphodlr
                 colSplit = ceil(colSize / 2);
 
                 if precIndexBool(obj.level) == 0
-                    xi = sqrt(obj.normOrder(obj.level+1) / obj.normOrder(1)) * delta;
-                    update_u = obj.prec_settings{1}.u / (2^((obj.level+1)/2) * xi);
+                    xi = sqrt(obj.normOrder(obj.level+1) / obj.normOrder(1)) ;
+                    update_u = obj.threshold / (2^((obj.level+1)/2) * xi);
                     find_u = find(obj.unitRoundOff<=update_u);
                     
                     if ~isempty(find_u)

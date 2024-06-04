@@ -12,7 +12,7 @@ u_chain_2 = prec_chain(u2, u3, u1, u4, u5); % mix order
 
 u_chain_inv = prec_chain(u5, u4, u3, u2, u1);
 disp('Precision [s, h, b, q52, q43], eps=0.001')
-epsilon = 1e-2;
+epsilon = 1e-12;
 
 n = 1000;
 A = rand(n, n);

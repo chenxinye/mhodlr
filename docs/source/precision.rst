@@ -29,10 +29,32 @@ One can simply specify the common floating point format by entering a given name
      randfunc: @(n)rand(n,1)
             u: 5.9605e-08
 
+To specify the tuple (t, emax), one can enter the first input as an array like
+.. code:: matlab
+
+  precision([6, 12], 2, 1, 1, 0.5, 1)
+
+Then, the result is
 
 .. code:: matlab
 
-  precision(6, 10, 1, 1, 0.5, 1)
+  precision with properties:
+
+            t: 6
+         emax: 12
+        round: 2
+    subnormal: 1
+       explim: 1
+         prob: 1
+         flip: 0.5000
+     randfunc: @(n)rand(n,1)
+            u: 0.0156
+
+
+Or you can leave the ``emax`` empty, use default value for it, then it can be 
+.. code:: matlab
+
+  precision(6, 2, 1, 1, 0.5, 1)
 
 
 precision with properties:
@@ -43,7 +65,7 @@ precision with properties:
   >> ans = 
             t: 6
          emax: 15
-        round: 10
+        round: 2
     subnormal: 1
        explim: 1
          prob: 1

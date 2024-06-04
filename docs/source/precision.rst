@@ -13,11 +13,9 @@ The precision is defined by class ``precision``, you can simply use a few letter
 
 
 precision with properties:
----------------------------
 
+.. code:: bash
   >> ans = 
-  
-
               t: 6
            emax: 15
           round: 10
@@ -29,10 +27,11 @@ precision with properties:
 
 
 
+Parameters Reference
+---------------------------
+
 .. code:: bash
 
-  Parameters Reference
-  
       Parameters
       --------------------
       base - array | str, default='h'

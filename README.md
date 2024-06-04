@@ -40,6 +40,8 @@ cd mhodlr
 Examples
 -----------
 
+Users may need to be familiar with the precision class if mixed precision routine is needed, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definitions. 
+
 After the software has been downloaded, one can try this simple example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
@@ -106,7 +108,6 @@ norm(recover(mp_C_appr2) - C_true,2)
 
 For reduced memory used, we suggest use shallow cluster tree for transforming.
 
-For customized precision, we refer to [precisions](https://github.com/chenxinye/mhodlr/blob/main/docs/source/precision.rst) for definitions. 
 
 Also, we refer to [document](https://github.com/chenxinye/mhodlr/blob/main/docs/source/start.rst) for usage in detail.
 

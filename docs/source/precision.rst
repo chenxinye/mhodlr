@@ -4,6 +4,8 @@ Customized precision
 With the software ``mhodlr``, you can easily customized your preferred precision for HODLR simulation. 
 The precision is defined by class ``precision``, you can simply use a few letters to define the precision, or specify the detail of the precision used.
 
+We give a few examples to illustrate its usage. 
+
 .. code:: matlab
 
   precision(6, 10, 1, 1, 0.5, 1)

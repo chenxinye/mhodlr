@@ -30,8 +30,6 @@ precision with properties:
 Parameters Reference
 ---------------------------
 
-.. code:: bash
-
         base - array | str, default='h'
            For the string type, the arithmetic format supports:
            'q43', 'fp8-e4m3'       - NVIDIA quarter precision (4 exponent bits,

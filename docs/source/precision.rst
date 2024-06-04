@@ -51,7 +51,7 @@ Then, the result is:
             u: 0.0156
 
 
-Or you can leave the ``emax`` empty, use default value for it, then it can be: 
+Or you can leave the ``emax`` empty to use default value for it, then it can be: 
 
 .. code:: matlab
 

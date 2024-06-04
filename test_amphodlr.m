@@ -20,6 +20,9 @@ A = rand(n, n);
 aphA = amphodlr(u_chain, A, 5, 20, 'svd', epsilon); 
 aprA = recover(aphA);
 norm(aprA - A, 'fro') / norm(A, 'fro')
+invA = inverse(aphA);
+norm(A * invA - eye(n), 'fro')
+
 
 phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);

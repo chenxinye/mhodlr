@@ -64,7 +64,6 @@ classdef amphodlr
         max_level {mustBeInteger} = 20
         normOrder {mustBeNonNan, mustBeFinite, mustBeNumeric}
         precIndex {mustBeNonNan, mustBeFinite, mustBeNumeric}
-        unitRoundOff {mustBeNonNan, mustBeFinite, mustBeNumeric}
     end
 
     properties(Access=private)
@@ -72,18 +71,16 @@ classdef amphodlr
         method {mustBeText} = 'svd'
         threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         precIndexBool {mustBeNonNan, mustBeFinite}
-        
         prec_settings
         sortIdx
     end
 
     methods(Access=public)
         function obj = amphodlr(precs, A, varargin)
-            obj.prec_settings = [prec_chain(precision('d')), precs];
-            
-            [obj.unitRoundOff, obj.sortIdx] = sort_by_u(obj, obj.prec_settings);
+            obj.prec_settings = precs;
+            [~, obj.sortIdx] = sort_by_u(obj, obj.prec_settings);
             % obj.prec_settings = obj.prec_settings(obj.sortIdx);
-            
+
             if nargin == 3
                 obj.max_level = varargin{1};
 
@@ -122,10 +119,10 @@ classdef amphodlr
                 obj.max_level = exponent - 1;
             end
 
-            obj.normOrder = zeros(1, obj.max_level+1);
+            obj.normOrder = zeros(1, obj.max_level);
             obj.precIndex = ones(1, obj.max_level);
             obj.precIndexBool = zeros(1, obj.max_level);
-            obj.normOrder(1) = sum(A.^2, 'all');
+
             [obj, obj.normOrder] = initialize(obj, A, obj.level, obj.normOrder);
             [obj, obj.precIndex, obj.precIndexBool]= build_hodlr_mat(obj, A, obj.level, ...
                                                     obj.precIndex, obj.precIndexBool);
@@ -139,6 +136,7 @@ classdef amphodlr
             obj.shape(2) = colSize;
             
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                
                 return;
             else
                 obj.level = level;
@@ -150,7 +148,7 @@ classdef amphodlr
                 nrm1 = sum(A(1:rowSplit, colSplit+1:end).^2, 'all');
                 nrm2 = sum(A(rowSplit+1:end, 1:colSplit).^2, 'all');
                 
-                normOrder(obj.level+1) = max([normOrder(obj.level+1), nrm1, nrm2]);
+                normOrder(obj.level) = max([normOrder(obj.level), nrm1, nrm2]);
                 
                 [obj.A11, normOrder] = initialize(obj, A(1:rowSplit, 1:colSplit), level, normOrder);
                 [obj.A22, normOrder] = initialize(obj, A(rowSplit+1:end, colSplit+1:end), level, normOrder);
@@ -166,7 +164,6 @@ classdef amphodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
             
-            delta = obj.prec_settings{1}.u * sqrt(2*obj.max_level) / (obj.threshold);
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 return;
@@ -177,18 +174,25 @@ classdef amphodlr
                 rowSplit = ceil(rowSize / 2);
                 colSplit = ceil(colSize / 2);
 
-                if precIndexBool(obj.level) == 0
-                    xi = sqrt(obj.normOrder(obj.level+1) / obj.normOrder(1)) * delta;
-                    update_u = obj.prec_settings{1}.u / (2^((obj.level+1)/2) * xi);
-                    find_u = find(obj.unitRoundOff<=update_u);
-                    
-                    if ~isempty(find_u)
-                        % disp('---------------------')
-                        % disp(obj.level)
-                        precIndex(obj.level) = obj.sortIdx(find_u(end)) - 1;
-                        % disp(precIndex(obj.level))
-                    else
-                        error('Not available precision');
+                if obj.level ~= 1
+                    if precIndexBool(obj.level) == 0
+                        if obj.normOrder(obj.level) < obj.normOrder(obj.level-1)
+                            if precIndex(obj.level-1) < length(obj.prec_settings)
+                                precIndex(obj.level) =  precIndex(obj.level-1) + 1;
+                            else
+                                precIndex(obj.level) =  precIndex(obj.level-1);
+                            end 
+
+                        elseif obj.normOrder(obj.level) == obj.normOrder(obj.level-1)
+                            precIndex(obj.level) =  precIndex(obj.level-1);
+
+                        else 
+                            if precIndex(obj.level-1) > 1
+                                precIndex(obj.level) =  precIndex(obj.level-1) - 1;
+                            else
+                                precIndex(obj.level) =  precIndex(obj.level-1);
+                            end 
+                        end
                     end
                 end
 
@@ -200,7 +204,11 @@ classdef amphodlr
                 [obj.A22, precIndex, precIndexBool] = build_hodlr_mat(obj, A(rowSplit+1:end, colSplit+1:end), ...
                     level, precIndex, precIndexBool);
 
-                set_prec(obj.prec_settings{precIndex(obj.level)+1});
+                if obj.level == 1
+                    set_prec(obj.prec_settings{obj.sortIdx(obj.level)});
+                else
+                    set_prec(obj.prec_settings{obj.sortIdx(precIndex(obj.level))});
+                end
 
                 [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1] = mp_compress(obj, A(rowSplit+1:end, 1:colSplit));

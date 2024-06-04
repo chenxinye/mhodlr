@@ -83,7 +83,7 @@ classdef precision
         function obj = precision(varargin)
             switch nargin
                 case 0 
-                    [obj.t, obj.emax] = fpbase('h');
+                    [obj.t, obj.emax] = base('h');
                     obj.round = 1;
                     obj.subnormal = 1;
                     obj.explim = 1;

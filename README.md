@@ -46,8 +46,8 @@ One can try this simple example to verify its functionality:
 ```matlab
 A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
 hA = hodlr(A); % Convert A to HODLR format
-rA = recover(A); % Reconstruct hA into dense matrix
-disp(norm(recover(full(rA - A)),2)); % Test error
+rA = recover(hA); % Reconstruct hA into dense matrix
+disp(norm(full(rA - A), 2) / norm(full(A), 2)); % relative test error
 ```
 
 Also, simulating adaptive precisions for each level of compression is allowed; please use the @mphodlr for low precision HODLR simulations. Users may consult the following code for usage guidance:

@@ -1,19 +1,28 @@
+
+n = 50;
+A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
+hA = hodlr(A);
+[L, U] = hlu(hA);
+
+norm(hdot(L, U, 'dense') - A, 'fro')
+
+
 n = 100;
 
 A = rand(n, n);
 disp(cond(A, 2));
 
-
 %$ working precision
 epsilon = 0.00001;
 hA = hodlr(A, 5, 20, 'svd', epsilon);
 
+[L, U] = hlu(hA);
 
-hh = hdot(hA.transpose(), hA, 'hodlr')
-R = hchol(hh, 'hodlr');
-htrsu(hA, R, 0);
-rR = recover(R);
-norm(rR' * rR - recover(hh),2)
+% hh = hdot(hA.transpose(), hA, 'hodlr')
+% R = hchol(hh, 'hodlr');
+% htrsu(hA, R, 1);
+% rR = recover(R);
+% norm(rR' * rR - recover(hh),2)
 % RA = recover(hA);
 % disp(norm(RA - A, 'fro'));
 disp('Working precision, eps=0.001')

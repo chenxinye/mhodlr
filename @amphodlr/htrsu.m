@@ -33,11 +33,11 @@ function X = htrsu(B, U, varargin)
             error('Please ensure the second input is sqaure matrix.');
         end
         
-        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr'))
+        if ~(isa(U, 'hodlr') | isa(U, 'amphodlr'))
             error('Please ensure the second input is of a HODLR matrix.');
         end
     
-        if isa(B, 'hodlr') | isa(B, 'mphodlr') 
+        if isa(B, 'hodlr') | isa(B, 'amphodlr') 
             % B is of hodlr format
             X = B;
             if isempty(U.D)
@@ -54,11 +54,11 @@ function X = htrsu(B, U, varargin)
             
         else
             % B is dense format 
-            if isempty(U.D)
-                [m1, ~] = hsize(U, 2);
-                X1 = htrsu(B(:, 1:m1), U.A11);
+            if isempty(U.D) % XU = B
+                [~, ~, n1] = hsize(U, 2);
+                X1 = htrsu(B(:, 1:n1), U.A11);
                 U12 = U.U1*U.V2;
-                X2 = htrsu(B(:, m1+1:end) - X1 * U12, U.A22);
+                X2 = htrsu(B(:, n1+1:end) - X1 * U12, U.A22);
                 X = [X1, X2];
 
                 % [m, n] = size(B);

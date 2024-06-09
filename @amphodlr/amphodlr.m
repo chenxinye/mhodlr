@@ -62,13 +62,14 @@ classdef amphodlr
         
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
+        bottom_level {mustBeInteger} = 0
         normOrder {mustBeNonNan, mustBeFinite, mustBeNumeric}
         precIndex {mustBeNonNan, mustBeFinite, mustBeNumeric}
         unitRoundOff {mustBeNonNan, mustBeFinite, mustBeNumeric}
     end
 
     properties(Access=private)
-        min_block_size {mustBeInteger} = 2
+        min_block_size {mustBeInteger} = 20
         method {mustBeText} = 'svd'
         threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         precIndexBool {mustBeNonNan, mustBeFinite}
@@ -119,7 +120,7 @@ classdef amphodlr
             [~, exponent] = log2(abs(min_size));
             
             if exponent < obj.max_level + 1
-                obj.max_level = exponent - 1;
+                obj.max_level = exponent;
             end
 
             obj.normOrder = zeros(1, obj.max_level+1);
@@ -138,7 +139,7 @@ classdef amphodlr
             obj.shape(1) = rowSize;
             obj.shape(2) = colSize;
             
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > (obj.max_level-1)
                 return;
             else
                 obj.level = level;
@@ -155,7 +156,6 @@ classdef amphodlr
                 [obj.A11, normOrder] = initialize(obj, A(1:rowSplit, 1:colSplit), level, normOrder);
                 [obj.A22, normOrder] = initialize(obj, A(rowSplit+1:end, colSplit+1:end), level, normOrder);
                 
-
             end
         end
         
@@ -166,8 +166,9 @@ classdef amphodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
             
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > (obj.max_level - 1)
                 obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level);
                 return;
             else
                 obj.level = level;
@@ -199,8 +200,9 @@ classdef amphodlr
                 [obj.A22, precIndex, precIndexBool] = build_hodlr_mat(obj, A(rowSplit+1:end, colSplit+1:end), ...
                     level, precIndex, precIndexBool);
 
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
                 set_prec(obj.prec_settings{precIndex(obj.level)+1});
-
+                
                 [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1] = mp_compress(obj, A(rowSplit+1:end, 1:colSplit));
             end

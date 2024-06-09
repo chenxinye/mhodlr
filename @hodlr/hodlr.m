@@ -56,11 +56,12 @@ classdef hodlr
         type {mustBeText} = 'dense' % TO DO
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
+        bottom_level {mustBeInteger} = 0
     end
 
     properties(Access=private)
         
-        min_block_size {mustBeInteger} = 2
+        min_block_size {mustBeInteger} = 20
         method {mustBeText} = 'svd'
         threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
 
@@ -103,9 +104,8 @@ classdef hodlr
             [~, exponent] = log2(abs(min_size));
             
             if exponent < obj.max_level + 1
-                obj.max_level = exponent - 1;
+                obj.max_level = exponent;
             end
-            
             obj = build_hodlr_mat(obj, A, obj.level);
         end
         
@@ -115,8 +115,9 @@ classdef hodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
 
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > (obj.max_level - 1)
                 obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level);
                 return;
             else
                 obj.level = level;
@@ -129,9 +130,11 @@ classdef hodlr
                     level);
                 obj.A22 = build_hodlr_mat(obj, A(rowSplit+1:end, colSplit+1:end), ...
                     level);
-                    
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
                 [obj.U1, obj.V2] = compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1] = compress(obj, A(rowSplit+1:end, 1:colSplit));
+                
             end
         end
         

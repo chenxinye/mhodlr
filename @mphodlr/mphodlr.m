@@ -62,10 +62,11 @@ classdef mphodlr
         prec_settings
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
+        bottom_level {mustBeInteger} = 0
     end
 
     properties(Access=private)
-        min_block_size {mustBeInteger} = 2
+        min_block_size {mustBeInteger} = 20
         method {mustBeText} = 'svd'
         threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
     end
@@ -109,7 +110,7 @@ classdef mphodlr
             [~, exponent] = log2(abs(min_size));
             
             if exponent < obj.max_level + 1
-                obj.max_level = exponent - 1;
+                obj.max_level = exponent;
             end
             
             obj.check_exception();
@@ -122,7 +123,7 @@ classdef mphodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
             
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > (obj.max_level - 1)
                 obj.D = A;
                 return;
             else
@@ -137,6 +138,7 @@ classdef mphodlr
                 obj.A22 = build_hodlr_mat(obj, A(rowSplit+1:end, colSplit+1:end), ...
                     level);
                 
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
                 if obj.level <= length(obj.prec_settings)
                     set_prec(obj.prec_settings{obj.level});
                     [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));

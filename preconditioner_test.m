@@ -1,7 +1,7 @@
 
-n = 50;
-A = spdiags(ones(n, 1) * [2 8 -1],  -1:1, n, n); % generate test matrix
-hA = hodlr(A);
+n = 1000;
+A = rand(n, n); % generate test matrix
+hA = hodlr(A, 5, 100);
 [L, U] = hlu(hA);
 
 norm(hdot(L, U, 'dense') - A, 'fro')
@@ -30,7 +30,7 @@ P = hpcond(hA, epsilon); % input a HODLR matrix
 disp(cond(P*A, 2)); % condition number is about 1
 
 disp('Working precision, eps=0.01')
-epsilon = 0.01;
+epsilon = 0.0001;
 P = hpcond(A, epsilon); % input a default matrix which will be automatically 
                         % converted into HODLR matrix
                         

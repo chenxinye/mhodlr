@@ -130,7 +130,6 @@ Support routines
 |  Matrix computations | API|
 |  ----  | ----  |
 | Matrix transpose   | [``hodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) [``mphodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m)|
-| Matrix inversion   | [``hodlr(A).inverse()``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) [``mphodlr(A).inverse()``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m)|
 | Matrix (vector) multiplication | [``hdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hdot.m) [``mphdot``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphdot.m) |
 | LU factorization   | [``hlu(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hlu.m)|
 | Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hchol.m)|

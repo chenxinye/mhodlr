@@ -1,4 +1,4 @@
-function [Un, Vn] = compress_factors(U, V, epsilon)
+function [Un, Vn] = hrank_truncate(U, V, epsilon)
     [QU, RU] = qr(U, 0);
     [QV, RV] = qr(V', 0);
     

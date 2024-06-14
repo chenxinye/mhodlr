@@ -23,7 +23,7 @@ norm(aprA - A, 'fro') / norm(A, 'fro')
 invA = inverse(aphA);
 norm(A * invA - eye(n), 'fro')
 
-[L, u2] = hlu(aphA);
+[L, U] = hlu(aphA);
 
 phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);
@@ -46,7 +46,10 @@ prA = recover(phA);
 norm(prA - A, 'fro')
 
 
+n = 1000;
+A = rand(n, n);
+u_chain_inv = prec_chain(u1, u1, u1, u1, u1);
 phA = mphodlr(u_chain_inv, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);
 norm(prA - A, 'fro')
-[L, u2] = hlu(phA);
+[L, U] = hlu(phA);

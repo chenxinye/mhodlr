@@ -117,7 +117,7 @@ classdef hodlr
 
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
                 obj.D = A;
-                obj.bottom_level = max(obj.bottom_level, level);
+                obj.bottom_level = max(obj.bottom_level, level-1);
                 return;
             else
                 obj.level = level;

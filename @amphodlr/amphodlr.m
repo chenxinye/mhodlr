@@ -180,15 +180,19 @@ classdef amphodlr
                 if precIndexBool(obj.level) == 0
                     xi = sqrt(obj.normOrder(obj.level+1) / obj.normOrder(1)) ;
                     update_u = obj.threshold / (2^((obj.level+1)/2) * xi);
-                    find_u = find(obj.unitRoundOff<=update_u);
-                    
-                    if ~isempty(find_u)
-                        % disp('---------------------')
-                        % disp(obj.level)
-                        precIndex(obj.level) = obj.sortIdx(find_u(end)) - 1;
-                        % disp(precIndex(obj.level))
+                    if ~isinf(update_u)
+                        find_u = find(obj.unitRoundOff<=update_u);
+    
+                        if ~isempty(find_u)
+                            % disp('---------------------')
+                            % disp(obj.level)
+                            precIndex(obj.level) = obj.sortIdx(find_u(end)) - 1;
+                            % disp(precIndex(obj.level))
+                        else
+                            error('Not available precision');
+                        end
                     else
-                        error('Not available precision');
+                        precIndex(obj.level) = precIndex(obj.level-1);
                     end
                 end
 
@@ -201,6 +205,7 @@ classdef amphodlr
                     level, precIndex, precIndexBool);
 
                 obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+
                 set_prec(obj.prec_settings{precIndex(obj.level)+1});
                 
                 [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));

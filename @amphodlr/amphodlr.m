@@ -66,10 +66,11 @@ classdef amphodlr
         normOrder {mustBeNonNan, mustBeFinite, mustBeNumeric}
         precIndex {mustBeNonNan, mustBeFinite, mustBeNumeric}
         unitRoundOff {mustBeNonNan, mustBeFinite, mustBeNumeric}
+
+        min_block_size {mustBeInteger} = 20
     end
 
     properties(Access=private)
-        min_block_size {mustBeInteger} = 20
         method {mustBeText} = 'svd'
         threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         precIndexBool {mustBeNonNan, mustBeFinite}
@@ -130,6 +131,9 @@ classdef amphodlr
             [obj, obj.normOrder] = initialize(obj, A, obj.level, obj.normOrder);
             [obj, obj.precIndex, obj.precIndexBool]= build_hodlr_mat(obj, A, obj.level, ...
                                                     obj.precIndex, obj.precIndexBool);
+
+            obj.precIndex = obj.precIndex(1: obj.bottom_level);
+            obj.precIndexBool = obj.precIndexBool(1: obj.bottom_level);
         end
 
 

@@ -8,8 +8,6 @@ function VA = compute_hmat_norm(obj, varargin)
         level = varargin{2};
     end
 
-    
-
     [rowSize, colSize] = size(VA);
 
     if level > obj.bottom_level | level > obj.max_level

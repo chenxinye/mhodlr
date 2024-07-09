@@ -1,4 +1,4 @@
-function fig = plot_hmat_nprec(obj, varargin)
+function gca = plot_hmat_nprec(obj, varargin)
     if nargin == 1
         colorMap = spring;
     else if nargin == 2

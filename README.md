@@ -122,8 +122,6 @@ To do
 
 [4] Singular value decomposition
 
-[5] visualization
-
 Support routines
 ---------------
 

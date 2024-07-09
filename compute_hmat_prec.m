@@ -1,10 +1,11 @@
-function [VA, h] =  plot_hmat_prec(obj, VA, varargin)
+function VA =  compute_hmat_prec(obj, varargin)
     
-    if nargin == 2
+    if nargin == 1
         level = 1;
         VA = zeros(2^obj.bottom_level, 2^obj.bottom_level);
     else
-        level = varargin{1};
+        VA = varargin{1};
+        level = varargin{2};
     end
 
     [rowSize, colSize] = size(VA);
@@ -22,14 +23,14 @@ function [VA, h] =  plot_hmat_prec(obj, VA, varargin)
         VA(1:rowSplit, colSplit+1:end) = obj.precIndex(obj.level);
         VA(rowSplit+1:end, 1:colSplit) = obj.precIndex(obj.level);
 
-        VA(1:rowSplit, 1:colSplit) = plot_hmat_prec(obj, VA(1:rowSplit, 1:colSplit), level);
-        VA(rowSplit+1:end, colSplit+1:end) = plot_hmat_prec(obj, VA(rowSplit+1:end, colSplit+1:end), level);
+        VA(1:rowSplit, 1:colSplit) = compute_hmat_prec(obj, VA(1:rowSplit, 1:colSplit), level);
+        VA(rowSplit+1:end, colSplit+1:end) = compute_hmat_prec(obj, VA(rowSplit+1:end, colSplit+1:end), level);
         
     end
 
-    h = heatmap(VA);
-    h.Colormap = parula;
-    h.ColorbarVisible = 'off';
+    % h = heatmap(VA);
+    % h.Colormap = parula;
+    % h.ColorbarVisible = 'off';
     % h.GridVisible = 'off';
 
 end

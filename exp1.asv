@@ -24,26 +24,15 @@ norm(aprA - A, 'fro') / norm(A, 'fro')
 bound_err = (2 * sqrt(2 * aphA.bottom_level) + 1) * epsilon 
 
 pA = compute_hmat_prec(aphA);
-h = heatmap(pA,'CellLabelColor','none');
-
-h.ColorbarVisible = 'off';
-h.GridVisible = 'off';
-h.Colormap = spring;
-set(gcf, 'Position',  [10 10 700 600])
-Ax = gca;
-Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
-Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-exportgraphics(gca,'figures/precsLeGres.pdf')
+h = heatmap(VA);
+% h.Colormap = parula;
+% h.ColorbarVisible = 'off';
+% h.GridVisible = 'off';
+    、
+exportgraphics(h,'figures/precsLeGres.pdf')
 
 nA = compute_hmat_norm(aphA);
-h = heatmap(nA,'CellLabelColor','none');
-h.Colormap = summer;
-h.GridVisible = 'off';
-set(gcf, 'Position',  [10 10 700 600])
-Ax = gca;
-Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
-Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-exportgraphics(gca, 'figures/normLeGres.pdf')
+exportgraphics(h, 'figures/normLeGres.pdf')
 
 % gca = plot_hmat_nprec(aphA);
 % exportgraphics(h, 'figures/pnormLeGres.pdf')
@@ -70,7 +59,7 @@ hold on
 % arrayfun(@(x)xline(ax,x,'k-','Alpha',1),0.5:1:(m+.5));
 % arrayfun(@(y)yline(ax,y,'k-','Alpha',1),0.5:1:(n+.5));
 [linesF, columnsF, valuesF] = find(pA);
-% th = text(linesF, columnsF, string(valuesF), ...
-%    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
+th = text(linesF, columnsF, string(valuesF), ...
+    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
 fontsize(9,"points");
 exportgraphics(gca, 'figures/pnormLeGres.pdf');

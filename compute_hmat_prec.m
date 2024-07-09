@@ -2,7 +2,7 @@ function VA =  compute_hmat_prec(obj, varargin)
     
     if nargin == 1
         level = 1;
-        VA = zeros(2^obj.bottom_level, 2^obj.bottom_level);
+        VA = zeros(2^(obj.bottom_level-1), 2^(obj.bottom_level-1));
     else
         VA = varargin{1};
         level = varargin{2};

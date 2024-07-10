@@ -80,6 +80,7 @@ classdef precision
         flip = 0
         randfunc = @(n) rand(n, 1)
         u {mustBeFinite, mustBeNumeric}
+        bits
     end
 
     methods
@@ -175,6 +176,7 @@ classdef precision
                     obj.prob = varargin{6};
                     obj.randfunc = varargin{7};
             end
+
             if nargin >= 1
                 if strcmp(class(varargin{1}), 'double')
                     if length(varargin{1}) < 1 | length(varargin{1}) > 2
@@ -183,15 +185,17 @@ classdef precision
                         obj.t = varargin{1};
                         obj.emax = 15;
                         obj.u = 2^(1 - obj.t) / 2; 
+                        obj.bits = obj.t + log2((obj.emax + 1)* 2);
                         return 
                     end
         
                     obj.t = varargin{1}(1);
                     obj.emax = varargin{1}(2);
-        
+                    
                 elseif ismember(varargin{1},  {'h','half','fp16','b','bfloat16','s', ...
                     'single','fp32','d','double','fp64',...
                     'q43','fp8-e4m3','q52','fp8-e5m2'})
+
                     [t, emax] = base(varargin{1});
                     obj.t = t;
                     obj.emax = emax;
@@ -203,7 +207,9 @@ classdef precision
                     error('Please enter an valid value.');
                 end
             end
+
             obj.u = 2^(1 - obj.t) / 2; 
+            obj.bits = obj.t + round(log2((obj.emax + 1)* 2));
         end
     end
 end

@@ -13,7 +13,7 @@ u5 = precision('q52');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
 epsilon = 1e-6; % 1e-1
-depth = 4;
+depth = 6;
 aphA = amphodlr(u_chain, A, depth, 10, 'svd', epsilon); 
 aprA = recover(aphA);
 

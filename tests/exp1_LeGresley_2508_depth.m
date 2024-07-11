@@ -1,8 +1,6 @@
 %% global error
 
 A = load('data/LeGresley_2508.mat');
-%LeGresley_2508.mat
-%LeGresley_4908.mat
 A =  A.Problem.A;
 disp(size(A));
 %% 'data/LeGresley_2508.mat'

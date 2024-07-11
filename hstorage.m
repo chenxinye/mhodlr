@@ -15,7 +15,7 @@ function y = hstorage(obj, varargin)
             end
 
             [m, n] = size(obj.D);
-            y = (m + n) * bits;
+            y = (m * n) * bits;
             return;
         else
             if isa(obj.U1, 'double') 
@@ -47,7 +47,7 @@ function y = hstorage(obj, varargin)
             end
 
             [m, n] = size(obj.D);
-            y = (m + n) * bits;
+            y = (m * n) * bits;
             return;
         else
             if size(obj.prec_settings, 2) >= level
@@ -79,7 +79,7 @@ function y = hstorage(obj, varargin)
             end
 
             [m, n] = size(obj.D);
-            y = (m + n) * bits;
+            y = (m * n) * bits;
             return;
         else
             if obj.precIndex(level) ~= 0

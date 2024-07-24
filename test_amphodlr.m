@@ -16,12 +16,16 @@ epsilon = 1e-12;
 
 n = 1000;
 A = rand(n, n);
+x = rand(n, 1);
 
 aphA = amphodlr(u_chain, A, 5, 20, 'svd', epsilon); 
 aprA = recover(aphA);
 norm(aprA - A, 'fro') / norm(A, 'fro')
 invA = inverse(aphA);
 norm(A * invA - eye(n), 'fro')
+
+
+norm(mhdot(aphA, x, precision('d'), 'dense') - A * x, 'fro')
 
 [L, U] = hlu(aphA);
 

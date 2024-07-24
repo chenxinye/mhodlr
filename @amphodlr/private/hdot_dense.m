@@ -1,5 +1,6 @@
 function C = hdot_dense(A, B)
-    if ismember(class(A), {'hodlr', 'amphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr'})
+
+    if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         [mA, nA] = hsize(A);
         [mB, nB] = hsize(B);
         if nA ~= mB
@@ -26,7 +27,7 @@ function C = hdot_dense(A, B)
             C = hdot_dense(A, B.D);
         end
             
-    elseif ismember(class(A), {'hodlr', 'amphodlr'})
+    elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
         if isempty(A.D)
             [mA, nA, su1, su2, sv1, sv2] = hsize(A);
             [mB, nB] = size(B);
@@ -37,8 +38,8 @@ function C = hdot_dense(A, B)
         
             C = zeros(mA, nB);
             y1 = hdot_dense(A.A11, B(1:sv1, :));
-            y2 = A.U1 * A.V2 * B(sv1+1:end, :);
-            y3 = A.U2 * A.V1 * B(1:sv1, :);
+            y2 = A.U1 * (A.V2 * B(sv1+1:end, :));
+            y3 = A.U2 * (A.V1 * B(1:sv1, :));
             y4 = hdot_dense(A.A22, B(sv1+1:end, :));
             
             C(1:su1, :) = y1 + y2;
@@ -47,7 +48,7 @@ function C = hdot_dense(A, B)
             C = A.D * B;
         end
 
-    elseif ismember(class(B), {'hodlr', 'amphodlr'})
+    elseif ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         if isempty(B.D)
             [mB, nB, su1, su2, sv1, sv2] = hsize(B);
             [mA, nA] = size(A);
@@ -58,8 +59,8 @@ function C = hdot_dense(A, B)
         
             C = zeros(mA, nB);
             y1 = hdot_dense(A(:, 1:su1), B.A11);
-            y2 = A(:, su1+1:end) * B.U2 * B.V1;
-            y3 = A(:, 1:su1) * B.U1 * B.V2;
+            y2 = (A(:, su1+1:end) * B.U2) * B.V1;
+            y3 = (A(:, 1:su1) * B.U1) * B.V2;
             y4 = hdot_dense(A(:, su1+1:end), B.A22);
             
             C(:, 1:sv1) = y1 + y2;

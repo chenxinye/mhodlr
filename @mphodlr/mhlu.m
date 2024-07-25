@@ -13,7 +13,7 @@ function [L, U] = mhlu(H, prec, varargin)
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
 
-    epsilon - double, default=10^(-10)
+    epsilon - double, default is the threshold of holdlr matrix H
         The threshold for recompression.
 
     Returns

@@ -68,12 +68,12 @@ classdef amphodlr
         unitRoundOff {mustBeNonNan, mustBeFinite, mustBeNumeric}
 
         min_block_size {mustBeInteger} = 20
+        threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         prec_settings
     end
 
     properties(Access=private)
         method {mustBeText} = 'svd'
-        threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         precIndexBool {mustBeNonNan, mustBeFinite}
         sortIdx
     end

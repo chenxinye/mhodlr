@@ -1,11 +1,8 @@
 %% kernel matrix 1
 rng(0)
 
-n_sample = 10;
-x = rand(1, 2000);
-y = rand(1, 2000);
-kernel_d1 = kernel1(x, y);
-v = rand(n_sample, 2000);
+A = load('data/blrLU/root_P64_cs128.mat');
+A =  A.A;
 
 u1 = precision('d');
 u2 = precision('s');
@@ -16,7 +13,7 @@ u5 = precision('q52');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
 depths = [2, 5, 8];
-vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02, 1e-00];
+vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02];
 
 n_d = size(depths, 2);
 n_eps = size(vareps, 2);
@@ -30,22 +27,19 @@ for i=1:n_eps
         eps = vareps(i);
         depth = depths(j);
         
-        aphA = amphodlr(u_chain, kernel_d1, depth, 10, 'svd', eps); 
+        aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
         
-        for k=1:n_sample
-            x = v(k, :)';
-            
-            hb1 = mhdot(aphA, x, u2, 'dense');
-            rhb = hdot(aphA, x, 'dense');
-            
-            b = kernel_d1 * x;
-            
-            err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
-            ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
-    
-            err_back_list(i, j) = err_back_list(i, j) + err_back1;
-            ref_err_back_list(i, j) = ref_err_back_list(i, j) + ref_err_back;
-        end
+        [L1, U1] = hlu(aphA, 'hodlr');
+        [L2, U2] = mhlu(aphA, u2, 'hodlr');
+        
+        b = A * x;
+        
+        err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(A, 'fro'));
+        ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(A, 'fro'));
+
+        err_back_list(i, j) = err_back_list(i, j) + err_back1;
+        ref_err_back_list(i, j) = ref_err_back_list(i, j) + ref_err_back;
+
     end
 end
 
@@ -63,7 +57,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=2');
@@ -93,7 +87,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=5');
@@ -123,7 +117,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=8');
@@ -147,11 +141,8 @@ hold off
 %% kernel matrix 2
 rng(0)
 
-n_sample = 10;
-x = rand(1, 2000);
-y = rand(1, 2000);
-kernel_d1 = kernel2(x, y);
-v = rand(n_sample, 2000);
+A = load('data/LeGresley_2508.mat');
+A =  A.Problem.A;
 
 u1 = precision('d');
 u2 = precision('s');
@@ -175,7 +166,7 @@ for i=1:n_eps
         eps = vareps(i);
         depth = depths(j);
         
-        aphA = amphodlr(u_chain, kernel_d1, depth, 10, 'svd', eps); 
+        aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
         
         for k=1:n_sample
             x = v(k, :)';
@@ -183,10 +174,10 @@ for i=1:n_eps
             hb1 = mhdot(aphA, x, u2, 'dense');
             rhb = hdot(aphA, x, 'dense');
             
-            b = kernel_d1 * x;
+            b = A * x;
             
-            err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
-            ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
+            err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(A, 'fro'));
+            ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(A, 'fro'));
     
             err_back_list(i, j) = err_back_list(i, j) + err_back1;
             ref_err_back_list(i, j) = ref_err_back_list(i, j) + ref_err_back;
@@ -208,7 +199,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=2');
@@ -237,7 +228,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=5');
@@ -267,7 +258,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=8');
@@ -290,11 +281,8 @@ hold off
 clear all
 rng(0)
 
-n_sample = 10;
-x = rand(2000, 3);
-y = rand(2000, 3);
-kernel_d1 = kernel3(x, y);
-v = rand(n_sample, 2000);
+A = load('data/breasttissue_10NN.mat');
+A =  A.Problem.A;
 
 u1 = precision('d');
 u2 = precision('s');
@@ -318,22 +306,19 @@ for i=1:n_eps
         eps = vareps(i);
         depth = depths(j);
         
-        aphA = amphodlr(u_chain, kernel_d1, depth, 10, 'svd', eps); 
+        aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
         
-        for k=1:n_sample
-            x = v(k, :)';
-            
-            hb1 = mhdot(aphA, x, u2, 'dense');
-            rhb = hdot(aphA, x, 'dense');
-            
-            b = kernel_d1 * x;
-            
-            err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
-            ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
+        hb1 = mhdot(aphA, x, u2, 'dense');
+        rhb = hdot(aphA, x, 'dense');
+        
+        b = A * x;
+        
+        err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(A, 'fro'));
+        ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(A, 'fro'));
+
+        err_back_list(i, j) = err_back_list(i, j) + err_back1;
+        ref_err_back_list(i, j) = ref_err_back_list(i, j) + ref_err_back;
     
-            err_back_list(i, j) = err_back_list(i, j) + err_back1;
-            ref_err_back_list(i, j) = ref_err_back_list(i, j) + ref_err_back;
-        end
     end
 end
 
@@ -351,7 +336,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=2');
@@ -381,7 +366,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=5');
@@ -411,7 +396,7 @@ h = legend('backward error (fp64)', ...
            'backward error (fp32)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.36, 0.895, .25, 0];
+rect = [0.36, 0.835, .25, 0];
 set(h, 'Position', rect);
 
 [l, s] = title('$\ell$=8');

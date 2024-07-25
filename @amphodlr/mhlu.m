@@ -13,7 +13,7 @@ function [L, U] = mhlu(H, prec, varargin)
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
 
-    epsilon - double, default=10^(-10)
+    epsilon - double, default is the threshold of holdlr matrix H
         The threshold for recompression.
 
     Returns
@@ -30,10 +30,10 @@ function [L, U] = mhlu(H, prec, varargin)
     
     if nargin == 2
         oformat = 'hodlr';
-        epsilon = 1.0e-12;
+        epsilon = H.threshold;
     elseif nargin == 3 
         oformat = varargin{1};
-        epsilon = 1.0e-12;
+        epsilon = H.threshold;
     elseif nargin > 3 
         oformat = varargin{1};
         epsilon = varargin{2};

@@ -57,14 +57,12 @@ classdef hodlr
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
         bottom_level {mustBeInteger} = 0
-        
+        threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         min_block_size {mustBeInteger} = 20
     end
 
     properties(Access=private)
         method {mustBeText} = 'svd'
-        threshold  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
-
     end
 
     methods(Access=public)

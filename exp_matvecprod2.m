@@ -16,7 +16,7 @@ u5 = precision('q52');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
 depths = [2, 5, 8];
-vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02, 1e-00];
+vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02];
 
 n_d = size(depths, 2);
 n_eps = size(vareps, 2);
@@ -162,7 +162,7 @@ u5 = precision('q52');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
 depths = [2, 5, 8];
-vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02, 1e-00];
+vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02];
 
 n_d = size(depths, 2);
 n_eps = size(vareps, 2);
@@ -305,7 +305,7 @@ u5 = precision('q52');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
 depths = [2, 5, 8];
-vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02, 1e-00];
+vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02];
 
 n_d = size(depths, 2);
 n_eps = size(vareps, 2);

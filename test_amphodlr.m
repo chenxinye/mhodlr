@@ -28,6 +28,9 @@ norm(A * invA - eye(n), 'fro')
 norm(mhdot(aphA, x, precision('d'), 'dense') - A * x, 'fro')
 
 [L, U] = hlu(aphA);
+[L, U] = mhlu(aphA, u1);
+norm(hdot(L, U, 'dense') - A, 'fro') / norm(A, 'fro')
+
 
 phA = mphodlr(u_chain, A, 5, 20, 'svd', epsilon);
 prA = recover(phA);

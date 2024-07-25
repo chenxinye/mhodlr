@@ -1,4 +1,4 @@
-function [L, U] = hlu(H, varargin)
+function [L, U] = mhlu(H, prec, varargin)
 %{
     Compute LU factorization for HODLR matrix H.
 
@@ -7,6 +7,9 @@ function [L, U] = hlu(H, varargin)
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
+    prec - precision
+        Precision to simulate the factorization.
+
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
 
@@ -25,33 +28,43 @@ function [L, U] = hlu(H, varargin)
         error('LU factorization is only applied to a square HODLR matrix.');
     end
     
-    if nargin == 1
+    if nargin == 2
         oformat = 'hodlr';
         epsilon = 1.0e-12;
-    elseif nargin == 2 
+    elseif nargin == 3 
         oformat = varargin{1};
         epsilon = 1.0e-12;
-    else
+    elseif nargin > 3 
         oformat = varargin{1};
         epsilon = varargin{2};
     end 
     
     [m, n] = hsize(H);
     
+    if H.level <= 1
+        set_prec(prec);
+    end 
+
+    H = hmchop(H);
 
     if strcmp(oformat, 'dense')
         if isempty(H.D)
-            [L11, U11] = hlu(H.A11, 'dense', epsilon);
-            U12 = mldivide(L11, H.U1 * H.V2);  %L11 U12 = A12 = H.U1 * H.V2
-            L21 = mrdivide(H.U2 * H.V1, U11);  %L21 U11 = A21 = H.U2 * H.V1
-            U12 = mldivide(L11, H.U1); 
-            L21 = mrdivide(H.V1, U11); 
-
-            NH = hrank_update(H.A22, -H.U2 * (L21 * U12), H.V2, epsilon);
-            [L22, U22] = hlu(NH, 'dense', epsilon);  % lu(hadd(H.A22, L21 * U12, '-'));
+            [L11, U11] = mhlu(H.A11, prec, 'dense', epsilon);
+            U12 = mldivide(mchop(L11), mchop(H.U1 * H.V2));  %L11 U12 = A12 = H.U1 * H.V2
+            L21 = mrdivide(mchop(H.U2 * H.V1), mchop(U11));  %L21 U11 = A21 = H.U2 * H.V1
+            U12 = mldivide(mchop(L11), H.U1); 
+            L21 = mrdivide(H.V1, mchop(U11)); 
             
-            U12 = U12 * H.V2;
-            L21 = H.U2 * L21;
+            U12 = mchop(U12);
+            L21 = mchop(L21);
+            U12 = mchop(U12); 
+            L21 = mchop(L21); 
+
+            NH = mhrank_update(H.A22, -H.U2 * mchop(L21 * U12), H.V2, epsilon);
+            [L22, U22] = mhlu(NH, prec, 'dense', epsilon);  % lu(hadd(H.A22, L21 * U12, '-'));
+            
+            U12 = mchop(U12 * H.V2);
+            L21 = mchop(H.U2 * L21);
 
             L = blkdiag(L11, L22);
             L(size(L11, 1)+1:end, 1:size(L11, 2)) = L21;
@@ -76,14 +89,15 @@ function [L, U] = hlu(H, varargin)
         U.V1 = zeros(1, n1);
 
         if isempty(H.D)
-            [L.A11, U.A11] = hlu(H.A11, 'hodlr', epsilon);
+            [L.A11, U.A11] = mhlu(H.A11, prec, 'hodlr', epsilon);
             
-            U.U1 = htrsl(L.A11, H.U1);  %.L11 * U.U1 * U.V2 = L11 * U12 = A12 = H.U1 * H.V2
-            L.V1 = htrsu(H.V1, U.A11);  % L.U2 * L.V1 * U11 = L21 * U11 = A21 = H.U2 * H.V1
-            [L.A22, U.A22] = hlu(hrank_update(H.A22, -L.U2 * (L.V1 * U.U1), H.V2, epsilon), 'hodlr', epsilon); 
+            U.U1 = mhtrsl(L.A11, H.U1);  %.L11 * U.U1 * U.V2 = L11 * U12 = A12 = H.U1 * H.V2
+            L.V1 = mhtrsu(H.V1, U.A11);  % L.U2 * L.V1 * U11 = L21 * U11 = A21 = H.U2 * H.V1
+            [L.A22, U.A22] = mhlu(mhrank_update(H.A22, -L.U2 * mchop(L.V1 * U.U1), H.V2, epsilon), ...
+                prec, 'hodlr', epsilon); 
 
         else
-            [L.D, U.D] = lu(H.D);
+            [L.D, U.D] = lu(mchop(H.D));
             % L.D = P'*L.D;
         end
     end

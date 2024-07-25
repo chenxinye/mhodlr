@@ -1,7 +1,7 @@
 %% kernel matrix 1
 rng(0)
 
-n_sample = 10;
+n_sample = 1;
 x = rand(1, 2000);
 y = rand(1, 2000);
 kernel_d1 = kernel1(x, y);
@@ -16,13 +16,16 @@ u5 = precision('q52');
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
 depths = [2, 5, 8];
-vareps = [10e-9, 10e-08, 10e-07, 10e-06, 10e-5, 10e-04, 10e-03, 10e-02];
+vareps = [1e-12, 1e-11, 1e-10, 1e-9, 1e-08, 1e-07, 1e-06, 1e-5, 1e-04, 1e-03];
 
 n_d = size(depths, 2);
 n_eps = size(vareps, 2);
 
-err_forward_list  = zeros(n_eps, n_d);
-err_back_list  = zeros(n_eps, n_d);
+err_forward_list1  = zeros(n_eps, n_d);
+err_back_list1  = zeros(n_eps, n_d);
+
+err_forward_list2  = zeros(n_eps, n_d);
+err_back_list2  = zeros(n_eps, n_d);
 
 ref_err_forward_list  = zeros(n_eps, n_d);
 ref_err_back_list  = zeros(n_eps, n_d);
@@ -36,35 +39,24 @@ for i=1:n_eps
         depth = depths(j);
         
         aphA = amphodlr(u_chain, kernel_d1, depth, 10, 'svd', eps); 
-        hA = hodlr(kernel_d1, depth, 10, 'svd', eps); 
-
+        
         for k=1:n_sample
             x = v(k, :)';
             
-            hb = hdot(aphA, x, 'dense');
-            rhb = hdot(hA, x, 'dense');
+            hb1 = mhdot(aphA, x, u2, 'dense');
+            hb2 = mhdot(aphA, x, u3, 'dense');
+            rhb = hdot(aphA, x, 'dense');
             
             b = kernel_d1 * x;
             
-            delta_H_bound = 2*(sqrt(2) + 1)*sqrt(2^(depth+1) + 2^(depth-1)) * eps * norm(kernel_d1, 'fro');
-            
-            err_forward = norm(b - hb, 'fro') / norm(b, 'fro');
-            err_back = norm(b - hb, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
+            err_back1 = norm(b - hb1, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
+            err_back2 = norm(b - hb2, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
 
-            ref_err_forward = norm(b - rhb, 'fro') / norm(b, 'fro');
             ref_err_back = norm(b - rhb, 'fro') / (norm(b, 'fro') * norm(kernel_d1, 'fro'));
-            
-            err_forward_bound = delta_H_bound * norm(x, 'fro') / norm(b, 'fro');
-            err_back_bound = delta_H_bound / norm(kernel_d1, 'fro');
     
-            err_forward_list(i, j) = err_forward_list(i, j) + err_forward;
-            err_back_list(i, j) = err_back_list(i, j) + err_back;
-            
-            ref_err_forward_list(i, j) = ref_err_forward_list(i, j) + ref_err_forward;
+            err_back_list1(i, j) = err_back_list1(i, j) + err_back1;
+            err_back_list2(i, j) = err_back_list2(i, j) + err_back2;
             ref_err_back_list(i, j) = ref_err_back_list(i, j) + ref_err_back;
-
-            err_forward_bound_list(i, j) = err_forward_bound_list(i, j) + err_forward_bound;
-            err_back_bound_list(i, j) = err_back_bound_list(i, j) + err_back_bound;
         end
     end
 end
@@ -74,38 +66,48 @@ fontSize = 18;
 %% plot 1
 set(gcf, 'Position',  [10 10 800 650])
 
-semilogy(1:n_eps, ref_err_forward_list(:, 1)./n_sample, ':c', 'Marker', '+', 'MarkerSize',10, 'Linewidth',2)
+semilogy(1:n_eps, ref_err_back_list(:, 1)./n_sample,':g', 'Marker', 'o', 'MarkerSize',10, 'Linewidth',2)
 hold on 
-semilogy(1:n_eps, ref_err_back_list(:, 1)./n_sample,'--y', 'Marker', 'pentagram', 'MarkerSize',10, 'Linewidth',2)
+semilogy(1:n_eps, err_back_list1(:, 1)./n_sample,'-.r', 'Marker', '*', 'MarkerSize',10, 'Linewidth',2)
 hold on 
-semilogy(1:n_eps, err_forward_list(:, 1)./n_sample, ':r', 'Marker', 'o', 'MarkerSize',10, 'Linewidth',2)
+semilogy(1:n_eps, err_back_list2(:, 1)./n_sample,'--b', 'Marker', 'pentagram',  'MarkerSize',10, 'Linewidth',2)
 hold on 
-semilogy(1:n_eps, err_back_list(:, 1)./n_sample,'--g', 'Marker', '*', 'MarkerSize',10, 'Linewidth',2)
-hold on 
-semilogy(1:n_eps, err_forward_bound_list(:, 1)./n_sample,':k', 'Marker', 's',  'MarkerSize',10, 'Linewidth',2)
-hold on 
-semilogy(1:n_eps, err_back_bound_list(:, 1)./n_sample,'--b', 'Marker', 's',  'MarkerSize',10, 'Linewidth',2)
-yline(u1.u, '--')
-yline(u2.u, '--')
-yline(u3.u, '--')
+% semilogy(1:n_eps, ref_err_forward_list(:, 1)./n_sample, ':c', 'Marker', '+', 'MarkerSize',10, 'Linewidth',2)
+% hold on 
+% semilogy(1:n_eps, ref_err_back_list(:, 1)./n_sample,'--y', 'Marker', 'pentagram', 'MarkerSize',10, 'Linewidth',2)
+% hold on 
+% semilogy(1:n_eps, err_forward_list(:, 1)./n_sample, ':r', 'Marker', 'o', 'MarkerSize',10, 'Linewidth',2)
+% hold on 
+% semilogy(1:n_eps, err_back_list(:, 1)./n_sample,'--g', 'Marker', '*', 'MarkerSize',10, 'Linewidth',2)
+% hold on 
+% semilogy(1:n_eps, err_forward_bound_list(:, 1)./n_sample,':k', 'Marker', 's',  'MarkerSize',10, 'Linewidth',2)
+% hold on 
+% semilogy(1:n_eps, err_back_bound_list(:, 1)./n_sample,'--b', 'Marker', 's',  'MarkerSize',10, 'Linewidth',2)
+% yline(u1.u, '--');
+% yline(u2.u, '--');
+% yline(u3.u, '--');
+% h = legend('forward error (I)', ...
+%     'backward error (I)', ...
+%     'forward error (II)', ...
+%     'backward error (II)', ...
+%     'forward error bound', 'backward error bound', ...
+%      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3)
 
-h = legend('forward error (I)', ...
-    'backward error (I)', ...
-    'forward error (II)', ...
-    'backward error (II)', ...
-    'forward error bound', 'backward error bound', ...
+h = legend('backward error (fp64)', ...
+           'backward error (fp32)', ...
+           'backward error (fp16)', ...
      'NumColumns',2, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3)
 legend boxoff
 rect = [0.32, 0.835, .25, 0];
 set(h, 'Position', rect)
 
-t1 = text(8, u3.u, 'fp16')
-t2 = text(8, u2.u, 'fp32')
-t3 = text(8, u1.u, 'fp64')
+% t1 = text(8, u3.u, 'fp16')
+% t2 = text(8, u2.u, 'fp32')
+% t3 = text(8, u1.u, 'fp64')
 
-t1.FontSize = fontSize;
-t2.FontSize = fontSize;
-t3.FontSize = fontSize;
+% t1.FontSize = fontSize;
+% t2.FontSize = fontSize;
+% t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
@@ -159,7 +161,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=5');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -204,7 +211,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=8');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -314,7 +326,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=2');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -359,7 +376,17 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=5');
-xticklabels(split(num2str(vareps,'%.e ')))
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -404,7 +431,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=8');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -512,7 +544,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=2');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -557,7 +594,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=5');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
@@ -602,7 +644,12 @@ t2.FontSize = fontSize;
 t3.FontSize = fontSize;
 
 [l, s] = title('$\ell$=8');
-xticklabels(split(num2str(vareps,'%.e ')))
+xticklabels(split(num2str(vareps,'%.e ')));
+
+lx = xlabel('$\varepsilon$');
+set(lx,'interpreter','latex');
+lx.FontSize = fontSize;
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');

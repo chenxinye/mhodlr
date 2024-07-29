@@ -5,12 +5,20 @@ depths = [5, 8];
 load("results/storage_eff1.mat");
 load("results/storage_eff_ap1.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -22,12 +30,20 @@ hold off
 load("results/storage_eff2.mat");
 load("results/storage_eff_ap2.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -39,12 +55,21 @@ hold off
 load("results/storage_eff3.mat");
 load("results/storage_eff_ap3.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -56,12 +81,21 @@ hold off
 load("results/storage_eff4.mat");
 load("results/storage_eff_ap4.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -73,12 +107,21 @@ hold off
 load("results/storage_eff5.mat");
 load("results/storage_eff_ap5.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -89,12 +132,21 @@ hold off
 load("results/storage_eff6.mat");
 load("results/storage_eff_ap6.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -106,12 +158,21 @@ hold off
 load("results/storage_eff7.mat");
 load("results/storage_eff_ap7.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -123,12 +184,21 @@ hold off
 load("results/storage_eff8.mat");
 load("results/storage_eff_ap8.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)
@@ -141,12 +211,21 @@ hold off
 load("results/storage_eff9.mat");
 load("results/storage_eff_ap9.mat");
 
-fontSize = 13;
+fontSize = 19;
 
-set(gcf, 'Position',  [10 10 600 500])
+set(gcf, 'Position',  [10 10 400 500])
 set(groot,'defaultAxesTickLabelInterpreter','latex');  
-bar(storage_eff./storage_eff_ap)
-xticklabels(split(['$\ell$=5', ' $\ell$=8']))
+ste = storage_eff./storage_eff_ap;
+ba = bar(ste(2, :))
+ba.FaceColor = 'flat';
+ba.CData(1,:) = [.5 0 .5];
+ba.CData(2,:) = [.5 1 .5];
+ba.CData(3,:) = [.5 .5 1];
+
+grid on;
+ylim([0,2])
+xticklabels(split(['$\varepsilon$=10^{-7}', ' $\varepsilon$=10^{-4}', ' $\varepsilon$=10^{-1}']))
+
 a = get(gca,'XTickLabel');  
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 %legend(split(num2str(vareps,'%.e ')),'location','northeastoutside', BackgroundAlpha=.3)

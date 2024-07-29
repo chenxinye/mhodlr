@@ -38,6 +38,7 @@ exportgraphics(gca,'figures/precsLeGres.pdf')
 
 nA = compute_hmat_norm(aphA);
 h = heatmap(nA,'CellLabelColor','none');
+h.FontSize = 17;
 h.Colormap = summer;
 h.GridVisible = 'off';
 set(gcf, 'Position',  [10 10 700 600])

@@ -1,7 +1,7 @@
-A = load('data/3-5000/root_P64_cs128.mat');
+A = load('data/saylr3.mat');
 %LeGresley_2508.mat
 %LeGresley_4908.mat
-A =  A.A;
+A =  A.Problem.A;
 %% 'data/LeGresley_2508.mat'
 %% mix precision
 u1 = precision('d');
@@ -12,7 +12,7 @@ u5 = precision('q52');
 
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
-epsilon = 1e-6; % 1e-1
+epsilon = 1e-3; % 1e-1
 depth = 6;
 aphA = amphodlr(u_chain, A, depth, 10, 'svd', epsilon); 
 aprA = recover(aphA);

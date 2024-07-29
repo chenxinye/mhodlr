@@ -1,13 +1,9 @@
 %% global error
 
-A = load('data/1138_bus.mat');
-%LeGresley_2508.mat
-%LeGresley_4908.mat
+A = load('data/3-5000/ex37.mat');
 A =  A.Problem.A;
 disp(size(A));
-%% 'data/LeGresley_2508.mat'
-%% mix precision
-u1 = precision('d');
+u1 = precision('d')
 u2 = precision('s');
 u3 = precision('h');
 u4 = precision('b');
@@ -48,7 +44,7 @@ for j = 1:n_d
 end
 
 rect = [0.5, 0, 0, 0.05];
-fontSize = 18;
+fontSize = 19;
 lineWidth = 1.5;
 markerSize = 13;
 
@@ -60,7 +56,7 @@ hold on
 semilogy(1:n_eps, err_bound_list(:, 1),':k', 'Marker', 's',  'MarkerSize',markerSize, 'Linewidth',lineWidth)
 
 legend('fp64', ...
-    'adptive precision', ...
+    'adaptive precision', ...
     'error bound', 'Position', rect, 'NumColumns',3, 'FontSize', fontSize)
 legend boxoff
 [l, s] = title('$\ell$=2');
@@ -69,7 +65,8 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
 l.FontSize = fontSize+12;
-exportgraphics(gca, 'figures/1138_bus_depth=1.pdf')
+grid on;
+exportgraphics(gca, 'figures/ex37_depth=1.pdf')
 hold off
 
 set(gcf, 'Position',  [10 10 800 600])
@@ -80,7 +77,7 @@ hold on
 semilogy(1:n_eps, err_bound_list(:, 2),':k', 'Marker', 's',  'MarkerSize',markerSize, 'Linewidth',lineWidth)
 
 legend('fp64', ...
-    'adptive precision', ...
+    'adaptive precision', ...
     'error bound', 'Position', rect, 'NumColumns',3, 'FontSize', fontSize)
 legend boxoff
 [l, s] = title('$\ell$=5');
@@ -89,7 +86,8 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
 l.FontSize = fontSize+12;
-exportgraphics(gca, 'figures/1138_bus_depth=2.pdf')
+grid on;
+exportgraphics(gca, 'figures/ex37_depth=2.pdf')
 hold off
 
 
@@ -101,7 +99,7 @@ hold on
 semilogy(1:n_eps, err_bound_list(:, 3),':k', 'Marker', 's',  'MarkerSize',markerSize, 'Linewidth',lineWidth)
 
 legend('fp64', ...
-    'adptive precision', ...
+    'adaptive precision', ...
     'error bound', 'Position', rect, 'NumColumns',3, 'FontSize', fontSize)
 legend boxoff
 [l, s] = title('$\ell$=8');
@@ -110,5 +108,6 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
 l.FontSize = fontSize+12;
-exportgraphics(gca, 'figures/1138_bus_depth=3.pdf')
+grid on;
+exportgraphics(gca, 'figures/ex37_depth=3.pdf')
 hold off

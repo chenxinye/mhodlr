@@ -1,3 +1,5 @@
-function y = kernel2(x, y) % for scalar
-    y = log(abs(repmat(x, size(x, 2), 1)' - repmat(y, size(y, 2), 1))); 
+function y = kernel2(x, y) 
+    y = pdist2(x, y);
+    y(find(y==0)) = 1;
+    y = log(y);
 end

@@ -5,7 +5,9 @@ n_sample = 10;
 x = rand(1, 2000);
 y = rand(1, 2000);
 kernel_mat = kernel1(x, y);
-v = rand(n_sample, 2000);
+
+rng(42);
+v =  unifrnd(-1, 1, n_sample, 2000);
 
 u1 = precision('d');
 u2 = precision('s');
@@ -65,10 +67,12 @@ save("results/prod1_bound.mat", 'err_bound_list');
 rng(0)
 
 n_sample = 10;
-x = rand(1, 2000);
-y = rand(1, 2000);
+x = unifrnd(-1, 1, 2000, 2);
+y = unifrnd(-1, 1, 2000, 2);
 kernel_mat = kernel2(x, y);
-v = rand(n_sample, 2000);
+
+rng(42);
+v =  unifrnd(-1, 1, n_sample, 2000);
 
 u1 = precision('d');
 u2 = precision('s');
@@ -130,10 +134,12 @@ clear all
 rng(0)
 
 n_sample = 10;
-x = rand(2000, 3);
-y = rand(2000, 3);
+x = unifrnd(-1, 1, 2000, 2);
+y = unifrnd(-1, 1, 2000, 2);
 kernel_mat = kernel3(x, y);
-v = rand(n_sample, 2000);
+
+rng(42);
+v =  unifrnd(-1, 1, n_sample, 2000);
 
 u1 = precision('d');
 u2 = precision('s');
@@ -197,10 +203,12 @@ clear all
 rng(0)
 
 n_sample = 10;
-x = rand(2000, 3);
-y = rand(2000, 3);
+x = unifrnd(-1, 1, 2000, 2);
+y = unifrnd(-1, 1, 2000, 2);
 kernel_mat = kernel4(x, y);
-v = rand(n_sample, 2000);
+
+rng(42);
+v =  unifrnd(-1, 1, n_sample, 2000);
 
 u1 = precision('d');
 u2 = precision('s');

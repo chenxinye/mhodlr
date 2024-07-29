@@ -35,8 +35,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -69,8 +69,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -103,8 +103,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -146,8 +146,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -180,8 +180,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -214,8 +214,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -259,8 +259,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -293,8 +293,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -327,8 +327,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -372,8 +372,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -406,8 +406,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -440,8 +440,8 @@ set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-20, 1e-5]);
-yticks([1e-20, 1e-15, 1e-10, 1e-5]);
+ylim([1e-23, 1e-4]);
+yticks([1e-23, 1e-19, 1e-14, 1e-9, 1e-4]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');

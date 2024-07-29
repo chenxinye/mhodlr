@@ -1,8 +1,7 @@
-clear all
-A = load('data/LeGresley_2508.mat');
+A = load('data/3-5000/root_P64_cs128.mat');
 %LeGresley_2508.mat
 %LeGresley_4908.mat
-A =  A.Problem.A;
+A =  A.A;
 %% 'data/LeGresley_2508.mat'
 %% mix precision
 u1 = precision('d');
@@ -34,7 +33,7 @@ set(gcf, 'Position',  [10 10 700 600])
 Ax = gca;
 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
 Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-exportgraphics(gca,'figures/precsLeGres.pdf')
+exportgraphics(gca,'figures/precsP64.pdf')
 
 nA = compute_hmat_norm(aphA);
 h = heatmap(nA,'CellLabelColor','none');
@@ -44,7 +43,7 @@ set(gcf, 'Position',  [10 10 700 600])
 Ax = gca;
 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
 Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-exportgraphics(gca, 'figures/normLeGres.pdf')
+exportgraphics(gca, 'figures/normP64.pdf')
 
 % gca = plot_hmat_nprec(aphA);
 % exportgraphics(h, 'figures/pnormLeGres.pdf')
@@ -74,4 +73,4 @@ hold on
 % th = text(linesF, columnsF, string(valuesF), ...
 %    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
 fontsize(9,"points");
-exportgraphics(gca, 'figures/pnormLeGres.pdf');
+exportgraphics(gca, 'figures/pnormP64.pdf');

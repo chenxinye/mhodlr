@@ -13,7 +13,7 @@ u5 = precision('q52');
 
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
-epsilon = 1e-6; % 1e-1
+epsilon = 1e-4; % 1e-1
 depth = 6;
 aphA = amphodlr(u_chain, A, depth, 10, 'svd', epsilon); 
 aprA = recover(aphA);
@@ -39,7 +39,7 @@ exportgraphics(gca,'figures/precsLeGres.pdf')
 nA = compute_hmat_norm(aphA);
 h = heatmap(nA,'CellLabelColor','none');
 h.FontSize = 17;
-h.Colormap = summer;
+h.Colormap = cool(4);
 h.GridVisible = 'off';
 set(gcf, 'Position',  [10 10 700 600])
 Ax = gca;

@@ -1,3 +1,4 @@
+clear all
 A = load('data/saylr3.mat');
 %LeGresley_2508.mat
 %LeGresley_4908.mat
@@ -12,7 +13,7 @@ u5 = precision('q52');
 
 u_chain = prec_chain(u1, u2, u3, u4, u5);
 
-epsilon = 1e-3; % 1e-1
+epsilon = 1e-4; % 1e-1
 depth = 6;
 aphA = amphodlr(u_chain, A, depth, 10, 'svd', epsilon); 
 aprA = recover(aphA);
@@ -33,17 +34,18 @@ set(gcf, 'Position',  [10 10 700 600])
 Ax = gca;
 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
 Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-exportgraphics(gca,'figures/precsP64.pdf')
+exportgraphics(gca,'figures/precssaylr3.pdf')
 
 nA = compute_hmat_norm(aphA);
 h = heatmap(nA,'CellLabelColor','none');
-h.Colormap = summer;
+h.FontSize = 17;
+h.Colormap = cool(4);
 h.GridVisible = 'off';
 set(gcf, 'Position',  [10 10 700 600])
 Ax = gca;
 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
 Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
-exportgraphics(gca, 'figures/normP64.pdf')
+exportgraphics(gca, 'figures/normsaylr3.pdf')
 
 % gca = plot_hmat_nprec(aphA);
 % exportgraphics(h, 'figures/pnormLeGres.pdf')
@@ -73,4 +75,4 @@ hold on
 % th = text(linesF, columnsF, string(valuesF), ...
 %    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
 fontsize(9,"points");
-exportgraphics(gca, 'figures/pnormP64.pdf');
+exportgraphics(gca, 'figures/pnormsaylr3.pdf');

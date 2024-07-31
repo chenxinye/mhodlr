@@ -1,5 +1,5 @@
 %% global error
-
+clear all
 A = load('data/3-5000/root_P64_cs128.mat');
 A =  A.A;
 disp(size(A));
@@ -44,7 +44,7 @@ for j = 1:n_d
 end
 
 rect = [0.5, 0, 0, 0.05];
-fontSize = 19;
+fontSize = 18;
 lineWidth = 1.5;
 markerSize = 13;
 
@@ -65,6 +65,8 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
 l.FontSize = fontSize+12;
+ylim([1e-10, 1e-0]);
+yticks([1e-10, 1e-8, 1e-6, 1e-4, 1e-2, 1e-0]);
 grid on;
 exportgraphics(gca, 'figures/P64_depth=1.pdf')
 hold off
@@ -86,6 +88,8 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
 l.FontSize = fontSize+12;
+ylim([1e-10, 1e-0]);
+yticks([1e-10, 1e-8, 1e-6, 1e-4, 1e-2, 1e-0]);
 grid on;
 exportgraphics(gca, 'figures/P64_depth=2.pdf')
 hold off
@@ -108,6 +112,8 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',fontSize) % ,'FontWeight','bold'
 set(l,'interpreter','latex');
 l.FontSize = fontSize+12;
+ylim([1e-10, 1e-0]);
+yticks([1e-10, 1e-8, 1e-6, 1e-4, 1e-2, 1e-0]);
 grid on;
 exportgraphics(gca, 'figures/P64_depth=3.pdf')
 hold off

@@ -3,7 +3,7 @@ n_sample = 10;
 depths = [2, 5, 8];
 vareps = [1e-14, 1e-12, 1e-10, 1e-08, 1e-06, 1e-04, 1e-02];
 lineWidth = 2;
-markerSize = 13;
+markerSize = 15;
 
 n_d = size(depths, 2);
 n_eps = size(vareps, 2);
@@ -34,13 +34,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-22, 1e-0+0.5]);
+yticks([1e-22, 1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');_
 %set(lx,'interpreter','latex');
@@ -72,13 +72,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-22, 1e-0+0.5]);
+yticks([1e-22, 1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -109,13 +109,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-22, 1e-0+0.5]);
+yticks([1e-22, 1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -156,13 +156,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -193,13 +193,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -231,13 +231,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -279,13 +279,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -316,13 +316,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -353,13 +353,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -401,13 +401,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=2');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -438,13 +438,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=5');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');
@@ -476,13 +476,13 @@ h = legend('fp64', ...
            'error bound', ...
      'NumColumns',4, 'Location', 'Best', 'FontSize', fontSize, BackgroundAlpha=.3);
 legend boxoff
-rect = [0.38, 0.155, .25, 0];
+rect = [0.5, 0, 0, 0.05];
 set(h, 'Position', rect);
 
 %[l, s] = title('$\ell$=8');
 xticklabels(split(num2str(vareps,'%.e ')));
-ylim([1e-24, 1e-0+0.5]);
-yticks([1e-24, 1e-18, 1e-12, 1e-6, 1e-0]);
+ylim([1e-18, 1e-0+0.5]);
+yticks([1e-18, 1e-12, 1e-6, 1e-0]);
 
 %lx = xlabel('$\varepsilon$');
 %set(lx,'interpreter','latex');

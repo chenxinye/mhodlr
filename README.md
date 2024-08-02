@@ -154,9 +154,7 @@ This project is supported by the European Union (ERC, [InEXASCALE](https://www.k
 References
 ---------------
 
-```bibtex
 Carson E., Chen X., Liu X., 2024, arXiv, arXiv:2407.21637. doi:10.48550/arXiv.2407.21637
-}
 
 
 License

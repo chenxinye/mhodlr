@@ -22,10 +22,11 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
             U = mchop(U(:,1:rnk));
             V = S(1:rnk,1:rnk) * mchop(V(:,1:rnk)');
         elseif norm_type == 'fro'
-            normf = sum(diag(S).^2);
-            cusm = cumsum(diag(S).^2, "reverse") / normf;
-            in_eq = cusm <= vareps^2;
-            rnk = sum(in_eq) + 1;
+            sq_dS = diag(S).^2;
+            normf = sum(sq_dS);
+            cusm = cumsum(sq_dS, "reverse") / normf;
+            in_eq = cusm > vareps^2;
+            rnk = min(sum(in_eq) + 1, size(U, 2));
             S = mchop(S);
             U = mchop(U(:,1:rnk));
             V = S(1:rnk,1:rnk) * mchop(V(:,1:rnk)');

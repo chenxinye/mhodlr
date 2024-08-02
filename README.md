@@ -153,7 +153,7 @@ This project is supported by the European Union (ERC, [InEXASCALE](https://www.k
 
 References
 ---------------
-[1] Carson E., Chen X., Liu X., 2024, arXiv, arXiv:2407.21637. doi:10.48550/arXiv.2407.21637
+[1] Carson E., Chen X., Liu X., 2024, arXiv, arXiv:2407.21637. https://doi:10.48550/arXiv.2407.21637
 
 [2] S. B¨ orm, L. Grasedyck, and W. Hackbusch, Introduction to hierarchical matrices with
  applications, Eng. Anal. Bound. Elem., 27 (2003), pp. 405–422, https://doi.org/10.1016/S0955-7997(02)00152-2.

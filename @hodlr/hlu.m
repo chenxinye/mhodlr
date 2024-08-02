@@ -10,8 +10,8 @@ function [L, U] = hlu(H, varargin)
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
 
-    epsilon - double, default is the threshold of holdlr matrix H
-        The threshold for recompression.
+    vareps - double, default is the vareps of holdlr matrix H
+        The vareps for recompression.
 
     Returns
     --------------------
@@ -27,13 +27,13 @@ function [L, U] = hlu(H, varargin)
     
     if nargin == 1
         oformat = 'hodlr';
-        epsilon = H.threshold;
+        vareps = H.vareps;
     elseif nargin == 2 
         oformat = varargin{1};
-        epsilon = H.threshold;
+        vareps = H.vareps;
     else
         oformat = varargin{1};
-        epsilon = varargin{2};
+        vareps = varargin{2};
     end 
     
     [m, n] = hsize(H);
@@ -41,14 +41,14 @@ function [L, U] = hlu(H, varargin)
 
     if strcmp(oformat, 'dense')
         if isempty(H.D)
-            [L11, U11] = hlu(H.A11, 'dense', epsilon);
+            [L11, U11] = hlu(H.A11, 'dense', vareps);
             U12 = mldivide(L11, H.U1 * H.V2);  %L11 U12 = A12 = H.U1 * H.V2
             L21 = mrdivide(H.U2 * H.V1, U11);  %L21 U11 = A21 = H.U2 * H.V1
             U12 = mldivide(L11, H.U1); 
             L21 = mrdivide(H.V1, U11); 
 
-            NH = hrank_update(H.A22, -H.U2 * (L21 * U12), H.V2, epsilon);
-            [L22, U22] = hlu(NH, 'dense', epsilon);  % lu(hadd(H.A22, L21 * U12, '-'));
+            NH = hrank_update(H.A22, -H.U2 * (L21 * U12), H.V2, vareps);
+            [L22, U22] = hlu(NH, 'dense', vareps);  % lu(hadd(H.A22, L21 * U12, '-'));
             
             U12 = U12 * H.V2;
             L21 = H.U2 * L21;
@@ -76,11 +76,11 @@ function [L, U] = hlu(H, varargin)
         U.V1 = zeros(1, n1);
 
         if isempty(H.D)
-            [L.A11, U.A11] = hlu(H.A11, epsilon);
+            [L.A11, U.A11] = hlu(H.A11, vareps);
             
             U.U1 = htrsl(L.A11, H.U1);  %.L11 * U.U1 * U.V2 = L11 * U12 = A12 = H.U1 * H.V2
             L.V1 = htrsu(H.V1, U.A11);  % L.U2 * L.V1 * U11 = L21 * U11 = A21 = H.U2 * H.V1
-            [L.A22, U.A22] = hlu(hrank_update(H.A22, -L.U2 * (L.V1 * U.U1), H.V2, epsilon), epsilon); 
+            [L.A22, U.A22] = hlu(hrank_update(H.A22, -L.U2 * (L.V1 * U.U1), H.V2, vareps), vareps); 
 
         else
             [L.D, U.D] = lu(H.D);

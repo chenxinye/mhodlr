@@ -30,9 +30,9 @@ function R = hchol(H, varargin)
     if otype == 1
         if isempty(H.D)
             [m, n, m1, m2, n1, n2] = hsize(H);
-            R11 = hchol(H.A11, H.threshold);
+            R11 = hchol(H.A11, H.vareps);
             R12 = mldivide(R11', H.U1 * H.V2);
-            R22 = hchol(hrank_update(H.A22, -R12', R12, H.threshold), H.threshold);
+            R22 = hchol(hrank_update(H.A22, -R12', R12, H.vareps), H.vareps);
             
             R = [R11, R12; zeros(m2, n1), R22];
         else
@@ -42,10 +42,10 @@ function R = hchol(H, varargin)
         R = H;
 
         if isempty(H.D)
-            R.A11 = hchol(H.A11, H.threshold);
+            R.A11 = hchol(H.A11, H.vareps);
             R12 = htrsl(R.A11.transpose(), H.U1 * H.V2);
-            [R.U1, R.V2] = compress_m(R12, H.method, H.threshold);
-            R.A22 = hchol(hrank_update(H.A22, -R12', R12, H.threshold), H.threshold);
+            [R.U1, R.V2] = compress_m(R12, H.method, H.vareps);
+            R.A22 = hchol(hrank_update(H.A22, -R12', R12, H.vareps), H.vareps);
             R.U2 = zeros(size(R.U2,1),0);
             R.V1 = zeros(0,size(R.V1,2));
         else

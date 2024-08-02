@@ -24,6 +24,8 @@ classdef mphodlr
     type - str, default='dense'
         Under developed, used for detemine the HODLR matrix type.
     
+    trun_norm_tp - str, default='2'
+        Norm type for the the off-diagonal block truncation ``||A - B||_trun_norm_tp <= vareps * ||B||``.
     
     Properties
     --------------------

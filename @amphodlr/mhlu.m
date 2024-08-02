@@ -13,8 +13,8 @@ function [L, U] = mhlu(H, prec, varargin)
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
 
-    epsilon - double, default is the threshold of holdlr matrix H
-        The threshold for recompression.
+    vareps - double, default is the vareps of holdlr matrix H
+        The vareps for recompression.
 
     Returns
     --------------------
@@ -30,13 +30,13 @@ function [L, U] = mhlu(H, prec, varargin)
     
     if nargin == 2
         oformat = 'hodlr';
-        epsilon = H.threshold;
+        vareps = H.vareps;
     elseif nargin == 3 
         oformat = varargin{1};
-        epsilon = H.threshold;
+        vareps = H.vareps;
     elseif nargin > 3 
         oformat = varargin{1};
-        epsilon = varargin{2};
+        vareps = varargin{2};
     end 
     
     [m, n] = hsize(H);
@@ -49,7 +49,7 @@ function [L, U] = mhlu(H, prec, varargin)
 
     if strcmp(oformat, 'dense')
         if isempty(H.D)
-            [L11, U11] = mhlu(H.A11, prec, 'dense', epsilon);
+            [L11, U11] = mhlu(H.A11, prec, 'dense', vareps);
             U12 = mldivide(mchop(L11), mchop(H.U1 * H.V2));  %L11 U12 = A12 = H.U1 * H.V2
             L21 = mrdivide(mchop(H.U2 * H.V1), mchop(U11));  %L21 U11 = A21 = H.U2 * H.V1
             U12 = mldivide(mchop(L11), H.U1); 
@@ -60,8 +60,8 @@ function [L, U] = mhlu(H, prec, varargin)
             U12 = mchop(U12); 
             L21 = mchop(L21); 
 
-            NH = mhrank_update(H.A22, -H.U2 * mchop(L21 * U12), H.V2, epsilon);
-            [L22, U22] = mhlu(NH, prec, 'dense', epsilon);  % lu(hadd(H.A22, L21 * U12, '-'));
+            NH = mhrank_update(H.A22, -H.U2 * mchop(L21 * U12), H.V2, vareps);
+            [L22, U22] = mhlu(NH, prec, 'dense', vareps);  % lu(hadd(H.A22, L21 * U12, '-'));
             
             U12 = mchop(U12 * H.V2);
             L21 = mchop(H.U2 * L21);
@@ -89,12 +89,12 @@ function [L, U] = mhlu(H, prec, varargin)
         U.V1 = zeros(1, n1);
 
         if isempty(H.D)
-            [L.A11, U.A11] = mhlu(H.A11, prec, 'hodlr', epsilon);
+            [L.A11, U.A11] = mhlu(H.A11, prec, 'hodlr', vareps);
             
             U.U1 = mhtrsl(L.A11, H.U1);  %.L11 * U.U1 * U.V2 = L11 * U12 = A12 = H.U1 * H.V2
             L.V1 = mhtrsu(H.V1, U.A11);  % L.U2 * L.V1 * U11 = L21 * U11 = A21 = H.U2 * H.V1
-            [L.A22, U.A22] = mhlu(mhrank_update(H.A22, -L.U2 * mchop(L.V1 * U.U1), H.V2, epsilon), ...
-                prec, 'hodlr', epsilon); 
+            [L.A22, U.A22] = mhlu(mhrank_update(H.A22, -L.U2 * mchop(L.V1 * U.U1), H.V2, vareps), ...
+                prec, 'hodlr', vareps); 
 
         else
             [L.D, U.D] = lu(mchop(H.D));

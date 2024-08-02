@@ -10,8 +10,8 @@ function [L, U] = hlu(H, varargin)
         oformat - str, default='hodlr'
             The output format. 'dense' or 'hodlr'.
     
-        epsilon - double, default is the threshold of holdlr matrix H
-            The threshold for recompression.
+        epsilon - double, default is the vareps of holdlr matrix H
+            The vareps for recompression.
     
         Returns
         --------------------
@@ -27,10 +27,10 @@ function [L, U] = hlu(H, varargin)
         
         if nargin == 1
             oformat = 'hodlr';
-            epsilon = H.threshold;
+            epsilon = H.vareps;
         elseif nargin == 2 
             oformat = varargin{1};
-            epsilon = H.threshold;
+            epsilon = H.vareps;
         else
             oformat = varargin{1};
             epsilon = varargin{2};

@@ -24,7 +24,7 @@ function X = htrsl(L, B, varargin)
 
             B21 = B.U2*B.V1;
             L21 = L.U2*L.V1;
-            [X.U2, X.V1] = compress_m(htrsl(L.A22, B21 - hdot(L21, X.A11, 'dense')), L.method, L.threshold);
+            [X.U2, X.V1] = compress_m(htrsl(L.A22, B21 - hdot(L21, X.A11, 'dense')), L.method, L.vareps);
             X.A22 = htrsl(L.A22, hadd(B.A22, L21*X.U1*X.V2, '-'));
         else
             X.D = mldivide(L.D, B.D);

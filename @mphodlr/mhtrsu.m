@@ -48,7 +48,7 @@ function X = mhtrsu(B, U, varargin)
                     X.V1 = mhtrsu(B.V1, U.A11, 1);
     
                     U12 = mchop(U.U1*U.V2);
-                    [X.U1, X.V2] = compress_m(mhtrsu(B.U1*B.V2 - hdot(X.A11, U12, 'dense'), U.A22, 1), U.method, U.threshold);
+                    [X.U1, X.V2] = compress_m(mhtrsu(B.U1*B.V2 - hdot(X.A11, U12, 'dense'), U.A22, 1), U.method, U.vareps);
                     
                     X.U1 = mchop(X.U1);
                     X.V2 = mchop(X.V2);

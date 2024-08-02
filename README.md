@@ -148,6 +148,17 @@ This project is supported by the European Union (ERC, [InEXASCALE](https://www.k
  Union or the European Research Council. Neither the European Union nor the granting
  authority can be held responsible for them.
 
+
+
+
+References
+---------------
+
+```bibtex
+Carson E., Chen X., Liu X., 2024, arXiv, arXiv:2407.21637. doi:10.48550/arXiv.2407.21637
+}
+
+
 License
 ----------------
 

@@ -14,8 +14,8 @@ classdef hodlr
     method - str, default='svd'
         The method to perform compression for off-diagonal blocks.
 
-    threshold - double, default=1.0e-12
-        The threshold value used for truncation of low rank approximation.
+    vareps - double, default=1.0e-12
+        The vareps value used for truncation of low rank approximation.
 
     type - str, default='dense'
         Under developed, used for detemine the HODLR matrix type.
@@ -57,12 +57,13 @@ classdef hodlr
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
         bottom_level {mustBeInteger} = 0
-        threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
+        vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         min_block_size {mustBeInteger} = 20
     end
 
     properties(Access=private)
         method {mustBeText} = 'svd'
+        trun_norm_tp = '2'
     end
 
     methods(Access=public)
@@ -83,16 +84,24 @@ classdef hodlr
                 obj.max_level = varargin{1};
                 obj.min_block_size = varargin{2};
                 obj.method = varargin{3};
-                obj.threshold = varargin{4};
+                obj.vareps = varargin{4};
             
             elseif nargin == 6
                 obj.max_level = varargin{1};
                 obj.min_block_size = varargin{2};
                 obj.method = varargin{3};
-                obj.threshold = varargin{4};
-                obj.type = varargin{5};
+                obj.vareps = varargin{4};
+                obj.trun_norm_tp = varargin{5};
 
-            elseif nargin > 6
+            elseif nargin == 7
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
+                obj.vareps = varargin{4};
+                obj.trun_norm_tp = varargin{5};
+                obj.type = varargin{6};
+
+            elseif nargin > 7
                 disp(['Please enter the correct number or type of' ...
                     ' parameters.']);
             end
@@ -171,12 +180,12 @@ classdef hodlr
                     fprintf(...
                         'Tree depth: %d\n', obj.max_level);
                     fprintf(...
-                        'Approximation threshold: %d\n', obj.threshold);
+                        'Approximation vareps: %d\n', obj.vareps);
                 end
             end
 
             md = obj.method;
-            td = obj.threshold;
+            td = obj.vareps;
             mbs = obj.min_block_size;
             ml = obj.max_level;
             tp = obj.type;
@@ -189,7 +198,7 @@ classdef hodlr
 
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.threshold);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp);
         end
     end
 

@@ -2,7 +2,7 @@
 function [U, V] = mp_compress_m(A, method, vareps, varargin)
     
     if nargin == 4
-        norm_type = varargin{4};
+        norm_type = varargin{1};
     else 
         norm_type = '2';
     end 
@@ -23,8 +23,9 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
             V = S(1:rnk,1:rnk) * mchop(V(:,1:rnk)');
         elseif norm_type == 'fro'
             normf = sum(diag(S).^2);
-            cusm = (normf - cumsum(diag(S).^2)) / normf;
-            rnk = sum(cusm > vareps^2) + 1;
+            cusm = cumsum(diag(S).^2, "reverse") / normf;
+            in_eq = cusm <= vareps^2;
+            rnk = sum(in_eq) + 1;
             S = mchop(S);
             U = mchop(U(:,1:rnk));
             V = S(1:rnk,1:rnk) * mchop(V(:,1:rnk)');

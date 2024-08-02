@@ -18,8 +18,8 @@ classdef amphodlr
     method - str, default='svd'
         The method to perform compression for off-diagonal blocks.
 
-    threshold - double, default=1.0e-12
-        The threshold value used for truncation of low rank approximation.
+    vareps - double, default=1.0e-12
+        The vareps value used for truncation of low rank approximation.
 
     type - str, default='dense'
         Under developed, used for detemine the HODLR matrix type.
@@ -68,7 +68,7 @@ classdef amphodlr
         unitRoundOff {mustBeNonNan, mustBeFinite, mustBeNumeric}
 
         min_block_size {mustBeInteger} = 20
-        threshold {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
+        vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         prec_settings
     end
 
@@ -76,6 +76,7 @@ classdef amphodlr
         method {mustBeText} = 'svd'
         precIndexBool {mustBeNonNan, mustBeFinite}
         sortIdx
+        trun_norm_tp = '2'
     end
 
     methods(Access=public)
@@ -101,20 +102,28 @@ classdef amphodlr
                 obj.max_level = varargin{1};
                 obj.min_block_size = varargin{2};
                 obj.method = varargin{3};
-                obj.threshold = varargin{4};
+                obj.vareps = varargin{4};
             
             elseif nargin == 7
                 obj.max_level = varargin{1};
                 obj.min_block_size = varargin{2};
                 obj.method = varargin{3};
-                obj.threshold = varargin{4};
-                obj.type = varargin{5};
+                obj.vareps = varargin{4};
+                obj.trun_norm_tp = varargin{5};
 
-            elseif nargin > 7
+            elseif nargin == 8
+                obj.max_level = varargin{1};
+                obj.min_block_size = varargin{2};
+                obj.method = varargin{3};
+                obj.vareps = varargin{4};
+                obj.trun_norm_tp = varargin{5};
+                obj.type = varargin{6};
+
+            elseif nargin > 8
                 disp(['Please enter the correct number or type of' ...
                     ' parameters.']);
             end
-            
+
             obj.level = 1;
             min_size = min(size(A));
             [~, exponent] = log2(abs(min_size));
@@ -182,7 +191,7 @@ classdef amphodlr
 
                 if precIndexBool(obj.level) == 0
                     xi = sqrt(obj.normOrder(obj.level+1) / obj.normOrder(1)) ;
-                    update_u = obj.threshold / (2^((obj.level+1)/2) * xi);
+                    update_u = obj.vareps / (2^((obj.level+1)/2) * xi);
                     if ~isinf(update_u)
                         find_u = find(obj.unitRoundOff<=update_u);
     
@@ -251,12 +260,12 @@ classdef amphodlr
                     fprintf(...
                         'Tree depth: %d\n', obj.max_level);
                     fprintf(...
-                        'Approximation threshold: %d\n', obj.threshold);
+                        'Approximation vareps: %d\n', obj.vareps);
                 end
             end
 
             md = obj.method;
-            td = obj.threshold;
+            td = obj.vareps;
             mbs = obj.min_block_size;
             ml = obj.max_level;
             tp = obj.type;
@@ -269,11 +278,11 @@ classdef amphodlr
    
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.threshold);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp);
         end
 
         function [U, V] = mp_compress(obj, A)
-            [U, V] = mp_compress_m(A, obj.method, obj.threshold);
+            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp);
         end
         
         function [sortu, sortIdx] = sort_by_u(obj, u_chain)

@@ -9,7 +9,7 @@ jobs:
       - checkout
       - matlab/install
       - matlab/run-tests:
-          source-folder: code
+          source-folder: mhodlr
 
       # As an alternative to run-tests, you can use run-command to execute a MATLAB script, function, or statement.
       # - matlab/run-command:

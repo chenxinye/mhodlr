@@ -11,12 +11,12 @@ import sphinx_rtd_theme
 
 sys.path.insert(0, os.path.abspath('../..'))
 
-project = 'CLASSIX'
-copyright = '2022, Stefan Güttel, Xinye Chen'
-author = 'Stefan Güttel, Xinye Chen'
+project = 'mhodlr'
+copyright = '2024, inEXASCALE'
+author = 'Erin Carson, Xinye Chen, and Xiaobo Liu'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.3'
+release = '0.0.1'
 
 
 # -- General configuration ---------------------------------------------------

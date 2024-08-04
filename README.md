@@ -5,7 +5,8 @@
 [![Documentation Status](https://readthedocs.org/projects/mhodlr/badge/?version=latest)](https://mhodlr.readthedocs.io/en/latest/?badge=stable)
 [![MATLAB](https://github.com/chenxinye/mhodlr/actions/workflows/ci.yml/badge.svg)](https://github.com/chenxinye/mhodlr/actions/workflows/ci.yml)
 
-![mhodlr](https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true)
+
+<img src="[drawing.jpg](https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true)" alt="drawing" width="200"/>
 
 ## Abstract
 

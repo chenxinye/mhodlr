@@ -5,10 +5,6 @@ import setuptools
 long_description = '''
 NA
 '''
-
-if sys.version_info < (3, 6):
-    sys.exit('Python>=3.6 is required by Texar.')
-
 setuptools.setup(
     name="mhodlr",
     version="0.0.1",

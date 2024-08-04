@@ -15,10 +15,11 @@ release = '0.0.1'
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    "sphinxcontrib.matlab",
-    "sphinx.ext.autodoc",
-    "sphinx_copybutton",
-    "myst_parser",
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.viewcode'
 ]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

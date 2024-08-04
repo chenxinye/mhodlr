@@ -18,7 +18,7 @@ setuptools.setup(
     long_description=long_description,
     license='BSD 3-Clause License',
 
-    packages=['mhodr'],
+    packages=['mhodlr'],
     platforms='any',
 
     install_requires=[

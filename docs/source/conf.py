@@ -1,6 +1,5 @@
 import sys
 import os
-import sphinx_rtd_theme
 
 
 sys.path.insert(0, os.path.abspath('../..'))
@@ -16,12 +15,10 @@ release = '0.0.1'
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx_rtd_theme',
+    "sphinxcontrib.matlab",
+    "sphinx.ext.autodoc",
+    "sphinx_copybutton",
+    "myst_parser",
 ]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -32,7 +29,7 @@ gettext_compact = False
 
 exclude_patterns = []
 
-pygments_style = 'default'
+pygments_style = "sphinx"
 
 html_static_path = ['_static']
 html_style = 'css/_.css'

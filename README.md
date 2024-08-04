@@ -10,7 +10,7 @@
 
 
 
-<p align="center">
+<p align="left">
  <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="300"/>
 </p>
 

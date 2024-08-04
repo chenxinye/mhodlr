@@ -44,7 +44,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Get Stated</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get Stated</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="hodlr_build.html">Build HODLR matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="matrix_compute.html">Matrix operations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a></li>
@@ -81,6 +85,11 @@
              
   <section id="get-stated">
 <h1>Get Stated<a class="headerlink" href="#get-stated" title="Permalink to this heading"></a></h1>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+</section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
 <p>Simply construct HODLR representation for array A via</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">spdiags</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
 <span class="n">hA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hodlr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0e-8</span><span class="p">);</span><span class="w"> </span><span class="c">% or simply use ``hA = hodlr(A)`` by omitting other parameters as default</span>
@@ -134,6 +143,7 @@ Frobenius norm only used with <a href="#id1"><span class="problematic" id="id2">
 <p class="admonition-title">Note</p>
 <p>The third parameter is specified as ‘dense’ to indicate the output is dense format, the other option is ‘hodlr’.</p>
 </div>
+</section>
 </section>
 
 

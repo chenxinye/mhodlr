@@ -1,6 +1,15 @@
 Get Stated
 ======================================
 
+
+Setup 
+--------
+
+Quick start
+-----------
+
+
+
 Simply construct HODLR representation for array A via 
 
 .. code:: matlab

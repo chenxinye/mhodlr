@@ -29,6 +29,7 @@ Others
    :maxdepth: 2
    
    teams.rst
+   acknow.rst
    license.rst
 
 

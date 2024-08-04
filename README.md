@@ -33,7 +33,7 @@ git clone https://github.com/<username>/mhodlr.git
 ```
 and run the command below:
 ```bash
-cd mhodlr
+cd mhodlr/mhodlr
 ```
 
 Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).

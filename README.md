@@ -16,9 +16,9 @@ Our software mainly contains three components
 
 |  Class | Description|
 |  ----  | ----  |
-|  [``@hodlr``](https://github.com/chenxinye/mhodlr/blob/main/%40hodlr/hodlr.m) | Compute HODLR matrix|
-|  [``@mphodlr``](https://github.com/chenxinye/mhodlr/blob/main/%40mphodlr/mphodlr.m) | Compute HODLR matrix in mixed precision (precisions are defined by the users) |
-|  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
+|  [``@hodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hodlr.m) | Compute HODLR matrix|
+|  [``@mphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m) | Compute HODLR matrix in mixed precision (precisions are defined by the users) |
+|  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
 
 
 

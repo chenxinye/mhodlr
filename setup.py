@@ -14,7 +14,7 @@ setuptools.setup(
     version="0.0.1",
     url="https://github.com/chenxinye/mhodlr/",
 
-    description="Toolkit for Machine Learning and Text Generation",
+    description="Matlab code for simulating mixed-precision HODLR matrix",
     long_description=long_description,
     license='BSD 3-Clause License',
 
@@ -31,19 +31,9 @@ setuptools.setup(
         'sentencepiece>=0.1.8',
         'packaging'
     ],
-    extras_require={
-        'tensorflow-cpu': [
-            'tensorflow>=1.10.0,<2.0',
-            'tensorflow-probability>=0.3.0,<0.8.0'
-        ],
-        'tensorflow-gpu': [
-            'tensorflow-gpu>=1.10.0,<2.0',
-            'tensorflow-probability>=0.3.0,<0.8.0'
-        ]
-    },
     package_data={
-        "texar": [
-            "../bin/utils/multi-bleu.perl",
+        "mhodlr": [
+            "../mhodlr",
         ]
     },
     classifiers=[
@@ -51,8 +41,5 @@ setuptools.setup(
         'Intended Audience :: Education',
         'Intended Audience :: Science/Research',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-    ],
+        'Programming Language :: Python',    ],
 )

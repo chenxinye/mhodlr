@@ -15,7 +15,7 @@
 Differential equations often result in rank-structured matrices associated with low-rank off-diagonal blocks. These matrices are often represented in a hierarchical format, and their operation often results in fast arithmetic, e.g., matrix-vector product.  The hierarchical matrix is a class of dense rank-structured matrices with a hierarchical low-rank off diagonal block structure, which frequently arises from finite element discretization of an elliptic PDE, radial basis function interpolation, and boundary integral equations. 
 
 
-<p align="center">
+<p align="left">
  <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="360"/>
 </p>
 

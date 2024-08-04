@@ -3,7 +3,6 @@
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-lightblue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 
-Add matlab versions
 
 ## Abstract
 
@@ -25,6 +24,8 @@ Our software mainly contains three components
 
 Setup
 -------
+
+The environment for running ``mhodlr`` is MATLAB2023a, MATLAB2023b, MATLAB2024a, MATLAB2024b.
 
 One can fork this repository, and simply download this repository via
 ```bash

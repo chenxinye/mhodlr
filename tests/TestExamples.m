@@ -19,67 +19,22 @@ classdef TestExamples < matlab.unittest.TestCase
 
     methods (Test)
 
-        function testNonLeapYear(testCase)
-            % Create non-leap year date of March 1st, 2021
-            dateStr = "03/01/2021";
+        function testBuild(testCase)
+            A = rand(100, 100);
+            u1 = precision('d');
+            u2 = precision('s');
+            u3 = precision('h');
+            u4 = precision('b');
+            u5 = precision('q52');
+            
+            u_chain = prec_chain(u1, u2, u3, u4, u5);
 
-            % Calculate expected result
-            dt = datetime(dateStr,"Format","MM/dd/uuuu");
-            doyExpected = day(dt,"dayofyear");
-
-            % Get actual result
-            doyActual = dayofyear(dateStr);
-
-            % Verify that the two are equal
-            testCase.verifyEqual(doyActual,doyExpected)
+            epsilon = 1e-4;
+            depth = 3;
+            aphA = amphodlr(u_chain, A, depth, 10, 'svd', epsilon); 
+            aprA = recover(aphA);
         end
 
-        function testLeapYear(testCase)
-            % Create leap year date of March 1st, 2020
-            dateStr = "03/01/2020";
-
-            % Calculate expected result
-            dt = datetime(dateStr,"Format","MM/dd/uuuu");
-            doyExpected = day(dt,"dayofyear");
-
-            % Get actual result
-            doyActual = dayofyear(dateStr);
-
-            % Verify that the two are equal
-            testCase.verifyEqual(doyActual,doyExpected)
-        end
-
-        function testInvalidDateFormat(testCase)
-            % Create invalid date of April 1st, 2021
-            dateStr = "04-01-2021";
-
-            % Verify that our function throws an error
-            testCase.verifyError(@() dayofyear(dateStr),"dayofyear:InvalidDateFormat");
-        end
-
-        function testCorrectDateFormatButInvalidDate(testCase)
-            % Create invalid date of February 30th, 2021
-            dateStr = "02/30/2021";
-
-            % Verify that our function throws an error
-            testCase.verifyError(@() dayofyear(dateStr),"MATLAB:datetime:ParseErr");
-        end
-
-%         function testAlternateDateFormat(testCase)
-%             % Create date of April 1st, 2021 in alternate date format
-%             dateStr = "01/04/2021";
-%             dateFormat = "dd/mm/yyyy";
-% 
-%             % Calculate expected result
-%             dt = datetime(dateStr,"Format","dd/MM/uuuu");
-%             doyExpected = day(dt,"dayofyear");
-% 
-%             % Get actual result
-%             doyActual = dayofyear(dateStr,dateFormat);
-% 
-%             % Verify that the two are equal
-%             testCase.verifyEqual(doyActual,doyExpected)
-%         end
         
     end
 

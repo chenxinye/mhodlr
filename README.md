@@ -38,12 +38,12 @@ and run the command below:
 cd mhodlr
 ```
 
-Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/EXAMPLE.md).
+Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).
 
 Support routines
 ---------------
 
-#### Note these routines work for both hodlr and mphodlr class.
+#### Note these routines work for both hodlr, mphodlr, amphodlr class.
 
 |  Matrix computations | API|
 |  ----  | ----  |

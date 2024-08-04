@@ -1,6 +1,6 @@
 
 
-<p align="left">
+<p align="center">
  <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="360"/>
 </p>
 

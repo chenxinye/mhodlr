@@ -6,7 +6,7 @@
 [![MATLAB](https://github.com/chenxinye/mhodlr/actions/workflows/ci.yml/badge.svg)](https://github.com/chenxinye/mhodlr/actions/workflows/ci.yml)
 
 
-<img src="[drawing.jpg](https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true)" alt="drawing" width="200"/>
+<img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="200"/>
 
 ## Abstract
 

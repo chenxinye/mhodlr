@@ -1,4 +1,4 @@
-classdef TestExamples < matlab.unittest.TestCase
+classdef TestUnits < matlab.unittest.TestCase
     % TestExamples contains a set of 4 simple tests:
     %     1) an equality test for a non-leap year date
     %     2) an equality test for a leap year date

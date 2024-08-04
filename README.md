@@ -13,9 +13,9 @@ Differential equations often result in rank-structured matrices associated with 
 
 Hierarchical Off-Diagonal Low-Rank (HODLR) matrix, as a typical hierarchical matrix, is formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with HODLR matrix construction as well as basic matrix computations with HOLDR matrices, which aims to provide a convenient API for HODLR operations. It also provides simulation code for mixed-precision and adaptive precision HODLR matrix computing.  
 
-
-<img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="360"/>
-
+<p align="center">
+ <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="360"/>
+</p>
 
 Our software mainly contains three components
 

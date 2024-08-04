@@ -21,16 +21,6 @@ setuptools.setup(
     packages=['mhodlr'],
     platforms='any',
 
-    install_requires=[
-        'regex>=2018.01.10',
-        'numpy<1.17.0',
-        'pathlib>=1.0',
-        'pyyaml',
-        'requests',
-        'funcsigs>=1.0.2',
-        'sentencepiece>=0.1.8',
-        'packaging'
-    ],
     package_data={
         "mhodlr": [
             "mhodlr",

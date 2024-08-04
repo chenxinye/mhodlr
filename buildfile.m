@@ -1,7 +1,7 @@
 function plan = buildfile
 
 % Add the source folder to the path
-addpath("code");
+addpath("mhodlr");
 
 % Create a plan
 plan = buildplan(localfunctions);

@@ -18,7 +18,9 @@
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api_ref.html" />
+    <link rel="prev" title="Matrix operations" href="matrix_compute.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,6 +33,7 @@
           
           <a href="index.html" class="icon icon-home">
             mhodlr
+              <img src="_static/LOGO2.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -40,7 +43,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="start.html">Get Stated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hodlr_build.html">Build HODLR matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_compute.html">Matrix operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Customized precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_ref.html">API Reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
@@ -127,98 +138,15 @@ precision<span class="w"> </span>with<span class="w"> </span>properties:
 <span class="w">          </span>u:<span class="w"> </span><span class="m">0</span>.0156
 </pre></div>
 </div>
-<section id="api-reference">
-<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h2>
-<blockquote>
-<div><blockquote>
-<div><blockquote>
-<div><dl>
-<dt>base - array | str, default=’h’</dt><dd><blockquote>
-<div><p>For the string type, the arithmetic format supports:
-‘q43’, ‘fp8-e4m3’       - NVIDIA quarter precision (4 exponent bits,</p>
-<blockquote>
-<div><p>3 significand (mantissa) bits),</p>
-</div></blockquote>
-<dl class="simple">
-<dt>‘q52’, ‘fp8-e5m2’       - NVIDIA quarter precision (5 exponent bits,</dt><dd><p>2 significand bits),</p>
-</dd>
-</dl>
-<p>‘b’, ‘bfloat16’         - bfloat16,
-‘h’, ‘half’, ‘fp16’     - IEEE half precision (the default),
-‘s’, ‘single’, ‘fp32’   - IEEE single precision,
-‘d’, ‘double’, ‘fp64’   - IEEE double precision,
-‘c’, ‘custom’           - custom format.</p>
-</div></blockquote>
-<p>The custom (base 2) format is defined by array (2-element, [t, emax]),
-where t is the number of bits in the significand
-(including the hidden bit) and emax is the maximum value of the
-exponent.  The minimu exponent is taken to be emin = 1 - emax and
-the IEEE floating-point number representation is assumed, so that
-emax and the number of  bits e in the exponent are related by
-emax = 2^(e-1) - 1.</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl>
-<dt>round - int, default=1</dt><dd><dl class="simple">
-<dt>1: round to nearest using round to even last bit to break ties</dt><dd><p>(the default);</p>
-</dd>
-</dl>
-<p>2: round towards plus infinity (round up);
-3: round towards minus infinity (round down);
-4: round towards zero;
-5: stochastic rounding - round to the next larger or next smaller</p>
-<blockquote>
-<div><p>f.p. (floating-point) number with probability proportional to
-1 minus the distance to those f.p. numbers;</p>
-</div></blockquote>
-<dl class="simple">
-<dt>6: stochastic rounding - round to the next larger or next smaller</dt><dd><p>f.p. number with equal probability.</p>
-</dd>
-</dl>
-</dd>
-<dt>subnormal - int</dt><dd><p>specifies whether subnormal numbers are supported, if <cite>subnormal=0</cite>,
-subnormals are flushed to zero:</p>
-<blockquote>
-<div><p>0 = do not support subnormals (the default for base=’b’, i.e., bfloat16 format),
-1 = support subnormals (the default if base is set to others).</p>
-</div></blockquote>
-</dd>
-<dt>explim - int, default=1</dt><dd><p><code class="docutils literal notranslate"><span class="pre">explim</span> <span class="pre">=</span> <span class="pre">0</span></code> make emax (the maximal exponent) for the specified arithmetic disabled,
-so overflow, underflow, or subnormal numbers will be produced only if necessary
-for the data type.  This parameter is for exploring
-low precisions independent of range limitations.</p>
-</dd>
-<dt>flip - int, default=0</dt><dd><p>Determine whether each element of the rounded value has a randomly chosen bit in
-its significand flipped with a certain probability.</p>
-</dd>
-<dt>prob - double, default=0.5</dt><dd><blockquote>
-<div><p>if flip = 1 then each element of the rounded</p>
-</div></blockquote>
-<p>value has a randomly chosen bit in its significand flipped with probability <code class="docutils literal notranslate"><span class="pre">prob</span></code>.</p>
-</dd>
-<dt>randfunc - func, default=&#64;(n) rand(n, 1)</dt><dd><p>The random function for stochastic rounding.
-If options.randfunc is supplied, then in stochastic rounding (modes
-5 and 6) the random numbers used for rounding will be generated
-using that function. It should be a function that has a single argument
-for the number of random numbers to generate and returns a vector of
-the random numbers.</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>Same as parameters, except</p>
-<dl class="simple">
-<dt>u - double</dt><dd><p>Unit roundoff computed for current floating point format.</p>
-</dd>
-</dl>
-</div></blockquote>
-</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="matrix_compute.html" class="btn btn-neutral float-left" title="Matrix operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_ref.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

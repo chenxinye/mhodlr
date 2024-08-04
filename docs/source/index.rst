@@ -4,6 +4,13 @@ Welcome to MHODLR's documentation!
 ===================================
 
 
+HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with Hierarchical Off-Diagonal Low-Rank (HODLR) matrices; we implement HODLR computations in MATLAB, and aim to provide a convenient API for HODLR operations. We also provide mixed precision simulation code for HODLR matrix computing.   
+
+
+.. image:: demo.png
+    :width: 560
+
+
 Guide
 -------------
 
@@ -14,8 +21,7 @@ Guide
    hodlr_build.rst
    matrix_compute.rst
    precision.rst
-   
-
+   api_ref.rst
 
 Others
 -------------
@@ -32,6 +38,3 @@ Indices and Tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. image:: _static/LOGO2.png
-    :width: 420

@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Get stated" href="start.html" /> 
+    <link rel="next" title="Get Stated" href="start.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,6 +32,7 @@
           
           <a href="#" class="icon icon-home">
             mhodlr
+              <img src="_static/LOGO2.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -42,10 +43,14 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="start.html">Get stated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Get Stated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hodlr_build.html">Build HODLR matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_compute.html">Matrix operations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_ref.html">API Reference</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
@@ -75,13 +80,18 @@
              
   <section id="welcome-to-mhodlr-s-documentation">
 <h1>Welcome to MHODLR’s documentation!<a class="headerlink" href="#welcome-to-mhodlr-s-documentation" title="Permalink to this heading"></a></h1>
+<p>HODLR matrices are formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with Hierarchical Off-Diagonal Low-Rank (HODLR) matrices; we implement HODLR computations in MATLAB, and aim to provide a convenient API for HODLR operations. We also provide mixed precision simulation code for HODLR matrix computing.</p>
+<a class="reference internal image-reference" href="_images/demo.png"><img alt="_images/demo.png" src="_images/demo.png" style="width: 560px;" /></a>
 <section id="guide">
 <h2>Guide<a class="headerlink" href="#guide" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="start.html">Get stated</a></li>
-<li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="precision.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Get Stated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hodlr_build.html">Build HODLR matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_compute.html">Matrix operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_ref.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_ref.html#precision">&#64;precision</a></li>
 </ul>
 </li>
 </ul>
@@ -91,6 +101,7 @@
 <h2>Others<a class="headerlink" href="#others" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 </div>
@@ -102,7 +113,6 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-<a class="reference internal image-reference" href="_images/LOGO2.png"><img alt="_images/LOGO2.png" src="_images/LOGO2.png" style="width: 420px;" /></a>
 </section>
 </section>
 
@@ -110,7 +120,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="start.html" class="btn btn-neutral float-right" title="Get stated" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="start.html" class="btn btn-neutral float-right" title="Get Stated" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

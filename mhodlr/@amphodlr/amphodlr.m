@@ -21,9 +21,6 @@ classdef amphodlr
     vareps - double, default=1.0e-12
         The vareps value used for truncation of low rank approximation.
 
-    type - str, default='dense'
-        Under developed, used for detemine the HODLR matrix type.
-        
     trun_norm_tp - str, default='2'
         Norm type for the the off-diagonal block truncation ``||A - B||_trun_norm_tp <= vareps * ||B||``.
     
@@ -60,7 +57,6 @@ classdef amphodlr
         A22 % HODLR format
         
         level {mustBeInteger} = 0
-        type {mustBeText} = 'dense' % TO DO
         
         shape {mustBeNumeric} = []
         max_level {mustBeInteger} = 20
@@ -113,15 +109,7 @@ classdef amphodlr
                 obj.vareps = varargin{4};
                 obj.trun_norm_tp = varargin{5};
 
-            elseif nargin == 8
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
-                obj.vareps = varargin{4};
-                obj.trun_norm_tp = varargin{5};
-                obj.type = varargin{6};
-
-            elseif nargin > 8
+            elseif nargin > 7
                 disp(['Please enter the correct number or type of' ...
                     ' parameters.']);
             end

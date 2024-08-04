@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get stated &mdash; mhodlr 0.0.1 documentation</title>
+  <title>Get Stated &mdash; mhodlr 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/_.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,7 +18,9 @@
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Build HODLR matrix" href="hodlr_build.html" />
+    <link rel="prev" title="Welcome to MHODLR’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,6 +33,7 @@
           
           <a href="index.html" class="icon icon-home">
             mhodlr
+              <img src="_static/LOGO2.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -40,7 +43,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get Stated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hodlr_build.html">Build HODLR matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_compute.html">Matrix operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_ref.html">API Reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
@@ -58,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Get stated</li>
+      <li class="breadcrumb-item active">Get Stated</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/start.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -69,27 +80,69 @@
            <div itemprop="articleBody">
              
   <section id="get-stated">
-<h1>Get stated<a class="headerlink" href="#get-stated" title="Permalink to this heading"></a></h1>
+<h1>Get Stated<a class="headerlink" href="#get-stated" title="Permalink to this heading"></a></h1>
 <p>Simply construct HODLR representation for array A via</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">spdiags</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
-<span class="n">hA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hodlr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0e-8</span><span class="p">);</span><span class="w"> </span><span class="c">% or simply use ``hA = hodlr(A)`` by leaving other parameters as default</span>
+<span class="n">hA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hodlr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0e-8</span><span class="p">);</span><span class="w"> </span><span class="c">% or simply use ``hA = hodlr(A)`` by omitting other parameters as default</span>
 </pre></div>
 </div>
-<p>Then you can recover your representation by</p>
+<p>By printing out the variable <code class="docutils literal notranslate"><span class="pre">hA</span></code>, one can obtain:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">hA</span><span class="w"> </span><span class="p">=</span>
+
+<span class="n">hodlr</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span>
+
+<span class="w">               </span><span class="n">U1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">               </span><span class="n">V2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span>
+<span class="w">               </span><span class="n">U2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">               </span><span class="n">V1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+<span class="w">               </span><span class="n">D</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">               </span><span class="n">A11</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">hodlr</span><span class="p">]</span>
+<span class="w">               </span><span class="n">A22</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">hodlr</span><span class="p">]</span>
+<span class="w">            </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="n">shape</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">10</span><span class="w"> </span><span class="mi">10</span><span class="p">]</span>
+<span class="w">         </span><span class="n">max_level</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">      </span><span class="n">bottom_level</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="n">vareps</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0000e-08</span>
+<span class="w">   </span><span class="n">min_block_size</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+</pre></div>
+</div>
+<p>Then you can recover your HODLR representation by built-in function <code class="docutils literal notranslate"><span class="pre">recover</span></code>.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">RA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">recover</span><span class="p">(</span><span class="n">hA</span><span class="p">);</span>
-<span class="nb">norm</span><span class="p">(</span><span class="nb">full</span><span class="p">(</span><span class="n">RA</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="c">% check how much error it arises</span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="nb">full</span><span class="p">(</span><span class="n">RA</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="c">% check how much error of the approxiamtion</span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition-note admonition">
 <p class="admonition-title">Note</p>
-<p>You can speficy four paramters for your initialization.  The first parameter is the matrix to be converted, the second is to specify the method low rank approximation, which default is ‘svd’, the third parameter is the tolerance for the low rank approximation, the fourth and the fifth refer to the minimum block size and maximum level for the cluster tree, respectively.</p>
+<p>You can speficy four paramters for your initialization:
+The first parameter is the matrix to be converted;
+the second and the third refer to the maximum level and minimum block size for the cluster tree, respectively;
+the fourth is to specify the method low rank approximation, which default is ‘svd’, the other options: ‘qr’;
+the fifth parameter is the tolerance for the low rank approximation;
+the sixth parameter is used to determine the norm used for the truncation, where only two norms, i.e., Frobenius and 2 norm, are supported, and the
+Frobenius norm only used with <a href="#id1"><span class="problematic" id="id2">``</span></a>method``=’svd’.</p>
+</div>
+<p>One can perform hierarchical matrix-vector product via <code class="docutils literal notranslate"><span class="pre">hdot</span></code></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hdot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;dense&#39;</span><span class="p">);</span>
+
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"> </span>#<span class="w"> </span><span class="n">Compute</span><span class="w"> </span><span class="n">forward</span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>The third parameter is specified as ‘dense’ to indicate the output is dense format, the other option is ‘hodlr’.</p>
 </div>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to MHODLR’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hodlr_build.html" class="btn btn-neutral float-right" title="Build HODLR matrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

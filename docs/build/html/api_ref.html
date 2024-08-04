@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; mhodlr 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/_.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Maintenance Team" href="teams.html" />
+    <link rel="prev" title="Customized precision" href="precision.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            mhodlr
+              <img src="_static/LOGO2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="start.html">Get Stated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hodlr_build.html">Build HODLR matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_compute.html">Matrix operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#precision">&#64;precision</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mhodlr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api_ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
+<section id="precision">
+<h2>&#64;precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><dl>
+<dt>base - array | str, default=’h’</dt><dd><blockquote>
+<div><p>For the string type, the arithmetic format supports:
+‘q43’, ‘fp8-e4m3’       - NVIDIA quarter precision (4 exponent bits,</p>
+<blockquote>
+<div><p>3 significand (mantissa) bits),</p>
+</div></blockquote>
+<dl class="simple">
+<dt>‘q52’, ‘fp8-e5m2’       - NVIDIA quarter precision (5 exponent bits,</dt><dd><p>2 significand bits),</p>
+</dd>
+</dl>
+<p>‘b’, ‘bfloat16’         - bfloat16,
+‘h’, ‘half’, ‘fp16’     - IEEE half precision (the default),
+‘s’, ‘single’, ‘fp32’   - IEEE single precision,
+‘d’, ‘double’, ‘fp64’   - IEEE double precision,
+‘c’, ‘custom’           - custom format.</p>
+</div></blockquote>
+<p>The custom (base 2) format is defined by array (2-element, [t, emax]),
+where t is the number of bits in the significand
+(including the hidden bit) and emax is the maximum value of the
+exponent.  The minimu exponent is taken to be emin = 1 - emax and
+the IEEE floating-point number representation is assumed, so that
+emax and the number of  bits e in the exponent are related by
+emax = 2^(e-1) - 1.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>round - int, default=1</dt><dd><dl class="simple">
+<dt>1: round to nearest using round to even last bit to break ties</dt><dd><p>(the default);</p>
+</dd>
+</dl>
+<p>2: round towards plus infinity (round up);
+3: round towards minus infinity (round down);
+4: round towards zero;
+5: stochastic rounding - round to the next larger or next smaller</p>
+<blockquote>
+<div><p>f.p. (floating-point) number with probability proportional to
+1 minus the distance to those f.p. numbers;</p>
+</div></blockquote>
+<dl class="simple">
+<dt>6: stochastic rounding - round to the next larger or next smaller</dt><dd><p>f.p. number with equal probability.</p>
+</dd>
+</dl>
+</dd>
+<dt>subnormal - int</dt><dd><p>specifies whether subnormal numbers are supported, if <cite>subnormal=0</cite>,
+subnormals are flushed to zero:</p>
+<blockquote>
+<div><p>0 = do not support subnormals (the default for base=’b’, i.e., bfloat16 format),
+1 = support subnormals (the default if base is set to others).</p>
+</div></blockquote>
+</dd>
+<dt>explim - int, default=1</dt><dd><p><code class="docutils literal notranslate"><span class="pre">explim</span> <span class="pre">=</span> <span class="pre">0</span></code> make emax (the maximal exponent) for the specified arithmetic disabled,
+so overflow, underflow, or subnormal numbers will be produced only if necessary
+for the data type.  This parameter is for exploring
+low precisions independent of range limitations.</p>
+</dd>
+<dt>flip - int, default=0</dt><dd><p>Determine whether each element of the rounded value has a randomly chosen bit in
+its significand flipped with a certain probability.</p>
+</dd>
+<dt>prob - double, default=0.5</dt><dd><blockquote>
+<div><p>if flip = 1 then each element of the rounded</p>
+</div></blockquote>
+<p>value has a randomly chosen bit in its significand flipped with probability <code class="docutils literal notranslate"><span class="pre">prob</span></code>.</p>
+</dd>
+<dt>randfunc - func, default=&#64;(n) rand(n, 1)</dt><dd><p>The random function for stochastic rounding.
+If options.randfunc is supplied, then in stochastic rounding (modes
+5 and 6) the random numbers used for rounding will be generated
+using that function. It should be a function that has a single argument
+for the number of random numbers to generate and returns a vector of
+the random numbers.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Same as parameters, except</p>
+<dl class="simple">
+<dt>u - double</dt><dd><p>Unit roundoff computed for current floating point format.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="precision.html" class="btn btn-neutral float-left" title="Customized precision" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="teams.html" class="btn btn-neutral float-right" title="Maintenance Team" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, inEXASCALE.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

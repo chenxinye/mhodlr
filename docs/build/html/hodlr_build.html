@@ -91,7 +91,7 @@
 <span class="n">hA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hodlr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="p">,</span><span class="w"> </span><span class="n">min_block_size</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">epsilon</span><span class="p">);</span><span class="w"> </span><span class="c">% or simply use ``hA = hodlr(A)`` by omitting other parameters as default</span>
 </pre></div>
 </div>
-<p>The generators U, V (we will detail later) are represented in sparse format, the level indicates the current level of the HODLR matrix.</p>
+<p>The generators U, V (U1, V1, U2, and V2; we will detail later) are represented in sparse format, the level indicates the current level of the HODLR matrix.</p>
 <p>The simulation to mixed precision HODLR matrix construction is implemented by the class <code class="docutils literal notranslate"><span class="pre">&#64;mphodlr</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;amphodlr</span></code>.
 Previous to the settings, users are required to provide the precisions (as specified in Section <a class="reference external" href="https://mhodlr.readthedocs.io/en/stable/precision.html">Customized precision</a>.).
 The following example illustrates the usage:</p>
@@ -119,9 +119,7 @@ The following example illustrates the usage:</p>
 </pre></div>
 </div>
 <p>Result is</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">hA</span><span class="w"> </span><span class="p">=</span>
-
-<span class="n">hodlr</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">hodlr</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span>
 
 <span class="w">              </span><span class="n">U1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
 <span class="w">              </span><span class="n">V2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
@@ -138,9 +136,11 @@ The following example illustrates the usage:</p>
 <span class="w">  </span><span class="n">min_block_size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
 </pre></div>
 </div>
-<p>The output refers to the attributes of HODLR matrix. The U, V represents generators that represent the off-diagonal blocks, i.e., <span class="math notranslate nohighlight">\(A_{12} \approx U_1 V_2\)</span> and <span class="math notranslate nohighlight">\(A_{21} \approx U_2 V_1\)</span>.
+<p>The output refers to the attributes of HODLR matrix. The U, V (U1, V1, U2, and V2) represent generators that represent the off-diagonal blocks, i.e., <span class="math notranslate nohighlight">\(A_{12} \approx U_1 V_2\)</span> and <span class="math notranslate nohighlight">\(A_{21} \approx U_2 V_1\)</span>.
+The A11 and
 The D is referred to as the diagonal block if the layer, indicated by the <code class="docutils literal notranslate"><span class="pre">level</span></code>, is the bottom layer.  <code class="docutils literal notranslate"><span class="pre">max_level</span></code> refers to the maximum depth the HODLR matrix should have, but the practical depth is indicated in <code class="docutils literal notranslate"><span class="pre">bottom_level</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">vareps</span></code> is the truncation error defined by the users (as input). The <code class="docutils literal notranslate"><span class="pre">min_block_size</span></code> is set to 2 (as input) as mentioned above .</p>
+The <code class="docutils literal notranslate"><span class="pre">vareps</span></code> is the truncation error defined by the users (as input). The <code class="docutils literal notranslate"><span class="pre">min_block_size</span></code> is set to 2 (as input) as mentioned above .
+The <code class="docutils literal notranslate"><span class="pre">shape</span></code> refers to the size of the dense matrix.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">mphA</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -163,6 +163,39 @@ The <code class="docutils literal notranslate"><span class="pre">vareps</span></
 <span class="w">  </span><span class="n">min_block_size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
 </pre></div>
 </div>
+<p>The mhodlr object contains an additional parameter <code class="docutils literal notranslate"><span class="pre">prec_settings</span></code>, which indicates the precision used in each layer.</p>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>If the size of the collection of precisions is less than the depth, the rest of the layers will use double precision, as indicated in the warning information.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">Warning</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">precisions</span> <span class="n">used</span> <span class="n">are</span> <span class="n">less</span> <span class="n">than</span> <span class="n">the</span> <span class="n">maximum</span>
+<span class="n">tree</span> <span class="n">level</span> <span class="n">that</span> <span class="n">can</span> <span class="n">achieve</span><span class="o">.</span> <span class="n">The</span> <span class="n">remaining</span> <span class="n">level</span> <span class="n">will</span> <span class="n">use</span> <span class="n">the</span>
+<span class="n">working</span> <span class="n">precision</span> <span class="k">for</span> <span class="n">compresion</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<p>Similarly, by printing out the <code class="docutils literal notranslate"><span class="pre">aphA</span></code>, we get</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">amphodlr</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span>
+
+<span class="w">              </span><span class="n">U1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">V2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">U2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">V1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">               </span><span class="n">D</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">             </span><span class="n">A11</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">amphodlr</span><span class="p">]</span>
+<span class="w">             </span><span class="n">A22</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">amphodlr</span><span class="p">]</span>
+<span class="w">           </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">           </span><span class="n">shape</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">500</span><span class="w"> </span><span class="mi">500</span><span class="p">]</span>
+<span class="w">       </span><span class="n">max_level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">bottom_level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">       </span><span class="n">normOrder</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">8.3423e+04</span><span class="w"> </span><span class="mf">2.0891e+04</span><span class="w"> </span>…<span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span>×<span class="mi">6</span><span class="w"> </span><span class="nb">double</span><span class="p">)</span>
+<span class="w">       </span><span class="n">precIndex</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span>
+<span class="w">    </span><span class="n">unitRoundOff</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.1102e-16</span><span class="w"> </span><span class="mf">1.1102e-16</span><span class="w"> </span>…<span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span>×<span class="mi">6</span><span class="w"> </span><span class="nb">double</span><span class="p">)</span>
+<span class="w">  </span><span class="n">min_block_size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">          </span><span class="n">vareps</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0000e-04</span>
+<span class="w">   </span><span class="n">prec_settings</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">6</span><span class="w"> </span><span class="nb">cell</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>As shown in the output, we get three more parameters: <code class="docutils literal notranslate"><span class="pre">normOrder</span></code>, <code class="docutils literal notranslate"><span class="pre">precIndex</span></code> and <code class="docutils literal notranslate"><span class="pre">unitRoundOff</span></code> which separately denote the norm value of each layer, the precision used in each layer (indicated by the order of u_chain) and the unit-roundoff of each precision, respectively. Note we got six elements for  <code class="docutils literal notranslate"><span class="pre">normOrder</span></code> and <code class="docutils literal notranslate"><span class="pre">unitRoundOff</span></code>, which more than the depths since the first element of them correspond the the layer 0.</p>
 </section>
 
 

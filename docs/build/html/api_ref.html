@@ -50,6 +50,9 @@
 <li class="toctree-l1"><a class="reference internal" href="precision.html">Customized precision</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#precision">&#64;precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hodlr">&#64;hodlr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mphodlr">&#64;mphodlr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">&#64;mphodlr</a></li>
 </ul>
 </li>
 </ul>
@@ -87,89 +90,213 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
 <section id="precision">
 <h2>&#64;precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h2>
-<blockquote>
-<div><blockquote>
-<div><blockquote>
-<div><dl>
-<dt>base - array | str, default=’h’</dt><dd><blockquote>
-<div><p>For the string type, the arithmetic format supports:
-‘q43’, ‘fp8-e4m3’       - NVIDIA quarter precision (4 exponent bits,</p>
-<blockquote>
-<div><p>3 significand (mantissa) bits),</p>
-</div></blockquote>
-<dl class="simple">
-<dt>‘q52’, ‘fp8-e5m2’       - NVIDIA quarter precision (5 exponent bits,</dt><dd><p>2 significand bits),</p>
-</dd>
-</dl>
-<p>‘b’, ‘bfloat16’         - bfloat16,
-‘h’, ‘half’, ‘fp16’     - IEEE half precision (the default),
-‘s’, ‘single’, ‘fp32’   - IEEE single precision,
-‘d’, ‘double’, ‘fp64’   - IEEE double precision,
-‘c’, ‘custom’           - custom format.</p>
-</div></blockquote>
-<p>The custom (base 2) format is defined by array (2-element, [t, emax]),
-where t is the number of bits in the significand
-(including the hidden bit) and emax is the maximum value of the
-exponent.  The minimu exponent is taken to be emin = 1 - emax and
-the IEEE floating-point number representation is assumed, so that
-emax and the number of  bits e in the exponent are related by
-emax = 2^(e-1) - 1.</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl>
-<dt>round - int, default=1</dt><dd><dl class="simple">
-<dt>1: round to nearest using round to even last bit to break ties</dt><dd><p>(the default);</p>
-</dd>
-</dl>
-<p>2: round towards plus infinity (round up);
-3: round towards minus infinity (round down);
-4: round towards zero;
-5: stochastic rounding - round to the next larger or next smaller</p>
-<blockquote>
-<div><p>f.p. (floating-point) number with probability proportional to
-1 minus the distance to those f.p. numbers;</p>
-</div></blockquote>
-<dl class="simple">
-<dt>6: stochastic rounding - round to the next larger or next smaller</dt><dd><p>f.p. number with equal probability.</p>
-</dd>
-</dl>
-</dd>
-<dt>subnormal - int</dt><dd><p>specifies whether subnormal numbers are supported, if <cite>subnormal=0</cite>,
-subnormals are flushed to zero:</p>
-<blockquote>
-<div><p>0 = do not support subnormals (the default for base=’b’, i.e., bfloat16 format),
-1 = support subnormals (the default if base is set to others).</p>
-</div></blockquote>
-</dd>
-<dt>explim - int, default=1</dt><dd><p><code class="docutils literal notranslate"><span class="pre">explim</span> <span class="pre">=</span> <span class="pre">0</span></code> make emax (the maximal exponent) for the specified arithmetic disabled,
-so overflow, underflow, or subnormal numbers will be produced only if necessary
-for the data type.  This parameter is for exploring
-low precisions independent of range limitations.</p>
-</dd>
-<dt>flip - int, default=0</dt><dd><p>Determine whether each element of the rounded value has a randomly chosen bit in
-its significand flipped with a certain probability.</p>
-</dd>
-<dt>prob - double, default=0.5</dt><dd><blockquote>
-<div><p>if flip = 1 then each element of the rounded</p>
-</div></blockquote>
-<p>value has a randomly chosen bit in its significand flipped with probability <code class="docutils literal notranslate"><span class="pre">prob</span></code>.</p>
-</dd>
-<dt>randfunc - func, default=&#64;(n) rand(n, 1)</dt><dd><p>The random function for stochastic rounding.
-If options.randfunc is supplied, then in stochastic rounding (modes
-5 and 6) the random numbers used for rounding will be generated
-using that function. It should be a function that has a single argument
-for the number of random numbers to generate and returns a vector of
-the random numbers.</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>Same as parameters, except</p>
-<dl class="simple">
-<dt>u - double</dt><dd><p>Unit roundoff computed for current floating point format.</p>
-</dd>
-</dl>
-</div></blockquote>
+<p>precision.m</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Parameters</span>
+<span class="o">--------------------</span>
+<span class="n">base</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;h&#39;</span>
+<span class="w">   </span><span class="n">For</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">arithmetic</span><span class="w"> </span><span class="nb">format</span><span class="w"> </span><span class="n">supports</span><span class="p">:</span>
+<span class="w">   </span><span class="s">&#39;q43&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;fp8-e4m3&#39;</span><span class="w">       </span><span class="o">-</span><span class="w"> </span><span class="n">NVIDIA</span><span class="w"> </span><span class="nb">quarter</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="w"> </span><span class="n">exponent</span><span class="w"> </span><span class="n">bits</span><span class="p">,</span>
+<span class="w">                             </span><span class="mi">3</span><span class="w"> </span><span class="n">significand</span><span class="w"> </span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span><span class="w"> </span><span class="n">bits</span><span class="p">),</span>
+<span class="w">   </span><span class="s">&#39;q52&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;fp8-e5m2&#39;</span><span class="w">       </span><span class="o">-</span><span class="w"> </span><span class="n">NVIDIA</span><span class="w"> </span><span class="nb">quarter</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="n">exponent</span><span class="w"> </span><span class="n">bits</span><span class="p">,</span>
+<span class="w">                             </span><span class="mi">2</span><span class="w"> </span><span class="n">significand</span><span class="w"> </span><span class="n">bits</span><span class="p">),</span>
+<span class="w">   </span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;bfloat16&#39;</span><span class="w">         </span><span class="o">-</span><span class="w"> </span><span class="n">bfloat16</span><span class="p">,</span>
+<span class="w">   </span><span class="s">&#39;h&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;half&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;fp16&#39;</span><span class="w">     </span><span class="o">-</span><span class="w"> </span><span class="n">IEEE</span><span class="w"> </span><span class="n">half</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="p">(</span><span class="n">the</span><span class="w"> </span><span class="n">default</span><span class="p">),</span>
+<span class="w">   </span><span class="s">&#39;s&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;single&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;fp32&#39;</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">IEEE</span><span class="w"> </span><span class="nb">single</span><span class="w"> </span><span class="n">precision</span><span class="p">,</span>
+<span class="w">   </span><span class="s">&#39;d&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;double&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;fp64&#39;</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">IEEE</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="n">precision</span><span class="p">,</span>
+<span class="w">   </span><span class="s">&#39;c&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;custom&#39;</span><span class="w">           </span><span class="o">-</span><span class="w"> </span><span class="n">custom</span><span class="w"> </span><span class="nb">format</span><span class="p">.</span>
+<span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">custom</span><span class="w"> </span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="nb">format</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">defined</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">emax</span><span class="p">]),</span>
+<span class="w">  </span><span class="n">where</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">bits</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">significand</span>
+<span class="w">  </span><span class="p">(</span><span class="n">including</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nb">hidden</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">emax</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span>
+<span class="w">  </span><span class="n">exponent</span><span class="p">.</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">minimu</span><span class="w"> </span><span class="n">exponent</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">taken</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">emin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">emax</span><span class="w"> </span><span class="n">and</span>
+<span class="w">  </span><span class="n">the</span><span class="w"> </span><span class="n">IEEE</span><span class="w"> </span><span class="n">floating</span><span class="o">-</span><span class="n">point</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">representation</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">assumed</span><span class="p">,</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">that</span>
+<span class="w">  </span><span class="n">emax</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w">  </span><span class="n">bits</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exponent</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">related</span><span class="w"> </span><span class="n">by</span>
+<span class="w">  </span><span class="n">emax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span>^<span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.</span>
+
+<span class="nb">round</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="nb">nearest</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">even</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="n">ties</span>
+<span class="w">      </span><span class="p">(</span><span class="n">the</span><span class="w"> </span><span class="n">default</span><span class="p">);</span>
+<span class="w">   </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">towards</span><span class="w"> </span><span class="nb">plus</span><span class="w"> </span><span class="n">infinity</span><span class="w"> </span><span class="p">(</span><span class="nb">round</span><span class="w"> </span><span class="n">up</span><span class="p">);</span>
+<span class="w">   </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">towards</span><span class="w"> </span><span class="n">minus</span><span class="w"> </span><span class="n">infinity</span><span class="w"> </span><span class="p">(</span><span class="nb">round</span><span class="w"> </span><span class="n">down</span><span class="p">);</span>
+<span class="w">   </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">towards</span><span class="w"> </span><span class="n">zero</span><span class="p">;</span>
+<span class="w">   </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">stochastic</span><span class="w"> </span><span class="n">rounding</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">larger</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">smaller</span>
+<span class="w">      </span><span class="n">f</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="n">floating</span><span class="o">-</span><span class="n">point</span><span class="p">)</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="n">proportional</span><span class="w"> </span><span class="n">to</span>
+<span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="n">minus</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">those</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="w"> </span><span class="n">numbers</span><span class="p">;</span>
+<span class="w">   </span><span class="mi">6</span><span class="p">:</span><span class="w"> </span><span class="n">stochastic</span><span class="w"> </span><span class="n">rounding</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">round</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">larger</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">smaller</span>
+<span class="w">      </span><span class="n">f</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">equal</span><span class="w"> </span><span class="n">probability</span><span class="p">.</span>
+
+<span class="n">subnormal</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">specifies</span><span class="w"> </span><span class="n">whether</span><span class="w"> </span><span class="n">subnormal</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">supported</span><span class="p">,</span><span class="w"> </span><span class="k">if</span><span class="w"> </span>`<span class="n">subnormal</span><span class="p">=</span><span class="mi">0</span>`<span class="p">,</span>
+<span class="w">    </span><span class="n">subnormals</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">flushed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">zero</span><span class="p">:</span>
+<span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">subnormals</span><span class="w"> </span><span class="p">(</span><span class="n">the</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">base</span><span class="p">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">i</span><span class="p">.</span><span class="n">e</span><span class="p">.,</span><span class="w"> </span><span class="n">bfloat16</span><span class="w"> </span><span class="nb">format</span><span class="p">),</span>
+<span class="w">        </span><span class="mi">1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">subnormals</span><span class="w"> </span><span class="p">(</span><span class="n">the</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">others</span><span class="p">).</span>
+
+<span class="n">explim</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">1</span>
+<span class="w">    </span>``<span class="n">explim</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>``<span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">emax</span><span class="w"> </span><span class="p">(</span><span class="n">the</span><span class="w"> </span><span class="n">maximal</span><span class="w"> </span><span class="n">exponent</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">arithmetic</span><span class="w"> </span><span class="n">disabled</span><span class="p">,</span>
+<span class="w">    </span><span class="n">so</span><span class="w"> </span><span class="n">overflow</span><span class="p">,</span><span class="w"> </span><span class="n">underflow</span><span class="p">,</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">subnormal</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">produced</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">necessary</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="nb">type</span><span class="p">.</span><span class="w">  </span><span class="n">This</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">exploring</span>
+<span class="w">    </span><span class="n">low</span><span class="w"> </span><span class="n">precisions</span><span class="w"> </span><span class="n">independent</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">range</span><span class="w"> </span><span class="n">limitations</span><span class="p">.</span>
+
+<span class="nb">flip</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Determine</span><span class="w"> </span><span class="n">whether</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">rounded</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">randomly</span><span class="w"> </span><span class="n">chosen</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">in</span>
+<span class="w">    </span><span class="n">its</span><span class="w"> </span><span class="n">significand</span><span class="w"> </span><span class="n">flipped</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">certain</span><span class="w"> </span><span class="n">probability</span><span class="p">.</span>
+
+<span class="n">prob</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mf">0.5</span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="nb">flip</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">then</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">rounded</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">randomly</span><span class="w"> </span><span class="n">chosen</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">its</span><span class="w"> </span><span class="n">significand</span><span class="w"> </span><span class="n">flipped</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span>``<span class="n">prob</span>``<span class="p">.</span>
+
+<span class="n">randfunc</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">func</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=@(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">stochastic</span><span class="w"> </span><span class="n">rounding</span><span class="p">.</span>
+<span class="w">    </span><span class="n">If</span><span class="w"> </span><span class="n">options</span><span class="p">.</span><span class="n">randfunc</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">supplied</span><span class="p">,</span><span class="w"> </span><span class="n">then</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">stochastic</span><span class="w"> </span><span class="n">rounding</span><span class="w"> </span><span class="p">(</span><span class="n">modes</span>
+<span class="w">    </span><span class="mi">5</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">rounding</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">generated</span>
+<span class="w">    </span><span class="n">using</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">function</span><span class="p">.</span><span class="w"> </span><span class="n">It</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">single</span><span class="w"> </span><span class="n">argument</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">vector</span><span class="w"> </span><span class="n">of</span>
+<span class="w">    </span><span class="n">the</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="n">numbers</span><span class="p">.</span>
+
+
+<span class="n">Properties</span>
+<span class="o">--------------------</span>
+<span class="n">Same</span><span class="w"> </span><span class="s">as</span><span class="w"> </span><span class="s">parameters,</span><span class="w"> </span><span class="s">except</span>
+
+<span class="n">u</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span>
+<span class="w">    </span><span class="n">Unit</span><span class="w"> </span><span class="n">roundoff</span><span class="w"> </span><span class="n">computed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="n">floating</span><span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="nb">format</span><span class="p">.</span>
+</pre></div>
+</div>
+</section>
+<section id="hodlr">
+<h2>&#64;hodlr<a class="headerlink" href="#hodlr" title="Permalink to this heading"></a></h2>
+<p>hodlr.m</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Parameters</span>
+<span class="o">--------------------</span>
+<span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">single</span>
+<span class="w">    </span><span class="n">Matrix</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">converted</span><span class="p">.</span>
+
+<span class="n">max_level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">9999</span>
+<span class="w">    </span><span class="n">Maximum</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span>
+
+<span class="n">min_block_size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">2</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">minimum</span><span class="w"> </span><span class="nb">size</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">HODLR</span><span class="w"> </span><span class="n">blocks</span><span class="p">.</span>
+
+<span class="n">method</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;svd&#39;</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">perform</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">off</span><span class="o">-</span><span class="n">diagonal</span><span class="w"> </span><span class="n">blocks</span><span class="p">.</span>
+
+<span class="n">vareps</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mf">1.0e-12</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">vareps</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">truncation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="nb">rank</span><span class="w"> </span><span class="n">approximation</span><span class="p">.</span>
+
+<span class="n">trun_norm_tp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;2&#39;</span>
+<span class="w">    </span><span class="n">Norm</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">off</span><span class="o">-</span><span class="n">diagonal</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">truncation</span><span class="w"> </span>``<span class="o">||</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">B</span><span class="o">||</span><span class="n">_trun_norm_tp</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">vareps</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">||</span><span class="n">B</span><span class="o">||</span>``<span class="p">.</span>
+
+
+<span class="n">Properties</span>
+<span class="o">--------------------</span>
+<span class="n">U1</span><span class="p">,</span><span class="w"> </span><span class="n">V2</span><span class="p">,</span><span class="w"> </span><span class="n">U2</span><span class="p">,</span><span class="w"> </span><span class="n">V1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="nb">upper</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">A12</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">U1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V2</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">A21</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">U2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V1</span><span class="p">.</span>
+
+<span class="n">A11</span><span class="p">,</span><span class="w"> </span><span class="n">A22</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hodlr</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">diagonal</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">HODLR</span><span class="w"> </span><span class="nb">format</span><span class="w"> </span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">level</span><span class="p">).</span>
+
+<span class="n">shape</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">array</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="n">level</span><span class="p">.</span>
+
+<span class="n">level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span>
+
+<span class="n">max_level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transformation</span><span class="p">.</span>
+</pre></div>
+</div>
+</section>
+<section id="mphodlr">
+<h2>&#64;mphodlr<a class="headerlink" href="#mphodlr" title="Permalink to this heading"></a></h2>
+<p>mphodlr.m</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Parameters</span>
+<span class="o">--------------------</span>
+<span class="n">precs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">cell</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="nb">cell</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="nb">contains</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">level</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Each</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="nb">class</span><span class="p">.</span>
+
+<span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">single</span>
+<span class="w">    </span><span class="n">Matrix</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">converted</span><span class="p">.</span>
+
+<span class="n">max_level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">9999</span>
+<span class="w">    </span><span class="n">Maximum</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span>
+
+<span class="n">min_block_size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">2</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">minimum</span><span class="w"> </span><span class="nb">size</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">HODLR</span><span class="w"> </span><span class="n">blocks</span><span class="p">.</span>
+
+<span class="n">method</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;svd&#39;</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">perform</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">off</span><span class="o">-</span><span class="n">diagonal</span><span class="w"> </span><span class="n">blocks</span><span class="p">.</span>
+
+<span class="n">vareps</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mf">1.0e-12</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">vareps</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">truncation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="nb">rank</span><span class="w"> </span><span class="n">approximation</span><span class="p">.</span>
+
+<span class="n">trun_norm_tp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;2&#39;</span>
+<span class="w">    </span><span class="n">Norm</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">off</span><span class="o">-</span><span class="n">diagonal</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">truncation</span><span class="w"> </span>``<span class="o">||</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">B</span><span class="o">||</span><span class="n">_trun_norm_tp</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">vareps</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">||</span><span class="n">B</span><span class="o">||</span>``<span class="p">.</span>
+
+
+<span class="n">Properties</span>
+<span class="o">--------------------</span>
+<span class="n">U1</span><span class="p">,</span><span class="w"> </span><span class="n">V2</span><span class="p">,</span><span class="w"> </span><span class="n">U2</span><span class="p">,</span><span class="w"> </span><span class="n">V1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="nb">upper</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">A12</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">U1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V2</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">A21</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">U2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V1</span><span class="p">.</span>
+
+<span class="n">A11</span><span class="p">,</span><span class="w"> </span><span class="n">A22</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hodlr</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">diagonal</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">HODLR</span><span class="w"> </span><span class="nb">format</span><span class="w"> </span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">level</span><span class="p">).</span>
+
+<span class="n">shape</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">array</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="n">level</span><span class="p">.</span>
+
+<span class="n">level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span>
+
+<span class="n">max_level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transformation</span><span class="p">.</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>&#64;mphodlr<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<p>amphodlr.m</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Parameters</span>
+<span class="o">--------------------</span>
+<span class="n">precs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">cell</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="nb">cell</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="nb">contains</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">level</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Each</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="nb">class</span><span class="p">.</span>
+
+<span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">single</span>
+<span class="w">    </span><span class="n">Matrix</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">converted</span><span class="p">.</span>
+
+<span class="n">max_level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">9999</span>
+<span class="w">    </span><span class="n">Maximum</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span>
+
+<span class="n">min_block_size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mi">2</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">minimum</span><span class="w"> </span><span class="nb">size</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">HODLR</span><span class="w"> </span><span class="n">blocks</span><span class="p">.</span>
+
+<span class="n">method</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;svd&#39;</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">perform</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">off</span><span class="o">-</span><span class="n">diagonal</span><span class="w"> </span><span class="n">blocks</span><span class="p">.</span>
+
+<span class="n">vareps</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="mf">1.0e-12</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">vareps</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">truncation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="nb">rank</span><span class="w"> </span><span class="n">approximation</span><span class="p">.</span>
+
+<span class="n">trun_norm_tp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">=</span><span class="s">&#39;2&#39;</span>
+<span class="w">    </span><span class="n">Norm</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">off</span><span class="o">-</span><span class="n">diagonal</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">truncation</span><span class="w"> </span>``<span class="o">||</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">B</span><span class="o">||</span><span class="n">_trun_norm_tp</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">vareps</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">||</span><span class="n">B</span><span class="o">||</span>``<span class="p">.</span>
+
+<span class="n">Properties</span>
+<span class="o">--------------------</span>
+<span class="n">U1</span><span class="p">,</span><span class="w"> </span><span class="n">V2</span><span class="p">,</span><span class="w"> </span><span class="n">U2</span><span class="p">,</span><span class="w"> </span><span class="n">V1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">double</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="nb">upper</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">A12</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">U1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V2</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">A21</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">U2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V1</span><span class="p">.</span>
+
+<span class="n">A11</span><span class="p">,</span><span class="w"> </span><span class="n">A22</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hodlr</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">diagonal</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">HODLR</span><span class="w"> </span><span class="nb">format</span><span class="w"> </span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="n">level</span><span class="p">).</span>
+
+<span class="n">shape</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">array</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="n">level</span><span class="p">.</span>
+
+<span class="n">level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span>
+
+<span class="n">max_level</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">int</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="n">tree</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transformation</span><span class="p">.</span>
+</pre></div>
+</div>
 </section>
 </section>
 

@@ -1,12 +1,12 @@
 
-<p align="center">
- <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="480"/>
-</p>
+
 
 <h1 align="center">
   mhodlr: Matrix computations in HODLR representation
 </h1>
-
+<p align="center">
+ <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="480"/>
+</p>
 <h1 align="center">
  
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-lightblue.svg)](https://opensource.org/licenses/BSD-3-Clause)

@@ -3,7 +3,7 @@
  <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="480"/>
 </p>
 
-#  mhodlr: Matrix computations in HODLR representation
+##  mhodlr: Matrix computations in HODLR representation
 
 --------------------
 

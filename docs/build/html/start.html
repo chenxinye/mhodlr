@@ -56,6 +56,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknow.html">Acknowledgement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
@@ -87,6 +88,14 @@
 <h1>Get Stated<a class="headerlink" href="#get-stated" title="Permalink to this heading"></a></h1>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>One can easily install <code class="docutils literal notranslate"><span class="pre">mhodlr</span></code> by simply downloading the software from the <a class="reference external" href="https://github.com/inEXASCALE/mhodlr">GitHub Link</a></p>
+<p>Or use the bash command if git is installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/inEXASCALE/mhodlr.git
+<span class="nb">cd</span><span class="w"> </span>mhodlr/mhodlr
+</pre></div>
+</div>
+<p>After downloading the package, one can put the code in the corresponding location and perform the computing.</p>
+<p>The alternative way to download is from <a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/170891-mhodlr">FileExchange</a>.</p>
 </section>
 <section id="quick-start">
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
@@ -123,13 +132,7 @@
 </div>
 <div class="admonition-note admonition">
 <p class="admonition-title">Note</p>
-<p>You can speficy four paramters for your initialization:
-The first parameter is the matrix to be converted;
-the second and the third refer to the maximum level and minimum block size for the cluster tree, respectively;
-the fourth is to specify the method low rank approximation, which default is ‘svd’, the other options: ‘qr’;
-the fifth parameter is the tolerance for the low rank approximation;
-the sixth parameter is used to determine the norm used for the truncation, where only two norms, i.e., Frobenius and 2 norm, are supported, and the
-Frobenius norm only used with <a href="#id1"><span class="problematic" id="id2">``</span></a>method``=’svd’.</p>
+<p>You can speficy four paramters for your initialization: The first parameter is the matrix to be converted; the second and the third refer to the maximum level and minimum block size for the cluster tree, respectively; the fourth is to specify the method low rank approximation, which default is ‘svd’, the other options: ‘qr’; the fifth parameter is the tolerance for the low rank approximation; the sixth parameter is used to determine the norm used for the truncation, where only two norms, i.e., Frobenius and 2 norm, are supported, and the Frobenius norm only used with <a href="#id1"><span class="problematic" id="id2">``</span></a>method``=’svd’.</p>
 </div>
 <p>One can perform hierarchical matrix-vector product via <code class="docutils literal notranslate"><span class="pre">hdot</span></code></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>

@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,6 +53,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="teams.html">Maintenance Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknow.html">Acknowledgement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
@@ -81,11 +83,86 @@
              
   <section id="build-hodlr-matrix">
 <h1>Build HODLR matrix<a class="headerlink" href="#build-hodlr-matrix" title="Permalink to this heading"></a></h1>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">spdiags</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
-<span class="n">hA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hodlr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0e-8</span><span class="p">);</span><span class="w"> </span><span class="c">% or simply use ``hA = hodlr(A)`` by omitting other parameters as default</span>
+<p>Now we try to build HODLR matrix of depth 5 and minmum block size of 2, using the SVD (singular value decomposition) truncation with approximation error of 1e-4; the normal HODLR format can be built via class <code class="docutils literal notranslate"><span class="pre">&#64;hodlr</span></code> via:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">rng</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c">%fix randomness</span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="n">depth</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">min_block_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">hA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hodlr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="p">,</span><span class="w"> </span><span class="n">min_block_size</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">epsilon</span><span class="p">);</span><span class="w"> </span><span class="c">% or simply use ``hA = hodlr(A)`` by omitting other parameters as default</span>
 </pre></div>
 </div>
-<p>The generators U, V are represented in sparse format, the level indicates the current level of the HODLR matrix.</p>
+<p>The generators U, V (we will detail later) are represented in sparse format, the level indicates the current level of the HODLR matrix.</p>
+<p>The simulation to mixed precision HODLR matrix construction is implemented by the class <code class="docutils literal notranslate"><span class="pre">&#64;mphodlr</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;amphodlr</span></code>.
+Previous to the settings, users are required to provide the precisions (as specified in Section <a class="reference external" href="https://mhodlr.readthedocs.io/en/stable/precision.html">Customized precision</a>.).
+The following example illustrates the usage:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% define the precisions</span>
+<span class="n">u1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">precision</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">);</span>
+<span class="n">u2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">precision</span><span class="p">(</span><span class="s">&#39;s&#39;</span><span class="p">);</span>
+<span class="n">u3</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">precision</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">);</span>
+<span class="n">u4</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">precision</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">);</span>
+<span class="n">u5</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">precision</span><span class="p">(</span><span class="s">&#39;q52&#39;</span><span class="p">);</span>
+
+<span class="c">% build the collection of precisions</span>
+<span class="n">u_chain</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">prec_chain</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span><span class="w"> </span><span class="n">u2</span><span class="p">,</span><span class="w"> </span><span class="n">u3</span><span class="p">,</span><span class="w"> </span><span class="n">u4</span><span class="p">,</span><span class="w"> </span><span class="n">u5</span><span class="p">);</span><span class="w"> </span><span class="c">% the order matters!</span>
+
+<span class="c">% build the precisions according to u_chain (each layer uses the corresponding preicison)</span>
+<span class="n">mphA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mphodlr</span><span class="p">(</span><span class="n">u_chain</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="p">,</span><span class="w"> </span><span class="n">min_block_size</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">epsilon</span><span class="p">);</span>
+<span class="n">mprA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">recover</span><span class="p">(</span><span class="n">mphA</span><span class="p">);</span><span class="w"> </span><span class="c">% recover from the HODLR format</span>
+
+<span class="c">% build the precisions automatically</span>
+<span class="n">aphA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">amphodlr</span><span class="p">(</span><span class="n">u_chain</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="p">,</span><span class="w"> </span><span class="n">min_block_size</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;svd&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">epsilon</span><span class="p">);</span>
+<span class="n">aprA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">recover</span><span class="p">(</span><span class="n">aphA</span><span class="p">);</span><span class="w"> </span><span class="c">% recover from the HODLR format</span>
+</pre></div>
+</div>
+<p>Now we plain the HODLR format. First we need print out the variables <code class="docutils literal notranslate"><span class="pre">hA</span></code>, <code class="docutils literal notranslate"><span class="pre">mphA</span></code>, and <code class="docutils literal notranslate"><span class="pre">aphA</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">hA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Result is</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">hA</span><span class="w"> </span><span class="p">=</span>
+
+<span class="n">hodlr</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span>
+
+<span class="w">              </span><span class="n">U1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">V2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">U2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">V1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">               </span><span class="n">D</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">             </span><span class="n">A11</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">hodlr</span><span class="p">]</span>
+<span class="w">             </span><span class="n">A22</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">hodlr</span><span class="p">]</span>
+<span class="w">           </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">           </span><span class="n">shape</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">500</span><span class="w"> </span><span class="mi">500</span><span class="p">]</span>
+<span class="w">       </span><span class="n">max_level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">bottom_level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">          </span><span class="n">vareps</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0000e-04</span>
+<span class="w">  </span><span class="n">min_block_size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>The output refers to the attributes of HODLR matrix. The U, V represents generators that represent the off-diagonal blocks, i.e., <span class="math notranslate nohighlight">\(A_{12} \approx U_1 V_2\)</span> and <span class="math notranslate nohighlight">\(A_{21} \approx U_2 V_1\)</span>.
+The D is referred to as the diagonal block if the layer, indicated by the <code class="docutils literal notranslate"><span class="pre">level</span></code>, is the bottom layer.  <code class="docutils literal notranslate"><span class="pre">max_level</span></code> refers to the maximum depth the HODLR matrix should have, but the practical depth is indicated in <code class="docutils literal notranslate"><span class="pre">bottom_level</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">vareps</span></code> is the truncation error defined by the users (as input). The <code class="docutils literal notranslate"><span class="pre">min_block_size</span></code> is set to 2 (as input) as mentioned above .</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">mphA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Result is</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">mphodlr</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span>
+
+<span class="w">              </span><span class="n">U1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">V2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">U2</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">250</span>×<span class="mi">249</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">              </span><span class="n">V1</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">249</span>×<span class="mi">250</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span>
+<span class="w">               </span><span class="n">D</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">             </span><span class="n">A11</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">mphodlr</span><span class="p">]</span>
+<span class="w">             </span><span class="n">A22</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">mphodlr</span><span class="p">]</span>
+<span class="w">           </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="n">prec_settings</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">5</span><span class="w"> </span><span class="nb">cell</span><span class="p">}</span>
+<span class="w">           </span><span class="n">shape</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">500</span><span class="w"> </span><span class="mi">500</span><span class="p">]</span>
+<span class="w">       </span><span class="n">max_level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">bottom_level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">          </span><span class="n">vareps</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0000e-04</span>
+<span class="w">  </span><span class="n">min_block_size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+</pre></div>
+</div>
 </section>
 
 

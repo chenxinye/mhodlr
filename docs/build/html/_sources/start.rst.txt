@@ -3,10 +3,29 @@ Get Stated
 
 
 Setup 
---------
+-------------
+
+One can easily install ``mhodlr`` by simply downloading the software from the `GitHub Link <https://github.com/inEXASCALE/mhodlr>`_
+
+Or use the bash command if git is installed:
+
+.. code:: bash
+
+   git clone https://github.com/inEXASCALE/mhodlr.git
+   cd mhodlr/mhodlr
+
+After downloading the package, one can put the code in the corresponding location and perform the computing.
+
+The alternative way to download is from `FileExchange <https://www.mathworks.com/matlabcentral/fileexchange/170891-mhodlr>`_.
+
+
+
+
+
+
 
 Quick start
------------
+-------------
 
 
 
@@ -51,14 +70,7 @@ Then you can recover your HODLR representation by built-in function ``recover``.
 
 .. admonition:: Note
 
-    You can speficy four paramters for your initialization:  
-    The first parameter is the matrix to be converted;
-    the second and the third refer to the maximum level and minimum block size for the cluster tree, respectively;
-    the fourth is to specify the method low rank approximation, which default is 'svd', the other options: 'qr';
-    the fifth parameter is the tolerance for the low rank approximation;
-    the sixth parameter is used to determine the norm used for the truncation, where only two norms, i.e., Frobenius and 2 norm, are supported, and the 
-    Frobenius norm only used with ``method``='svd'. 
-    
+    You can speficy four paramters for your initialization\: The first parameter is the matrix to be converted; the second and the third refer to the maximum level and minimum block size for the cluster tree, respectively; the fourth is to specify the method low rank approximation, which default is 'svd', the other options: 'qr'; the fifth parameter is the tolerance for the low rank approximation; the sixth parameter is used to determine the norm used for the truncation, where only two norms, i.e., Frobenius and 2 norm, are supported, and the Frobenius norm only used with ``method``='svd'. 
 
 One can perform hierarchical matrix-vector product via ``hdot``
 

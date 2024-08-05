@@ -20,6 +20,10 @@ The project ``mhodlr`` is maintained by the following members:
 |           |  as a postdoctoral fellow at the Courant Institute of Mathematical Sciences, New York University.                |
 |           |                                                                                                                  |    
 |           |  Since 2018, she has been working at the Department of Numerical Mathematics, Charles University.                |
+|           |                                                                                                                  |
+|           |  Her research focuses on numerical linear algebra and parallel computing underlying the machine learning         |
+|           |                                                                                                                  |
+|           |  and data science applications.                                                                                  |
 +-----------+------------------------------------------------------------------------------------------------------------------+
 
 

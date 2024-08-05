@@ -8,7 +8,7 @@ HODLR matrices are formulated by hierarchically partitioning the matrix in terms
 
 
 .. image:: demo.png
-    :width: 560
+    :width: 640
 
 
 Guide

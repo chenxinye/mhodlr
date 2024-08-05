@@ -7,7 +7,6 @@
   mhodlr: Matrix computations in HODLR representation
 </h1>
 
---------------------
 
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-lightblue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![View mhodlr on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/170891-mhodlr)

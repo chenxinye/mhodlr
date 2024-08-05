@@ -3,7 +3,7 @@
 
 
 <p align="center">
- <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="880"/>
+ <img src="https://github.com/chenxinye/mhodlr/blob/main/data/lg.png?raw=true" alt="drawing" width="980"/>
 </p>
 
  <h1 align="center">

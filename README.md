@@ -25,11 +25,11 @@
 ## Abstract
 
 
-Differential equations often result in rank-structured matrices associated with low-rank off-diagonal blocks. These matrices are often represented in a hierarchical format, and their operation often results in fast arithmetic, e.g., matrix-vector product.  The hierarchical matrix is a class of dense rank-structured matrices with a hierarchical low-rank off diagonal block structure, which frequently arises from finite element discretization of an elliptic PDE, radial basis function interpolation, and boundary integral equations. 
+Differential equations often result in rank-structured matrices associated with low-rank off-diagonal blocks. These matrices are often represented in a hierarchical format, and their operation often results in fast arithmetic, e.g., matrix-vector product.  The hierarchical matrix [2] is a class of dense rank-structured matrices with a hierarchical low-rank off diagonal block structure, which frequently arises from finite element discretization of an elliptic PDE, radial basis function interpolation, and boundary integral equations. 
 
 
 
-Hierarchical Off-Diagonal Low-Rank (HODLR) matrix, as a typical hierarchical matrix, is formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with HODLR matrix construction as well as basic matrix computations with HOLDR matrices, which aims to provide a convenient API for HODLR operations. It also provides simulation code for mixed-precision and adaptive precision HODLR matrix computing.  
+Hierarchical Off-Diagonal Low-Rank (HODLR) matrix, as a typical hierarchical matrix, is formulated by hierarchically partitioning the matrix in terms of a binary cluster tree and all off-diagonal blocks of each level of the tree are represented as low-rank matrices. This repository is concerned with HODLR matrix construction as well as basic matrix computations with HOLDR matrices, which aims to provide a convenient API for HODLR operations. It also provides simulation code for mixed-precision and adaptive precision HODLR matrix computing [1]. Our low precision arithmetic is simulated in terms of [4].  
 
 
 Our software mainly contains three components
@@ -74,21 +74,22 @@ Support routines
 
 Contributions
 ---------------
+
 Any forms of contributions are welcomed. Our documents are still in progress; feel free to pull request and submit issues for suggestions. Before contributing code, we suggest to contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://mhodlr.readthedocs.io/en/latest/teams.html).
 
 
 Acknowledgement
 ---------------
-This project is supported by the European Union (ERC, [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale), 101075632). Views and opinions
- expressed are those of the authors only and do not necessarily reflect those of the European
- Union or the European Research Council. Neither the European Union nor the granting
- authority can be held responsible for them.
+
+This project is supported by the European Union (ERC, [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale), 101075632). Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting
+authority can be held responsible for them.
 
 
 
 
 References
 ---------------
+
 [1] C. Erin, X. Chen and X. Liu, Mixed precision HODLR matrices, arXiv:2407.21637, (2024), https://doi.org/10.48550/arXiv.2407.21637.
 
 [2] S. B¨orm, L. Grasedyck, and W. Hackbusch, Introduction to hierarchical matrices with

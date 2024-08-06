@@ -5,6 +5,8 @@ Get Stated
 Setup 
 -------------
 
+The support Matlab releases for running ``mhodlr``: MATLAB2023a, MATLAB2023b, MATLAB2024a, MATLAB2024b.
+
 One can easily install ``mhodlr`` by simply downloading the software from the `GitHub Link <https://github.com/inEXASCALE/mhodlr>`_
 
 Or use the bash command if git is installed:

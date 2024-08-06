@@ -28,7 +28,7 @@ The project ``mhodlr`` is maintained by the following members:
 
 
 +-----------+------------------------------------------------------------------------------------------------------------------+
-| |people2| | Xinye Chen obtained her Ph. D. at the University of Manchester. Currently he is a postdoctoral researcher        |
+| |people2| | Xinye Chen obtained his Ph. D. at the University of Manchester. He currently is a postdoctoral researcher        |
 |           |                                                                                                                  |  
 |           | from Charles Univerisity. His work focuses on machine learning and numerical analysis, with a a particular       |      
 |           |                                                                                                                  | 
@@ -38,7 +38,7 @@ The project ``mhodlr`` is maintained by the following members:
 +-----------+------------------------------------------------------------------------------------------------------------------+
 
 +-----------+------------------------------------------------------------------------------------------------------------------+
-| |people3| | Xiaobo Liu obtained her Ph. D. at the University of Manchester. He currently is a postdoctoral researcher        |
+| |people3| | Xiaobo Liu obtained his Ph. D. at the University of Manchester. He currently is a postdoctoral researcher        |
 |           |                                                                                                                  |    
 |           | from Max Planck Institute for Dynamics of Complex Technical Systems. He works on Numerical Analysis              |  
 |           |                                                                                                                  |  

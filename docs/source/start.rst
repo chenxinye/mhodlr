@@ -7,6 +7,9 @@ Setup
 
 The support Matlab releases for running ``mhodlr``: MATLAB2023a, MATLAB2023b, MATLAB2024a, MATLAB2024b.
 
+Platform Compatibility: Windows, macOS, Linux.
+
+
 One can easily install ``mhodlr`` by simply downloading the software from the `GitHub Link <https://github.com/inEXASCALE/mhodlr>`_
 
 Or use the bash command if git is installed:
@@ -19,6 +22,7 @@ Or use the bash command if git is installed:
 After downloading the package, one can put the code in the corresponding location and perform the computing.
 
 The alternative way to download is from `FileExchange <https://www.mathworks.com/matlabcentral/fileexchange/170891-mhodlr>`_.
+
 
 
 

@@ -90,3 +90,38 @@ The output:
 
 Multiple precision
 ^^^^^^^^^^^^^^^^^^^^
+
+The working preicion for LU factorization can be specified by the method ``mhlu``:
+
+.. code:: matlab
+
+    u = precision('h');
+    [L, U] = mhlu(hA, u, 'hodlr');
+    err = norm(hdot(L, U, 'dense') - A, 'fro');
+    disp(err);
+
+
+One can also load the mixed precision ``mhodlr`` objects via, for example:
+
+.. code:: matlab
+
+    u1 = precision('d');
+    u2 = precision('s');
+    u3 = precision('h');
+    u4 = precision('b');
+
+    u_chain = prec_chain(u1, u2, u3, u4);
+    depth=5;
+    eps=1e-5;
+    aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
+    mphA = mphodlr(u_chain, A, depth, 10, 'svd', eps); 
+
+    u = precision('h'); % set the working precision to half
+    [L, U] = mhlu(mphA, u, 'hodlr');
+    err = norm(hdot(L, U, 'dense') - A, 'fro');
+    disp(err);
+
+    u = precision('s'); % set the working precision to single
+    [L, U] = mhlu(aphA, u, 'hodlr');
+    err = norm(hdot(L, U, 'dense') - A, 'fro');
+    disp(err);

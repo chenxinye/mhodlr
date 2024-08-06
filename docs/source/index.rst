@@ -1,4 +1,4 @@
-.. CLASSIX documentation
+.. MHODLR documentation
 
 Welcome to MHODLR's documentation!
 ===================================

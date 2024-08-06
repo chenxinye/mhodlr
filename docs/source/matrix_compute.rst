@@ -57,6 +57,9 @@ The output:
 LU factorization
 ------------------------------------------------
 
+Working precision
+^^^^^^^^^^^^^^^^^^
+
 The LU factorization is performed by the rountine ``routine``
 
 
@@ -82,3 +85,8 @@ The output:
    1.4124e-12
 
    1.3376e-12
+
+
+
+Multiple precision
+^^^^^^^^^^^^^^^^^^^^

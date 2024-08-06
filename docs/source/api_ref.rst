@@ -505,3 +505,26 @@ lu_solve.m
     --------------------
     x - double
         The solution.
+
+
+
+
+
+hstorage.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    Measure the theoretical storage of HODLR matrix
+
+    Parameters
+    --------------------
+    
+    H - hodlr, mphodlr, and amphodlr
+        The input of HODLR matrix.
+
+
+    Returns
+    --------------------
+    y - double 
+        The number of bits for storage.

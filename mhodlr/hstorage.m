@@ -1,4 +1,21 @@
 function y = hstorage(obj, varargin)
+%{  
+    Measure the theoretical storage of HODLR matrix
+
+    Parameters
+    --------------------
+    
+    H - hodlr, mphodlr, and amphodlr
+        The input of HODLR matrix.
+
+
+    Returns
+    --------------------
+    y - double 
+        The number of bits for storage.
+
+%}
+
     y = 0;
     if nargin == 1
         level = 1;

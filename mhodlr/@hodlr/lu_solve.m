@@ -28,7 +28,7 @@ function x = lu_solve(varargin)
 
     if nargin == 2
         H = varargin{1}; 
-        if ~(isa(H, 'hodlr') | isa(H, 'mphodlr'))
+        if ~(isa(H, 'hodlr') | isa(H, 'mphodlr') | isa(H, 'amphodlr'))
             error('Please ensure the first input is of a HODLR matrix.');
         end
         
@@ -42,11 +42,11 @@ function x = lu_solve(varargin)
         L = varargin{1}; 
         U = varargin{2}; 
 
-        if ~(isa(L, 'hodlr') | isa(L, 'mphodlr'))
+        if ~(isa(L, 'hodlr') | isa(L, 'mphodlr') | isa(L, 'amphodlr'))
             error('Please ensure the first input is of a HODLR matrix.');
         end
 
-        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr'))
+        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr') | isa(U, 'amphodlr'))
             error('Please ensure the second input is of a HODLR matrix.');
         end
         

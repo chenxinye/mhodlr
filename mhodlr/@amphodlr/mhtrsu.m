@@ -39,7 +39,7 @@ function X = mhtrsu(B, U, varargin)
             
             U = hmchop(U);
 
-            if isa(B, 'hodlr') | isa(B, 'amphodlr') 
+            if isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr') 
                 % B is of hodlr format
                 B = hmchop(B);
                 X = B;

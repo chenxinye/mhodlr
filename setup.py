@@ -10,7 +10,7 @@ setuptools.setup(
     version="0.0.1",
     url="https://github.com/chenxinye/mhodlr/",
 
-    description="Matlab code for simulating mixed-precision HODLR matrix",
+    description="Simulating mixed-precision HODLR matrix",
     long_description=long_description,
     license='BSD 3-Clause License',
 

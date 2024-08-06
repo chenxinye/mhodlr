@@ -39,12 +39,12 @@ function C = hadd(varargin)
         error('Please enter the correct number of inputs.');
     end
     
-    if (isa(varargin{1}, 'mphodlr') | isa(varargin{1}, 'hodlr') ...
-            ) & (isa(varargin{2}, 'mphodlr') | isa(varargin{2}, 'hodlr'))
+    if (isa(varargin{1}, 'hodlr') | isa(varargin{1}, 'mphodlr') | isa(varargin{1}, 'amphodlr') ...
+            ) & (isa(varargin{2}, 'hodlr') | isa(varargin{2}, 'mphodlr') | isa(varargin{2}, 'amphodlr'))
         input_number = 0;
-    elseif isa(varargin{1}, 'hodlr') 
+    elseif isa(varargin{1}, 'hodlr') | isa(varargin{1}, 'mphodlr') | isa(varargin{1}, 'amphodlr') 
         input_number = 1;
-    elseif isa(varargin{2}, 'hodlr') 
+    elseif isa(varargin{2}, 'hodlr') | isa(varargin{2}, 'mphodlr') | isa(varargin{2}, 'amphodlr') 
         input_number = 2;
     else
         input_number = 3;

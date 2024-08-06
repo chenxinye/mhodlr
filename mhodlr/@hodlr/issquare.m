@@ -15,7 +15,7 @@ function ch = issquare(H)
 %}
  
  
-    if strcmp(class(H), 'mphodlr') | strcmp(class(H), 'hodlr')
+    if strcmp(class(H), 'hodlr') | strcmp(class(H), 'mphodlr') | strcmp(class(H), 'amphodlr')
         if isempty(H.D)
             su1 = size(H.U1, 1);
             su2 = size(H.U2, 1);

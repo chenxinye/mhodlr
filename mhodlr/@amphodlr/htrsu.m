@@ -33,11 +33,11 @@ function X = htrsu(B, U, varargin)
             error('Please ensure the second input is sqaure matrix.');
         end
         
-        if ~(isa(U, 'hodlr') | isa(U, 'amphodlr'))
+        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr') | isa(U, 'amphodlr'))
             error('Please ensure the second input is of a HODLR matrix.');
         end
     
-        if isa(B, 'hodlr') | isa(B, 'amphodlr') 
+        if isa(B, 'hodlr') | isa(B, 'mphodlr')  | isa(B, 'amphodlr') 
             % B is of hodlr format
             X = B;
             if isempty(U.D)

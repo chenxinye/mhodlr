@@ -5,6 +5,7 @@ API Reference
 -----------
 
 precision.m
+^^^^^^^^^^^^^
 
 .. code:: matlab
 
@@ -81,6 +82,7 @@ precision.m
 -----------
 
 hodlr.m
+^^^^^^^^^^^^^
 
 .. code:: matlab
 
@@ -127,6 +129,7 @@ hodlr.m
 
 
 mphodlr.m
+^^^^^^^^^^^
 
 .. code:: matlab
     
@@ -175,10 +178,11 @@ mphodlr.m
 
 
 
-@mphodlr 
+@amphodlr 
 -----------
 
 amphodlr.m
+^^^^^^^^^^^
 
 .. code:: matlab
 
@@ -222,3 +226,282 @@ amphodlr.m
     
     max_level - int
         The maximum level of cluster tree after transformation.
+
+
+
+Matrix computation rountines
+-----------------------------
+
+hadd.m
+^^^^^^^^^^^
+
+.. code:: matlab
+
+    The function is calculation of add or minus for HODLR matrix A and B.
+
+    Parameters
+    --------------------
+    A - hodlr | double
+        Input matrix - hodlr class / dense tyle.
+  
+    B - hodlr | double
+        Input matrix - hodlr class / dense tyle.
+    
+    operator - str, default = '+'
+        The operator of add ('+') or minus ('-'), string type.
+
+    oformat - str, default = 'hodlr'
+        The format of returns.
+    
+    Returns
+    --------------------
+    C - hodlr | double
+        Return matrix in hodlr class or dense array.
+
+
+
+
+hdot.m
+^^^^^^^^^^^
+
+.. code:: matlab
+
+    Compute dot product of A and B.
+
+    Parameters
+    --------------------
+    A - hodlr | double
+        Matrix in HODLR format or double array.
+    
+    B - hodlr | double
+        Matrix in HODLR format or double array.
+
+    oformat - str, default='hodlr'
+        Output format: 'hodlr' or 'dense'.
+    
+
+
+    Returns
+    --------------------
+    C - hodlr | double
+        The matrix of product. 
+
+mhdot.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    Compute dot product of A and B.
+
+    Parameters
+    --------------------
+    A - hodlr | double
+        Matrix in HODLR format or double array.
+    
+    B - hodlr | double
+        Matrix in HODLR format or double array.
+
+    prec - precision
+        Precision for the matrix-vector product.
+
+    oformat - str, default='hodlr'
+        Output format: 'hodlr' or 'dense'.
+    
+
+    Returns
+    --------------------
+    C - hodlr | double
+        The matrix of product. 
+
+
+hlu.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+        Compute LU factorization for HODLR matrix H.
+    
+        Parameters
+        --------------------
+        H - hodlr
+            Matrix in HODLR format - hodlr class.
+        
+        oformat - str, default='hodlr'
+            The output format. 'dense' or 'hodlr'.
+    
+        epsilon - double, default is the vareps of holdlr matrix H
+            The vareps for recompression.
+    
+        Returns
+        --------------------
+        L - double
+            The upper triangular matrix L is computed such that L * U = H. 
+        U - double
+            The upper triangular matrix U is computed such that L * U = H. 
+
+
+
+
+mhlu.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    Compute LU factorization for HODLR matrix H.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    prec - precision
+        Precision to simulate the factorization.
+
+    oformat - str, default='hodlr'
+        The output format. 'dense' or 'hodlr'.
+
+    vareps - double, default is the vareps of holdlr matrix H
+        The vareps for recompression.
+
+    Returns
+    --------------------
+    L - double
+        The upper triangular matrix L is computed such that L * U = H. 
+    U - double
+        The upper triangular matrix U is computed such that L * U = H. 
+
+
+
+
+
+
+hchol.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    Compute Cholesky factorization for symmetric positive-definite HODLR matrix H.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    oformat - str, default='hodlr'
+        The output format, either 'hodlr' or ''dense.
+
+
+    Returns
+    --------------------
+    R - double
+        The upper triangular matrix R is computed such that R' * R = H.  
+
+
+
+
+
+
+recover.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    The function is to recover a HODLR format into array format
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+ 
+    issparse - boolean
+        `1` indicates returning sparse format, `0` indicates returning full arrary. 
+
+
+    Returns
+    --------------------
+    A - double 
+        Array in sparse or not.
+
+
+
+
+hsize.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    The function is to return the shape of HOLDR matrix.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    oformat - int, default=1
+        If input is not the leafnode of the HODLR matrix:
+            1: Outputs of varying number [m, n, m1, m2, n1, n2] for hierarchical block matrices.
+            2: Outputs of varying number [m1, m2, n1, n2] for hierarchical block matrices.
+        
+        Otherwise:
+            Outputs of varying number [m, n] for hierarchical block matrices.
+
+    Returns
+    --------------------
+    [m, n, su1, su2, sv1, sv2] - int
+        Indicates the size of rows and columns for H, size(H.U1, 1), size(H.U2, 1), size(H.V1, 2), size(H.V2, 2), respectively.
+
+
+
+
+inverse.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    algorithm - int, default=1
+        The algorithm to implement inverse
+    
+    oformat - str, default = 'hodlr'
+        The format of returns.
+    
+    Returns
+    --------------------
+    C - hodlr | double
+        Return matrix in hodlr class or dense array.
+
+
+
+lu_solve.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    Compute Hx = b using LU factorization.
+
+    Parameters
+    --------------------
+    Setting 1:
+        H - hodlr
+            Matrix in HODLR format - hodlr class.
+
+        b - double/single
+
+
+    Setting 2:
+        l - hodlr
+            Matrix in HODLR format - hodlr class.
+
+        U - hodlr
+            Matrix in HODLR format - hodlr class.
+            
+        b - double/single
+
+    Returns
+    --------------------
+    x - double
+        The solution.

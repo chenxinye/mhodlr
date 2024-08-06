@@ -1,23 +1,24 @@
 function C = inverse(obj, varargin)
-    %% The function is to return the inverse of HOLDR matrix.
-    %
-    % Parameters
-    % --------------------
-    % H - hodlr
-    %     Matrix in HODLR format - hodlr class.
-    % 
-    % algorithm - int, default=1
-    %     The algorithm to implement inverse
-    % 
-    % oformat - str, default = 'hodlr'
-    %     The format of returns.
-    % 
-    % Returns
-    % --------------------
-    % C - hodlr | double
-    %     Return matrix in hodlr class or dense array.
-    % 
+%{
+    The function is to return the inverse of HOLDR matrix.
     
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    algorithm - int, default=1
+        The algorithm to implement inverse
+    
+    oformat - str, default = 'hodlr'
+        The format of returns.
+    
+    Returns
+    --------------------
+    C - hodlr | double
+        Return matrix in hodlr class or dense array.
+    
+%}
     switch nargin
         case 1 
             algorithm = 1;
@@ -33,13 +34,13 @@ function C = inverse(obj, varargin)
     end
 
     if algorithm == 1
-        if algorithm == 'hodlr'
+        if oformat == 'hodlr'
             C = inverse_hodlr(obj);
         else
             C = inverse_dense(obj);
         end
     else
-        if algorithm == 'hodlr'
+        if oformat == 'hodlr'
             C = inverse_nonrecursive_hodlr(obj);
         else
             C = inverse_nonrecursive_dense(obj);

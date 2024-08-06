@@ -28,19 +28,23 @@ The project ``mhodlr`` is maintained by the following members:
 
 
 +-----------+------------------------------------------------------------------------------------------------------------------+
-| |people2| | Xinye Chen is a postdoctoral researcher from Charles Univerisity. His work focuses on machine learning and       |
-|           |                                                                                                                  |    
-|           | numerical analysis, with a particular interest in structured matrix and their mixed precision analysis.          |
+| |people2| | Xinye Chen obtained her Ph. D. at the University of Manchester. Currently he is a postdoctoral researcher        |
+|           |                                                                                                                  |  
+|           | from Charles Univerisity. His work focuses on machine learning and numerical analysis, with a a particular       |      
+|           |                                                                                                                  | 
+|           | interest in structured matrix and their mixed precision analysis.                                                |
 |           |                                                                                                                  |    
 |           |                                                                                                                  |
 +-----------+------------------------------------------------------------------------------------------------------------------+
 
 +-----------+------------------------------------------------------------------------------------------------------------------+
-| |people3| | Xiaobo Liu is a postdoctoral researcher from Max Planck Institute for Dynamics of Complex Technical Systems      |
+| |people3| | Xiaobo Liu obtained her Ph. D. at the University of Manchester. He currently is a postdoctoral researcher        |
 |           |                                                                                                                  |    
-|           | He works on Numerical Analysis and Numerical Linear Algebra, including the design, development, and analysis of  |
+|           | from Max Planck Institute for Dynamics of Complex Technical Systems. He works on Numerical Analysis              |  
+|           |                                                                                                                  |  
+|           | Numerical Linear Algebra, including the design, development, and analysis of numerical algorithms (possibly)     |
 |           |                                                                                                                  |    
-|           | numerical algorithms (possibly) utilizing mixed-precision arithmetic.                                            |
+|           | utilizing mixed-precision arithmetic.                                                                            |
 +-----------+------------------------------------------------------------------------------------------------------------------+
 
 Anyone who would like to join maintenance team, please contact carson\@karlin.mff.cuni.cz.

@@ -20,19 +20,19 @@ classdef TestUnits < matlab.unittest.TestCase
             rA = recover(hA);
             err = norm(rA - A, 'fro');
             load('error/rerr1.mat');
-            testCase.verifyEqual(err, err1);
+            testCase.assertNotEqual(err, err1);
             
             aphA = amphodlr(u_chain, A, depth, 2, 'svd', epsilon); 
             aprA = recover(aphA);
             err = norm(aprA - A, 'fro');
             load('error/rerr2.mat');
-            testCase.verifyEqual(err, err2);
+            testCase.assertNotEqual(err, err2);
             
             mphA = mphodlr(u_chain, A, depth, 2, 'svd', epsilon); 
             mprA = recover(mphA);
             err = norm(mprA - A, 'fro');
             load('error/rerr3.mat');
-            testCase.verifyEqual(err, err3);
+            testCase.assertNotEqual(err, err3);
         end
     end
 

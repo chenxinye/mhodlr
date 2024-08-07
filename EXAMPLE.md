@@ -12,7 +12,7 @@ rA = recover(hA); % Reconstruct hA into dense matrix
 disp(norm(full(rA - A), 2) / norm(full(A), 2)); % relative test error
 ```
 
-Also, simulating adaptive precisions for each level of compression is allowed; please use the @mphodlr for low precision HODLR simulations. Users may consult the following code for usage guidance:
+Also, simulating adaptive precisions for each level of compression is allowed; please use the @mphodlr or @amphodlr for low precision HODLR simulations. Users may consult the following code for usage guidance:
 ```matlab
 rng(0);
 A = rand(15,15); % Generate 15 by 15 random matrix
@@ -32,6 +32,11 @@ norm(rA - A,2)  % Compute the error
 mphA = mphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
 mprA = recover(mphA)
 norm(mprA - A,2) % Compute the error
+
+% Call adaptive precision HODLR representation
+aphA = amphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
+aprA = recover(aphA)
+norm(aprA - A,2) % Compute the error
 
 ```
 It should noted that we use 3 precisions for the HODLR matrix computation since there are three levels of the cluster tree. If the number of precisions is less than the depth of the cluster tree, the rest of the levels will be performed in the working precision. One can compute in a uniform precision for each level via 

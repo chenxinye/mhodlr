@@ -1,6 +1,6 @@
 function C = hadd(varargin)
 %{
-    The function is calculation of add or minus for HODLR matrix A and B.
+    The function is used for the operation of summation or subtraction for HODLR matrix A and B.
 
     Parameters
     --------------------
@@ -55,11 +55,15 @@ function C = hadd(varargin)
             case 0
                 C = hadd_full_hodlr(varargin{1}, varargin{2}, operator);
             case 1
-                C = hadd_partial_hodlr(varargin{1}, varargin{2}, operator);
+                C = hadd_partial_hodlr(varargin{1}, varargin{2}, operator, true);
             case 2
-                C = hadd_partial_hodlr(varargin{2}, varargin{1}, operator);
+                C = hadd_partial_hodlr(varargin{1}, varargin{2}, operator, false);
             case 3
-                C = hodlr(varargin{1} + varargin{2});
+                if strcmp(operator, '-')
+                    C = hodlr(varargin{1} + varargin{2});
+                else
+                    C = hodlr(varargin{1} - varargin{2});
+                end
         end
     else
         switch input_number
@@ -69,8 +73,16 @@ function C = hadd(varargin)
                 C = hadd_partial_dense(varargin{1}, varargin{2}, operator);
             case 2
                 C = hadd_partial_dense(varargin{2}, varargin{1}, operator);
+                
+                if strcmp(operator, '-')
+                    C = -C;
+                end
             case 3
-                C = varargin{1} + varargin{2};
+                if strcmp(operator, '-')
+                    C = varargin{1} + varargin{2};
+                else
+                    C = varargin{1} - varargin{2};
+                end
         end
     end
 end

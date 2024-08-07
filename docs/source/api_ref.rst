@@ -237,7 +237,7 @@ hadd.m
 
 .. code:: matlab
 
-    The function is calculation of add or minus for HODLR matrix A and B.
+    The function is used for the operation of summation or subtraction for HODLR matrix A and B.
 
     Parameters
     --------------------
@@ -257,6 +257,7 @@ hadd.m
     --------------------
     C - hodlr | double
         Return matrix in hodlr class or dense array.
+  
 
 
 

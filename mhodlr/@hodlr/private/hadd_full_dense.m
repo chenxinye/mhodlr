@@ -1,11 +1,14 @@
 function C = hadd_full_dense(A, B, operator)
 % Output dense format when inputs A, B are HODLR matrix.
 % 
-    [m, n, m1, m2] = hsize(A);
-    [mb, nb] = hsize(B);
-    C = zeros(mb, nb);
-
     if isempty(A.D) & isempty(B.D) 
+        [m, n] = hsize(A);
+        m1 = size(A.U1, 1);
+        n1 = size(A.V1, 2);
+
+        [mb, nb] = hsize(B);
+        C = zeros(mb, nb);
+
         if m ~= mb | n ~= nb
             error('Please enter the inputs with consistent dimensions.');
         end  

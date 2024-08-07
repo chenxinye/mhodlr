@@ -9,6 +9,7 @@ Now we try to build HODLR matrix of depth 5 and minmum block size of 2, using th
    A = rand(500);
    depth = 5;
    min_block_size = 2;
+   epsilon = 1e-8;
    hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
 The generators U, V (U1, V1, U2, and V2; we will detail later) are represented in sparse format, the level indicates the current level of the HODLR matrix. 
@@ -69,12 +70,45 @@ Result is
 
 
 
-
 The output refers to the attributes of HODLR matrix. The U, V (U1, V1, U2, and V2) represent generators that represent the off-diagonal blocks, i.e., :math:`A_{12} \approx U_1 V_2` and :math:`A_{21} \approx U_2 V_1`. 
-The A11 and 
+The A11 and A22 are the digonal blocks, which will be further divided into HODLR matrix if the layer has not reached the depth. 
 The D is referred to as the diagonal block if the layer, indicated by the ``level``, is the bottom layer.  ``max_level`` refers to the maximum depth the HODLR matrix should have, but the practical depth is indicated in ``bottom_level``.
 The ``vareps`` is the truncation error defined by the users (as input). The ``min_block_size`` is set to 2 (as input) as mentioned above . 
 The ``shape`` refers to the size of the dense matrix.  
+
+
+We can print out A11 or A22 for further investigation:
+
+.. code:: matlab
+
+   disp(hA.A11)
+
+
+Then, the Command Window will show: 
+
+.. code:: 
+
+
+  hodlr with properties:
+
+                U1: [125×125 double]
+                V2: [125×125 double]
+                U2: [125×125 double]
+                V1: [125×125 double]
+                 D: []
+               A11: [1×1 hodlr]
+               A22: [1×1 hodlr]
+             level: 2
+             shape: [250 250]
+         max_level: 5
+      bottom_level: 5
+            vareps: 1.0000e-08
+    min_block_size: 2
+
+
+Accordingly, the ``level`` will increase by 1, and the size of the generators U and V will be halved, and the ``shape`` now represented the size of current block. 
+
+Now we look at the variable ``mphA`` created by the class ``mphodlr``:
 
 .. code:: matlab
 

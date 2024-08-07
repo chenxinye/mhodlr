@@ -25,22 +25,23 @@ function C = inverse(obj, varargin)
             oformat = 'hodlr';
 
         case 2
-            algorithm = varargin{1};
-            oformat = 'hodlr';
-
+            oformat = varargin{1};
+            algorithm = 1;
+            
         case 3 
-            algorithm = varargin{1};
-            oformat = varargin{2};
+            oformat = varargin{1};
+            algorithm = varargin{2};
+            
     end
 
     if algorithm == 1
-        if oformat == 'hodlr'
+        if strcmp(oformat, 'hodlr')
             C = inverse_hodlr(obj);
         else
             C = inverse_dense(obj);
         end
     else
-        if oformat == 'hodlr'
+        if strcmp(oformat, 'hodlr')
             C = inverse_nonrecursive_hodlr(obj);
         else
             C = inverse_nonrecursive_dense(obj);

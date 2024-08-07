@@ -47,7 +47,7 @@ The project ``mhodlr`` is maintained by the following members:
 |           | utilizing mixed-precision arithmetic.                                                                            |
 +-----------+------------------------------------------------------------------------------------------------------------------+
 
-Anyone who would like to join maintenance team, please contact carson\@karlin.mff.cuni.cz.
+Anyone who has questions or would like to join maintenance team, please contact carson\@karlin.mff.cuni.cz.
 
 The project inEXASCALE focus on linking the analysis of individual sources of inaccuracy when using algorithms for numerical computation, it aims to change the way people think about designing and analyzing algorithms in the exascale era. 
 

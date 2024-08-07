@@ -182,13 +182,6 @@ The LU factorization is performed by the rountine ``routine``
 
 Same to the ``hdot``, the last parameter are used to specify whether or not the output are of hodlr format.
 
-The output:
-
-.. code:: 
-
-   1.4124e-12
-
-   1.3376e-12
 
 
 .. admonition:: Note

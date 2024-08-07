@@ -141,3 +141,7 @@ disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))
 
 R = hchol(hA, 'dense'); % return a 
 norm(R'*R - A, 'fro')
+
+
+
+

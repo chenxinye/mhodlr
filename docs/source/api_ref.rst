@@ -229,7 +229,7 @@ amphodlr.m
 
 
 
-Computing rountines
+Compute rountines
 -----------------------------
 
 hadd.m

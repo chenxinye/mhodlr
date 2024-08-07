@@ -66,8 +66,8 @@ Similarly, for mixed precision operations, each level of the computation will fo
 ```matlab
 mphA = mphodlr(u_chain, A, 3, 2, 'svd');
 
-mp_C_appr1 = mphdot(mphA, A, 'dense'); % output array format
-mp_C_appr2 = mphdot(mphA, mphA); % output HODLR format
+mp_C_appr1 = mphdot(mphA, A, u1, 'dense'); % use precision u1 to simiulate product, and output array format
+mp_C_appr2 = mphdot(mphA, mphA, u2); % use precision u2 to simiulate product, and output HODLR format
 
 norm(mp_C_appr1 - C_true,2)
 norm(recover(mp_C_appr2) - C_true,2) 

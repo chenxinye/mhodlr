@@ -86,7 +86,12 @@ Note that one should ensure the two inputs are same structure (e.g., same depth)
 Matrix product
 ------------------------------------------------
 
-Matrix-vector product and matrix-matrix product share the same rountine, one simply use ``hdot`` to perform comptation, the code example is as below:
+Matrix-vector product and matrix-matrix product share the same rountine, one simply use ``hdot`` for working precision or ``mhdot`` for varying precision to perform comptation.
+
+Working precision
+^^^^^^^^^^^^^^^^^^
+
+The code example for working precision is as below:
 
 .. code:: matlab
 
@@ -117,6 +122,38 @@ Matrix-vector product and matrix-matrix product share the same rountine, one sim
     disp(err); % print error
 
 The third parameter is optional, which indicates whether or not the output is of hodlr format, one can also specify the parameter to `dense`. The holdr format sometimes requires to be receovered for further operation. 
+
+
+
+Multiple precision
+^^^^^^^^^^^^^^^^^^^^
+
+To simulate specific precision for matrix-matrix product or matrix-vector product, the above example can be simply modifed to: 
+
+
+.. code:: matlab
+
+    u = precision('h');
+
+    rng(0);
+    A = rand(100);
+    x = rand(100, 1); % define vector
+    X = rand(100, 80); % define matrix
+
+    % Usual call for full working precision 
+    hA = hodlr(A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
+ 
+    b = mhdot(hA, x, u, 'dense');
+    err = norm(b - A * x, 'fro');
+    disp(err); % print error
+
+    B = mhdot(hA, X, u);
+    err = norm(recover(B) - A * X, 'fro');
+    disp(err); % print error
+
+    B = mhdot(hA, X, u, 'dense');
+    err = norm(B - A * X, 'fro');
+    disp(err); % print error
 
 
 

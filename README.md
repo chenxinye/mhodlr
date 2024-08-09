@@ -8,9 +8,6 @@
 
  <h1 align="center">
   mhodlr: Matrix computations in HODLR representation
-</h1>
-
-<h1 align="center">
  
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-lightblue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![MATLAB](https://github.com/chenxinye/mhodlr/actions/workflows/ci.yml/badge.svg)](https://github.com/chenxinye/mhodlr/actions/workflows/ci.yml)

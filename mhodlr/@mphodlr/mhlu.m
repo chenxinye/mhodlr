@@ -60,7 +60,7 @@ function [L, U] = mhlu(H, prec, varargin)
             U12 = mchop(U12); 
             L21 = mchop(L21); 
 
-            NH = mhrank_update(H.A22, -H.U2 * mchop(L21 * U12), H.V2, vareps);
+            NH = mfusedma(H.A22, -H.U2 * mchop(L21 * U12), H.V2, vareps);
             [L22, U22] = mhlu(NH, prec, 'dense', vareps);  % lu(hadd(H.A22, L21 * U12, '-'));
             
             U12 = mchop(U12 * H.V2);
@@ -93,7 +93,7 @@ function [L, U] = mhlu(H, prec, varargin)
             
             U.U1 = mhtrsl(L.A11, H.U1);  %.L11 * U.U1 * U.V2 = L11 * U12 = A12 = H.U1 * H.V2
             L.V1 = mhtrsu(H.V1, U.A11);  % L.U2 * L.V1 * U11 = L21 * U11 = A21 = H.U2 * H.V1
-            [L.A22, U.A22] = mhlu(mhrank_update(H.A22, -L.U2 * mchop(L.V1 * U.U1), H.V2, vareps), ...
+            [L.A22, U.A22] = mhlu(mfusedma(H.A22, -L.U2 * mchop(L.V1 * U.U1), H.V2, vareps), ...
                 prec, 'hodlr', vareps); 
 
         else

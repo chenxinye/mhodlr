@@ -47,7 +47,7 @@ function [L, U] = hlu(H, varargin)
             U12 = mldivide(L11, H.U1); 
             L21 = mrdivide(H.V1, U11); 
 
-            NH = hrank_update(H.A22, -H.U2 * (L21 * U12), H.V2, vareps);
+            NH = fusedma(H.A22, -H.U2 * (L21 * U12), H.V2, vareps);
             [L22, U22] = hlu(NH, 'dense', vareps);  % lu(hadd(H.A22, L21 * U12, '-'));
             
             U12 = U12 * H.V2;
@@ -80,7 +80,7 @@ function [L, U] = hlu(H, varargin)
             
             U.U1 = htrsl(L.A11, H.U1);  %.L11 * U.U1 * U.V2 = L11 * U12 = A12 = H.U1 * H.V2
             L.V1 = htrsu(H.V1, U.A11);  % L.U2 * L.V1 * U11 = L21 * U11 = A21 = H.U2 * H.V1
-            [L.A22, U.A22] = hlu(hrank_update(H.A22, -L.U2 * (L.V1 * U.U1), H.V2, vareps), vareps); 
+            [L.A22, U.A22] = hlu(fusedma(H.A22, -L.U2 * (L.V1 * U.U1), H.V2, vareps), vareps); 
 
         else
             [L.D, U.D] = lu(H.D);

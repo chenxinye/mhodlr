@@ -138,10 +138,21 @@ R = hchol(hA); % return a block upper triangular HODLR matrix
 
 disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))
 
-
 R = hchol(hA, 'dense'); % return a 
 norm(R'*R - A, 'fro')
 
+% Create precisions for each level; Level 1 use precision u1, level 2 use precision u2, ...
+u1 = precision('q43');
+u2 = precision('q52');
+u3 = precision('b');
+u4 = precision('s');
+u_chain = prec_chain(u1, u2, u3, u4);
 
 
+% Call mixed precision HODLR representation
+amphA = amphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
+amprA = recover(amphA);
+norm(amprA - A,2) % Compute the error
 
+R = mhchol(amphA, u4); % or R = mhchol(hA, u4);
+disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))

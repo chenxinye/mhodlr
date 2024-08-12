@@ -28,7 +28,7 @@ function R = hchol(H, varargin)
             [m, n, m1, m2, n1, n2] = hsize(H);
             R11 = hchol(H.A11, varargin{1});
             R12 = mldivide(R11', H.U1 * H.V2);
-            R22 = hchol(hrank_update(H.A22, -R12', R12, H.vareps), oformat);
+            R22 = hchol(fusedma(H.A22, -R12', R12, H.vareps), oformat);
             
             R = [R11, R12; zeros(m2, n1), R22];
         else
@@ -41,7 +41,7 @@ function R = hchol(H, varargin)
             R.A11 = hchol(H.A11, oformat);
             R12 = htrsl(R.A11.transpose(), H.U1 * H.V2);
             [R.U1, R.V2] = compress_m(R12, H.method, H.vareps);
-            R.A22 = hchol(hrank_update(H.A22, -R12', R12, H.vareps), oformat);
+            R.A22 = hchol(fusedma(H.A22, -R12', R12, H.vareps), oformat);
             R.U2 = zeros(size(R.U2,1),0);
             R.V1 = zeros(0,size(R.V1,2));
         else

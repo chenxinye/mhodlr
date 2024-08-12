@@ -182,8 +182,6 @@ The LU factorization is performed by the rountine ``routine``
 
 Same to the ``hdot``, the last parameter are used to specify whether or not the output are of hodlr format.
 
-
-
 .. admonition:: Note
 
    Note that the factors L and U are block lower and upper triangular matrix. 
@@ -235,6 +233,10 @@ Cholesky factorization
 
 The Cholesky factorization can be used similarly to LU factorization, which is implemented by the method ``hchol``. The following example briefly illustrate the usage of ``hchol``.
 
+
+Working precision
+^^^^^^^^^^^^^^^^^^
+
 .. code:: matlab
 
     rng(0);
@@ -257,3 +259,27 @@ To generate the dense output, simply use:
 
     R = hchol(hA, 'dense'); % return a 
     dusp(norm(R'*R - A, 'fro')); % print error
+
+
+Multiple precision
+^^^^^^^^^^^^^^^^^^^^
+
+The usage of ``mhchol`` is similar, it proceeds by simply adding one additional parameter to determine the user-specific working precision.
+
+.. code:: matlab
+
+    % Create precisions for each level; Level 1 use precision u1, level 2 use precision u2, ...
+    u1 = precision('q43');
+    u2 = precision('q52');
+    u3 = precision('b');
+    u4 = precision('s');
+    u_chain = prec_chain(u1, u2, u3, u4);
+
+
+    % Call mixed precision HODLR representation
+    amphA = amphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
+    amprA = recover(amphA);
+    norm(amprA - A,2) % Compute the error
+
+    R = mhchol(amphA, u4); % or R = mhchol(hA, u4);
+    disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro')); % print error

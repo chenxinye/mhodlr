@@ -1,6 +1,4 @@
 function C = hadd_partial_hodlr(A, B, operator, B_is_dense)
-% A must be hodlr format, while B must be dense format
-
 
     if B_is_dense
         [mB, nB] = size(B);

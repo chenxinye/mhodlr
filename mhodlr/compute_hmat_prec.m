@@ -27,10 +27,5 @@ function VA =  compute_hmat_prec(obj, varargin)
         VA(rowSplit+1:end, colSplit+1:end) = compute_hmat_prec(obj, VA(rowSplit+1:end, colSplit+1:end), level);
         
     end
-
-    % h = heatmap(VA);
-    % h.Colormap = parula;
-    % h.ColorbarVisible = 'off';
-    % h.GridVisible = 'off';
-
+    
 end

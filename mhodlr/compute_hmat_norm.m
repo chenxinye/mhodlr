@@ -25,7 +25,4 @@ function VA = compute_hmat_norm(obj, varargin)
         
     end
 
-    % h = heatmap(VA);
-    % h.GridVisible = 'off';
-
 end

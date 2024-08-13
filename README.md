@@ -30,7 +30,7 @@ Differential equations often result in rank-structured matrices associated with 
 It is widely known that low precision can reduce data communication and be more energy- and storage-efficient. Regarding the IEEE standard for floating point, single precision arithmetic can be twice as fast as double precision on specific hardware and the half-precision arithmetic achieves 4 times speedup over double precision. Using the software mhodlr, one can know what precisions are required for the HODLR matrix construction by evaluating their reconstruction error and computations error by simulating various precisions. This repository is concerned with HODLR matrix construction as well as basic matrix computations with HOLDR matrices, which aims to provide a convenient API for HODLR operations and efficient simulations for mixed-precision and adaptive precision HODLR matrix computing [1]. Our low precision arithmetic is simulated in terms of [4].  
 
 
-Our software mainly contains three components
+Our software mainly contains three modules
 
 |  Class | Description|
 |  ----  | ----  |
@@ -64,9 +64,9 @@ Support routines
 |  Matrix computations | API|
 |  ----  | ----  |
 | Matrix transpose   | [``hodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hodlr.m) [``mphodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m)|
-| Matrix (vector) multiplication | [``hdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hdot.m) [``mphdot``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphdot.m) |
-| LU factorization   | [``hlu(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hlu.m)|
-| Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hchol.m)|
+| Matrix (vector) multiplication | [``hdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hdot.m), [``mphdot``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphdot.m) |
+| LU factorization   | [``hlu(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hlu.m), [``mhlu(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhlu.m)|
+| Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hchol.m), [``mhchol(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhchol.m)|
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsu.m)|
 | Linear solver (Ax = b) |[``lu_solve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/lu_solve.m)|
 

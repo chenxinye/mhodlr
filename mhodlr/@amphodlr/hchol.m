@@ -1,21 +1,21 @@
 function R = hchol(H, varargin)
-    %{
-        Compute Cholesky factorization for symmetric positive-definite HODLR matrix H.
+%{
+    Compute Cholesky factorization for symmetric positive-definite HODLR matrix H.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
     
-        Parameters
-        --------------------
-        H - hodlr
-            Matrix in HODLR format - hodlr class.
-        
-        oformat - str, default='hodlr'
-            The output format, either 'hodlr' or ''dense.
-    
-    
-        Returns
-        --------------------
-        R - double
-            The upper triangular matrix R is computed such that R' * R = H.  
-    %}
+    oformat - str, default='hodlr'
+        The output format, either 'hodlr' or ''dense.
+
+
+    Returns
+    --------------------
+    R - double
+        The upper triangular matrix R is computed such that R' * R = H.  
+%}
     if nargin < 2
         oformat = 'hodlr';
     else

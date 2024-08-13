@@ -1,4 +1,24 @@
-function R = mmhchol(H, prec, varargin)
+function R = mhchol(H, prec, varargin)
+%{
+    Compute Cholesky factorization for symmetric positive-definite HODLR matrix H.
+
+    Parameters
+    --------------------
+    H - hodlr
+        Matrix in HODLR format - hodlr class.
+    
+    prec - precision
+        Precision to simulate the factorization.
+
+    oformat - str, default='hodlr'
+        The output format, either 'hodlr' or ''dense.
+
+
+    Returns
+    --------------------
+    R - double
+        The upper triangular matrix R is computed such that R' * R = H.  
+%}
     if nargin < 3
         oformat = 'hodlr';
     else

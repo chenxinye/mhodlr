@@ -65,7 +65,7 @@ Support routines
 |  ----  | ----  |
 | Matrix transpose   | [``hodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hodlr.m) [``mphodlr(A).transpose()``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m)|
 | Matrix inverse | [``inverse(H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/inverse.m)|
-| Matrix (vector) multiplication | [``hdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hdot.m), [``mphdot``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphdot.m) |
+| Matrix (vector) multiplication | [``hdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hdot.m), [``mphdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphdot.m) |
 | LU factorization   | [``hlu(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hlu.m), [``mhlu(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhlu.m)|
 | Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hchol.m), [``mhchol(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhchol.m)|
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsu.m)|

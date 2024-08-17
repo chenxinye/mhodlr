@@ -14,7 +14,7 @@
 [![View mhodlr on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/170891-mhodlr)
 [![Documentation Status](https://readthedocs.org/projects/mhodlr/badge/?version=latest)](https://mhodlr.readthedocs.io/en/latest/?badge=stable)
 [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=chenxinye/mhodlr&file=mhodlr)
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13335429.svg)](https://doi.org/10.5281/zenodo.13335429)
 
 
 </h1>

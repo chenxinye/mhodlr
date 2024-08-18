@@ -33,7 +33,7 @@ function X = htrsu(B, U, varargin)
             error('Please ensure the second input is sqaure matrix.');
         end
         
-        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr')) | isa(B, 'amphodlr'))
+        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr') | isa(B, 'amphodlr'))
             error('Please ensure the second input is of a HODLR matrix.');
         end
     

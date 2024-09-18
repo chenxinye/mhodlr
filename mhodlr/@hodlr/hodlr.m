@@ -67,52 +67,180 @@ classdef hodlr
 
     methods(Access=public)
         function obj = hodlr(A, varargin)
-            if nargin == 2
-                obj.max_level = varargin{1};
+            if strcmp(class(A), 'char')
+                
+                if strcmp(A, 'eye')
+                    A = eye(varargin{1});
+                    obj.max_level = varargin{2};
+          
+                    if nargin == 4
+                        obj.min_block_size = varargin{3};
+                    end
 
-            elseif nargin == 3
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
+                    obj = build_hodlr_eye(obj, A, obj.level);
 
-            elseif nargin == 4
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
+                elseif strcmp(A, 'ones')
+                    A = ones(varargin{1});
+                    obj.max_level = varargin{2};
 
-            elseif nargin == 5
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
-                obj.vareps = varargin{4};
+                    if nargin == 4
+                        obj.min_block_size = varargin{3};
+                    end
+                    
+                    obj = build_hodlr_ones(obj, A, obj.level);
+                
+                elseif strcmp(A, 'zeros')
+                    A = zeros(varargin{1});
+                    obj.max_level = varargin{2};
+
+                    if nargin == 4
+                        obj.min_block_size = varargin{3};
+                    end
+
+                    obj = build_hodlr_zeros(obj, A, obj.level);
+                end
+                  
+            else
+                if nargin == 2
+                    obj.max_level = varargin{1};
+    
+                elseif nargin == 3
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                
+                elseif nargin == 4
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+    
+                elseif nargin == 5
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                
+                elseif nargin == 6
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                    obj.trun_norm_tp = varargin{5};
+    
+                elseif nargin > 6
+                    disp(['Please enter the correct number or type of' ...
+                        ' parameters.']);
+                end
             
-            elseif nargin == 6
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
-                obj.vareps = varargin{4};
-                obj.trun_norm_tp = varargin{5};
-
-            elseif nargin > 6
-                disp(['Please enter the correct number or type of' ...
-                    ' parameters.']);
+                obj.level = 1;
+                min_size = min(size(A));
+                [~, exponent] = log2(abs(min_size));
+                
+                if exponent < obj.max_level + 1
+                    obj.max_level = exponent - 1;
+                end
+                
+                obj = build_hodlr_mat(obj, A, obj.level);
             end
-            
-            obj.level = 1;
-            min_size = min(size(A));
-            [~, exponent] = log2(abs(min_size));
-            
-            if exponent < obj.max_level + 1
-                obj.max_level = exponent - 1;
-            end
-            obj = build_hodlr_mat(obj, A, obj.level);
+
+
         end
         
+        function obj =  build_hodlr_zeros(obj, A, level)
+            [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = rowSize; 
+            obj.shape(2) = colSize;
+           
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level-1);
+                return;
+            else
+                obj.level = level;
+    
+                level = level + 1;
+                rowSplit = ceil(rowSize / 2);
+                colSplit = ceil(colSize / 2);
+
+                obj.A11 = build_hodlr_zeros(obj, A(1:rowSplit, 1:colSplit), ...
+                    level);
+                obj.A22 = build_hodlr_zeros(obj, A(rowSplit+1:end, colSplit+1:end), ...
+                    level);
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+                obj.U1 = zeros(rowSplit, 1);
+                obj.V2 = zeros(1, colSize-colSplit);
+                obj.U2 = zeros(rowSize-rowSplit, 1);
+                obj.V1 = zeros(1, colSplit);
+            end
+        end
+
+        function obj =  build_hodlr_eye(obj, A, level)
+            [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = rowSize; 
+            obj.shape(2) = colSize;
+            
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level-1);
+                return;
+            else
+                obj.level = level;
+    
+                level = level + 1;
+                rowSplit = ceil(rowSize / 2);
+                colSplit = ceil(colSize / 2);
+
+                obj.A11 = build_hodlr_eye(obj, A(1:rowSplit, 1:colSplit), ...
+                    level);
+                obj.A22 = build_hodlr_eye(obj, A(rowSplit+1:end, colSplit+1:end), ...
+                    level);
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+                obj.U1 = zeros(rowSplit, 1);
+                obj.V2 = zeros(1, colSize-colSplit);
+                obj.U2 = zeros(rowSize-rowSplit, 1);
+                obj.V1 = zeros(1, colSplit);
+            end
+        end
+
+        function obj =  build_hodlr_ones(obj, A, level)
+            [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = rowSize; 
+            obj.shape(2) = colSize;
+           
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level-1);
+                return;
+            else
+                obj.level = level;
+    
+                level = level + 1;
+                rowSplit = ceil(rowSize / 2);
+                colSplit = ceil(colSize / 2);
+
+                obj.A11 = build_hodlr_ones(obj, A(1:rowSplit, 1:colSplit), ...
+                    level);
+                obj.A22 = build_hodlr_ones(obj, A(rowSplit+1:end, colSplit+1:end), ...
+                    level);
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+                obj.U1 = ones(rowSplit, 1);
+                obj.V2 = ones(1, colSize-colSplit);
+                obj.U2 = ones(rowSize-rowSplit, 1);
+                obj.V1 = ones(1, colSplit);
+            end
+        end
+
         function obj =  build_hodlr_mat(obj, A, level)
             [rowSize, colSize] = size(A);
             
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
-
+           
             if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
@@ -132,7 +260,7 @@ classdef hodlr
                 obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
                 [obj.U1, obj.V2] = compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1] = compress(obj, A(rowSplit+1:end, 1:colSplit));
-                
+          
             end
         end
         

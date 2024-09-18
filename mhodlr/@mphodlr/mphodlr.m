@@ -73,49 +73,175 @@ classdef mphodlr
 
     methods(Access=public)
         function obj = mphodlr(precs, A, varargin)
-            obj.prec_settings = precs;
+            if strcmp(class(precs), 'char')
+                if strcmp(precs, 'eye')
+                    A = eye(A);
+                    obj.max_level = varargin{1};
+          
+                    if nargin == 4
+                        obj.min_block_size = varargin{2};
+                    end
 
-            if nargin == 3
-                obj.max_level = varargin{1};
+                    obj = build_hodlr_eye(obj, A, obj.level);
 
-            elseif nargin == 4
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
+                elseif strcmp(precs, 'ones')
+                    A = ones(A);
+                    obj.max_level = varargin{1};
 
-            elseif nargin == 5
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
+                    if nargin == 4
+                        obj.min_block_size = varargin{2};
+                    end
+                    
+                    obj = build_hodlr_ones(obj, A, obj.level);
+                
+                elseif strcmp(precs, 'zeros')
+                    A = zeros(A);
+                    obj.max_level = varargin{1};
 
-            elseif nargin == 6
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
-                obj.vareps = varargin{4};
-            
-            elseif nargin == 7
-                obj.max_level = varargin{1};
-                obj.min_block_size = varargin{2};
-                obj.method = varargin{3};
-                obj.vareps = varargin{4};
-                obj.trun_norm_tp = varargin{5};
+                    if nargin == 4
+                        obj.min_block_size = varargin{2};
+                    end
 
-            elseif nargin > 7
-                disp(['Please enter the correct number or type of' ...
-                    ' parameters.']);
+                    obj = build_hodlr_zeros(obj, A, obj.level);
+                end
+                  
+            else
+                obj.prec_settings = precs;
+
+                if nargin == 3
+                    obj.max_level = varargin{1};
+
+                elseif nargin == 4
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+
+                elseif nargin == 5
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+
+                elseif nargin == 6
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                
+                elseif nargin == 7
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                    obj.trun_norm_tp = varargin{5};
+
+                elseif nargin > 7
+                    disp(['Please enter the correct number or type of' ...
+                        ' parameters.']);
+                end
+                
+                obj.level = 1;
+                min_size = min(size(A));
+                [~, exponent] = log2(abs(min_size));
+                
+                if exponent < obj.max_level + 1
+                    obj.max_level = exponent - 1; % Compute the maximum level the tree can reach
+                end
+                
+                obj.check_exception();
+                obj = build_hodlr_mat(obj, A, obj.level);
             end
-            
-            obj.level = 1;
-            min_size = min(size(A));
-            [~, exponent] = log2(abs(min_size));
-            
-            if exponent < obj.max_level + 1
-                obj.max_level = exponent - 1; % Compute the maximum level the tree can reach
-            end
-            
-            obj.check_exception();
-            obj = build_hodlr_mat(obj, A, obj.level);
         end
+        
+
+        function obj =  build_hodlr_zeros(obj, A, level)
+            [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = rowSize; 
+            obj.shape(2) = colSize;
+           
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level-1);
+                return;
+            else
+                obj.level = level;
+    
+                level = level + 1;
+                rowSplit = ceil(rowSize / 2);
+                colSplit = ceil(colSize / 2);
+
+                obj.A11 = build_hodlr_zeros(obj, A(1:rowSplit, 1:colSplit), ...
+                    level);
+                obj.A22 = build_hodlr_zeros(obj, A(rowSplit+1:end, colSplit+1:end), ...
+                    level);
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+                obj.U1 = zeros(rowSplit, 1);
+                obj.V2 = zeros(1, colSize-colSplit);
+                obj.U2 = zeros(rowSize-rowSplit, 1);
+                obj.V1 = zeros(1, colSplit);
+            end
+        end
+
+        function obj =  build_hodlr_eye(obj, A, level)
+            [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = rowSize; 
+            obj.shape(2) = colSize;
+            
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level-1);
+                return;
+            else
+                obj.level = level;
+    
+                level = level + 1;
+                rowSplit = ceil(rowSize / 2);
+                colSplit = ceil(colSize / 2);
+
+                obj.A11 = build_hodlr_eye(obj, A(1:rowSplit, 1:colSplit), ...
+                    level);
+                obj.A22 = build_hodlr_eye(obj, A(rowSplit+1:end, colSplit+1:end), ...
+                    level);
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+                obj.U1 = zeros(rowSplit, 1);
+                obj.V2 = zeros(1, colSize-colSplit);
+                obj.U2 = zeros(rowSize-rowSplit, 1);
+                obj.V1 = zeros(1, colSplit);
+            end
+        end
+
+        function obj =  build_hodlr_ones(obj, A, level)
+            [rowSize, colSize] = size(A);
+            
+            obj.shape(1) = rowSize; 
+            obj.shape(2) = colSize;
+           
+            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+                obj.D = A;
+                obj.bottom_level = max(obj.bottom_level, level-1);
+                return;
+            else
+                obj.level = level;
+    
+                level = level + 1;
+                rowSplit = ceil(rowSize / 2);
+                colSplit = ceil(colSize / 2);
+
+                obj.A11 = build_hodlr_ones(obj, A(1:rowSplit, 1:colSplit), ...
+                    level);
+                obj.A22 = build_hodlr_ones(obj, A(rowSplit+1:end, colSplit+1:end), ...
+                    level);
+                
+                obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
+                obj.U1 = ones(rowSplit, 1);
+                obj.V2 = ones(1, colSize-colSplit);
+                obj.U2 = ones(rowSize-rowSplit, 1);
+                obj.V1 = ones(1, colSplit);
+            end
+        end
+
         
         function obj =  build_hodlr_mat(obj, A, level)
             [rowSize, colSize] = size(A);

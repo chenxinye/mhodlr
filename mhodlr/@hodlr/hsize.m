@@ -10,8 +10,11 @@ function varargout = hsize(H, varargin)
     oformat - int, default=1
         If input is not the leafnode of the HODLR matrix:
             1: Outputs of varying number [m, n, m1, m2, n1, n2] for hierarchical block matrices.
+                m1 and m2 denote the block rows, n1 and n2 denote the block columns. 
+
             2: Outputs of varying number [m1, m2, n1, n2] for hierarchical block matrices.
-        
+                m1 and m2 denote the block rows, n1 and n2 denote the block columns. 
+
         Otherwise:
             Outputs of varying number [m, n] for hierarchical block matrices.
 

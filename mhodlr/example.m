@@ -138,7 +138,7 @@ R = hchol(hA); % return a block upper triangular HODLR matrix
 
 disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))
 
-R = hchol(hA, 'dense'); % return a 
+R = hchol(hA, 'dense'); % return a upper triangulr matrix
 norm(R'*R - A, 'fro')
 
 % Create precisions for each level; Level 1 use precision u1, level 2 use precision u2, ...
@@ -156,3 +156,43 @@ norm(amprA - A,2) % Compute the error
 
 R = mhchol(amphA, u4); % or R = mhchol(hA, u4);
 disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))
+
+
+
+%%% QR factorization
+rng(0);
+A = rand(500);
+depth = 5;
+min_block_size = 2;
+epsilon = 1e-8;
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+
+[Q, R] = hqr(hA, 'lintner');
+
+disp(norm(hdot(Q.transpose(), Q, 'dense') - eye(500), 'fro'))
+disp(norm(hdot(Q, R, 'dense') - A, 'fro'))
+
+
+
+%%% Generate special matrices
+u1 = precision('d');
+u2 = precision('s');
+u3 = precision('h');
+u4 = precision('b');
+
+u_chain = prec_chain(u1, u2, u3, u4);
+A = hodlr('eye', 100, 10);
+B = mphodlr('eye', 100, 10);
+C = amphodlr('eye', 100, 10);
+
+disp(norm(recover(A) - eye(100), 'fro'))
+disp(norm(recover(B) - eye(100), 'fro'))
+disp(norm(recover(C) - eye(100), 'fro'))
+
+A = hodlr('ones', 100, 10);
+B = mphodlr('ones', 100, 10);
+C = amphodlr('ones', 100, 10);
+
+disp(norm(recover(A) - ones(100), 'fro'))
+disp(norm(recover(B) - ones(100), 'fro'))
+disp(norm(recover(C) - ones(100), 'fro'))

@@ -9,7 +9,8 @@ function X = htrsu(B, U, varargin)
         Matrix in HODLR format - hodlr class.
 
     itype- int
-        `1`: Solve XU = B, U is upper triangular matrix
+        `1`: Solve XU = B, U is upper triangular matrix, 
+              e.g., QR = A
         
         `2` Solve BX = U, B is upper triangular matrix.
 

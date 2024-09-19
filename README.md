@@ -56,7 +56,7 @@ cd mhodlr/mhodlr
 
 Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).
 
-Support routines
+Basic support routines
 ---------------
 
 #### Note these routines work for ``@hodlr``, ``@mphodlr``, and ``@amphodlr`` modules, 

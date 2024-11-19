@@ -3,6 +3,10 @@ function [U, V] = compress_m(A, method, vareps, varargin)
 
     if nargin == 4
         norm_type = varargin{1};
+        issparse = true
+    elseif nargin == 5
+        norm_type = varargin{1};
+        issparse = varargin{2};
     else 
         norm_type = '2';
     end 
@@ -39,6 +43,8 @@ function [U, V] = compress_m(A, method, vareps, varargin)
         V = V(1:rnk,:)*P';
     end
     
-    U = sparse(U);
-    V = sparse(V);
+    if issparse
+        U = sparse(U);
+        V = sparse(V);
+    end
 end

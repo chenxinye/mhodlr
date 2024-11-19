@@ -58,6 +58,7 @@ classdef hodlr
         bottom_level {mustBeInteger} = 0
         vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         min_block_size {mustBeInteger} = 20
+        issparse = true
     end
 
     properties(Access=private)
@@ -125,12 +126,24 @@ classdef hodlr
                     obj.method = varargin{3};
                     obj.vareps = varargin{4};
                     obj.trun_norm_tp = varargin{5};
-    
-                elseif nargin > 6
+
+                elseif nargin == 7
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                    obj.trun_norm_tp = varargin{5};
+                    obj.issparse = varargin{6};
+
+                elseif nargin > 7
                     disp(['Please enter the correct number or type of' ...
                         ' parameters.']);
                 end
             
+                if strcmp(class(A) , 'single')
+                    obj.issparse = false;
+                end
+
                 obj.level = 1;
                 min_size = min(size(A));
                 [~, exponent] = log2(abs(min_size));
@@ -317,7 +330,7 @@ classdef hodlr
 
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp, obj.issparse);
         end
     end
 

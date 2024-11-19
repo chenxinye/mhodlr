@@ -68,6 +68,7 @@ classdef amphodlr
         min_block_size {mustBeInteger} = 20
         vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         prec_settings
+        issparse = true
     end
 
     properties(Access=private)
@@ -143,9 +144,21 @@ classdef amphodlr
                     obj.vareps = varargin{4};
                     obj.trun_norm_tp = varargin{5};
 
-                elseif nargin > 7
+                elseif nargin == 8
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                    obj.trun_norm_tp = varargin{5};
+                    obj.issparse = varargin{6};
+
+                elseif nargin > 8
                     disp(['Please enter the correct number or type of' ...
                         ' parameters.']);
+                end
+                
+                if strcmp(class(A) , 'single')
+                    obj.issparse = false;
                 end
 
                 obj.level = 1;
@@ -394,11 +407,11 @@ classdef amphodlr
    
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp, obj.issparse);
         end
 
         function [U, V] = mp_compress(obj, A)
-            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp);
+            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp, obj.issparse);
         end
         
         function [sortu, sortIdx] = sort_by_u(obj, u_chain)

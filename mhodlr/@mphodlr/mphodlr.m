@@ -64,7 +64,7 @@ classdef mphodlr
         bottom_level {mustBeInteger} = 0
         vareps  {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         min_block_size {mustBeInteger} = 20
-        issparse = true
+        issparse = false
     end
 
     properties(Access=private)

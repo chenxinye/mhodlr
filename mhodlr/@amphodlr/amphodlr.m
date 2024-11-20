@@ -68,7 +68,7 @@ classdef amphodlr
         min_block_size {mustBeInteger} = 20
         vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         prec_settings
-        issparse = true
+        issparse = false
     end
 
     properties(Access=private)

@@ -27,7 +27,7 @@ function X = mhtrsl(L, B, varargin)
 
             B21 = mchop(B.U2*B.V1);
             L21 = mchop(L.U2*L.V1);
-            [X.U2, X.V1] = compress_m(mhtrsl(L.A22, B21 - hdot(L21, X.A11, 'dense')), L.method, L.vareps);
+            [X.U2, X.V1] = compress_m(mhtrsl(L.A22, B21 - hdot(L21, X.A11, 'dense')), L.method, L.vareps, obj.issparse);
             X.A22 = mhtrsl(L.A22, hadd(B.A22, L21*X.U1*X.V2, '-'));
             X = hmchop(X);
         else

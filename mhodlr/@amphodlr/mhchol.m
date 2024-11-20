@@ -48,7 +48,7 @@ function R = mhchol(H, prec, varargin)
         if isempty(H.D)
             R.A11 = mhchol(H.A11, prec, oformat);
             R12 = mhtrsl(R.A11.transpose(), mchop(H.U1 * H.V2));
-            [R.U1, R.V2] = compress_m(R12, H.method, H.vareps);
+            [R.U1, R.V2] = compress_m(R12, H.method, H.vareps, obj.issparse);
             R.A22 = mhchol(fusedma(H.A22, -R12', R12, H.vareps), prec, oformat);
             R.U2 = zeros(size(R.U2,1),0);
             R.V1 = zeros(0,size(R.V1,2));

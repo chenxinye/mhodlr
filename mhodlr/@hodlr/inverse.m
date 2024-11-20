@@ -116,9 +116,9 @@ function C = inverse_hodlr(obj)
         
         C.A11  = inverse_hodlr(hadd(obj.A11, hdot_dense(hdot(A12, X22), A21), '-'));
     
-        [C.U1, C.V2] = compress_m(hdot_dense(hdot_dense(C.A11, -A12), X22), obj.method, obj.vareps);
+        [C.U1, C.V2] = compress_m(hdot_dense(hdot_dense(C.A11, -A12), X22), obj.method, obj.vareps, obj.issparse);
         C21 = -hdot_dense(hdot_dense(X22, A21), C.A11);
-        [C.U2, C.V1] = compress_m(C21, obj.method, obj.vareps);
+        [C.U2, C.V1] = compress_m(C21, obj.method, obj.vareps, obj.issparse);
         XX = hdot_dense(C21 * A12, X22);
         C.A22 = hadd(X22, XX, '-');
     else

@@ -3,12 +3,13 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
     
     if nargin == 4
         norm_type = varargin{1};
-        issparse = true
+        issparse = true;
     elseif nargin == 5
         norm_type = varargin{1};
         issparse = varargin{2};
     else 
         norm_type = '2';
+        issparse = true;
     end 
 
     if min(size(A)) == 0

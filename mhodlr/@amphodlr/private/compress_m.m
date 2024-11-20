@@ -2,14 +2,14 @@
 function [U, V] = compress_m(A, method, vareps, varargin)
 
     if nargin == 4
-        norm_type = varargin{1};
-        issparse = true;
+        issparse = varargin{1};
+        norm_type = true;
     elseif nargin == 5
-        norm_type = varargin{1};
-        issparse = varargin{2};
+        issparse = varargin{1};
+        norm_type = varargin{2};
     else 
-        norm_type = '2';
         issparse = true;
+        norm_type = '2';
     end 
 
     if min(size(A)) == 0

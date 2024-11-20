@@ -407,11 +407,11 @@ classdef amphodlr
    
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp, obj.issparse);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.issparse, obj.trun_norm_tp);
         end
 
         function [U, V] = mp_compress(obj, A)
-            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.trun_norm_tp, obj.issparse);
+            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.issparse, obj.trun_norm_tp);
         end
         
         function [sortu, sortIdx] = sort_by_u(obj, u_chain)

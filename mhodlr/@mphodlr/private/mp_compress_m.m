@@ -3,7 +3,7 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
     
     if nargin == 4
         issparse = varargin{1};
-        norm_type = true;
+        norm_type = '2';
     elseif nargin == 5
         issparse = varargin{1};
         norm_type = varargin{2};

@@ -50,7 +50,7 @@ One can fork this repository, and simply download this repository via
 git clone https://github.com/<username>/mhodlr.git
 ```
 
-Then add the destination folder where ``mhodlr`` is installed to MATLAB’s search path. 
+Then add the destination folder where ``mhodlr`` is installed to MATLAB’s search path:
 ```bash
 addpath('mhodlr/mhodlr')
 ```

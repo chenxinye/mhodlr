@@ -17,9 +17,15 @@ Or use the bash command if git is installed:
 .. code:: bash
 
    git clone https://github.com/inEXASCALE/mhodlr.git
-   cd mhodlr/mhodlr
 
-After downloading the package, one can put the code in the corresponding location and perform the computing.
+
+After downloading the package, in Matlab terminal, add enviromental variables like
+
+.. code
+
+   addpath('mhodlr/mhodlr')
+
+Or one can put the code in the corresponding location and perform the computing. 
 
 The alternative way to download is from `FileExchange <https://www.mathworks.com/matlabcentral/fileexchange/170891-mhodlr>`_.
 

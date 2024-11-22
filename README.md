@@ -49,9 +49,10 @@ One can fork this repository, and simply download this repository via
 ```bash
 git clone https://github.com/<username>/mhodlr.git
 ```
-and run the command below:
+
+Then add the destination folder where ``mhodlr`` is installed to MATLAB’s search path. 
 ```bash
-cd mhodlr/mhodlr
+addpath('mhodlr')
 ```
 
 Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).

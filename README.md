@@ -52,7 +52,7 @@ git clone https://github.com/<username>/mhodlr.git
 
 Then add the destination folder where ``mhodlr`` is installed to MATLAB’s search path. 
 ```bash
-addpath('mhodlr')
+addpath('mhodlr/mhodlr')
 ```
 
 Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).

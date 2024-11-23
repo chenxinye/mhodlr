@@ -13,6 +13,7 @@ classdef precision
        's', 'single', 'fp32'   - IEEE single precision,
        'd', 'double', 'fp64'   - IEEE double precision,
        'c', 'custom'           - custom format.
+
       The custom (base 2) format is defined by array (2-element, [t, emax]), 
       where t is the number of bits in the significand
       (including the hidden bit) and emax is the maximum value of the
@@ -81,6 +82,8 @@ classdef precision
         randfunc = @(n) rand(n, 1)
         u {mustBeFinite, mustBeNumeric}
         bits
+        ftp = 'custom'
+        built_in = false
     end
 
     methods
@@ -165,7 +168,7 @@ classdef precision
                     obj.flip = varargin{5};
                     obj.prob = varargin{6};
                     obj.randfunc = varargin{7};
-
+                
                 otherwise
                     obj.t = 0;
                     obj.emax = 0;
@@ -199,6 +202,8 @@ classdef precision
                     [t, emax] = base(varargin{1});
                     obj.t = t;
                     obj.emax = emax;
+                    
+                    obj.ftp = varargin{1};
 
                     if ismember(varargin{1}, {'b','bfloat16'})
                         obj.subnormal = 0;
@@ -210,6 +215,19 @@ classdef precision
 
             obj.u = 2^(1 - obj.t) / 2; 
             obj.bits = obj.t + round(log2((obj.emax + 1)* 2));
+        end
+
+
+        function obj = builtin(obj, varargin)
+            if ~ismember(obj.ftp, {'h','half','fp16','s', 'single','fp32','d','double','fp64'})
+                error("The current floating point types does not support built-in rounding.")
+            end
+
+            if nargin == 1
+                obj.built_in = true;
+            else
+                obj.built_in = varargin{1};
+            end
         end
     end
 end

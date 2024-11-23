@@ -5,82 +5,94 @@ function x = mchop(x)
         precision();
     end
 
-    emin = 1-opt.emax;
-    xmin = 2^emin; 
-    emins = emin + 1 - opt.t; 
-    xmins = 2^emins;
-    xmax = 2^opt.emax * (2-2^(1-opt.t));
+    if opt.built_in
+        switch(opt.ftp)
+            case {'h','half','fp16'}
+                x = half(x);
+            case {'s', 'single','fp32'}
+                x = single(x);
+            case {'d','double','fp64'}
+                x = double(x);
+        end
+        
+    else
+        emin = 1-opt.emax;
+        xmin = 2^emin; 
+        emins = emin + 1 - opt.t; 
+        xmins = 2^emins;
+        xmax = 2^opt.emax * (2-2^(1-opt.t));
 
-    [~, exponent] = log2(abs(x));
-    exponent = exponent - 1;
-    ktemp = (exponent < emin & exponent >= emins);
-    
-    if opt.explim
-        k_sub = find(ktemp);
-        k_norm = find(~ktemp);
-    else 
-        k_sub = [];
-        k_norm = 1:length(ktemp(:));
-    end   
+        [~, exponent] = log2(abs(x));
+        exponent = exponent - 1;
+        ktemp = (exponent < emin & exponent >= emins);
+        
+        if opt.explim
+            k_sub = find(ktemp);
+            k_norm = find(~ktemp);
+        else 
+            k_sub = [];
+            k_norm = 1:length(ktemp(:));
+        end   
 
-    x(k_norm) = pow2(roundit(pow2(x(k_norm), opt.t-1-exponent(k_norm))), exponent(k_norm)-(opt.t-1));
+        x(k_norm) = pow2(roundit(pow2(x(k_norm), opt.t-1-exponent(k_norm))), exponent(k_norm)-(opt.t-1));
 
-    if ~isempty(k_sub)
-        t1 = opt.t - max(emin-exponent(k_sub),0);
-        x(k_sub) = pow2(roundit(pow2(x(k_sub), t1-1-exponent(k_sub))), exponent(k_sub)-(t1-1));
-     end
-
-    if opt.explim
-        switch(opt.round)
-            case {1,6}
-                xboundary = 2^opt.emax * (2-(1/2)*2^(1-opt.t));
-                x(find(x >= xboundary)) = inf;   
-                x(find(x <= -xboundary)) = -inf; 
-
-            case 2
-                x(find(x > xmax)) = inf;
-                x(find(x < -xmax & x ~= -inf)) = -xmax;
-
-            case 3
-                x(find(x > xmax & x ~= inf)) = xmax;
-                x(find(x < -xmax)) = -inf;
-
-            case {4,5}
-                x(find(x > xmax & x ~= inf)) = xmax;
-                x(find(x < -xmax & x ~= -inf)) = -xmax;
-            end
-
-        if opt.subnormal == 0
-            min_rep = xmin;
-        else
-            min_rep = xmins;
+        if ~isempty(k_sub)
+            t1 = opt.t - max(emin-exponent(k_sub),0);
+            x(k_sub) = pow2(roundit(pow2(x(k_sub), t1-1-exponent(k_sub))), exponent(k_sub)-(t1-1));
         end
 
-        k_small = abs(x) < min_rep;
+        if opt.explim
+            switch(opt.round)
+                case {1,6}
+                    xboundary = 2^opt.emax * (2-(1/2)*2^(1-opt.t));
+                    x(find(x >= xboundary)) = inf;   
+                    x(find(x <= -xboundary)) = -inf; 
 
-        switch(opt.round)
-            case 1
-                if opt.subnormal == 0
-                    k_round = k_small & abs(x) >= min_rep/2;
-                else
-                    k_round = k_small & abs(x) > min_rep/2;
+                case 2
+                    x(find(x > xmax)) = inf;
+                    x(find(x < -xmax & x ~= -inf)) = -xmax;
+
+                case 3
+                    x(find(x > xmax & x ~= inf)) = xmax;
+                    x(find(x < -xmax)) = -inf;
+
+                case {4,5}
+                    x(find(x > xmax & x ~= inf)) = xmax;
+                    x(find(x < -xmax & x ~= -inf)) = -xmax;
                 end
 
-                x(k_round) = sign(x(k_round)) * min_rep;
-                x(k_small & ~k_round) = 0;
-            
-            case 2
-                k_round = k_small & x > 0 & x < min_rep;
-                x(k_round) = min_rep;
-                x(k_small & ~k_round) = 0;
-            
-            case 3
-                k_round = k_small & x < 0 & x > -min_rep;
-                x(k_round) = -min_rep;
-                x(k_small & ~k_round) = 0;
+            if opt.subnormal == 0
+                min_rep = xmin;
+            else
+                min_rep = xmins;
+            end
 
-            case {4,5,6}
-                x(k_small) = 0;
+            k_small = abs(x) < min_rep;
+
+            switch(opt.round)
+                case 1
+                    if opt.subnormal == 0
+                        k_round = k_small & abs(x) >= min_rep/2;
+                    else
+                        k_round = k_small & abs(x) > min_rep/2;
+                    end
+
+                    x(k_round) = sign(x(k_round)) * min_rep;
+                    x(k_small & ~k_round) = 0;
+                
+                case 2
+                    k_round = k_small & x > 0 & x < min_rep;
+                    x(k_round) = min_rep;
+                    x(k_small & ~k_round) = 0;
+                
+                case 3
+                    k_round = k_small & x < 0 & x > -min_rep;
+                    x(k_round) = -min_rep;
+                    x(k_small & ~k_round) = 0;
+
+                case {4,5,6}
+                    x(k_small) = 0;
+            end
         end
     end
 end

@@ -10,5 +10,6 @@ function opt = set_prec(prec)
     opt.prob = prec.prob;
     opt.flip = prec.flip;
     opt.randfunc = prec.randfunc;
-    
+    opt.built_in = prec.built_in;
+    opt.ftp = prec.ftp;
 end

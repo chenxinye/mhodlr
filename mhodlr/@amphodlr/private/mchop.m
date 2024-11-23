@@ -1,4 +1,4 @@
-function x = ch(x)
+function x = mchop(x)
     global opt;
 
     if isempty(opt)

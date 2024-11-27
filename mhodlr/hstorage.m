@@ -99,7 +99,7 @@ function y = hstorage(obj, varargin)
             y = (m * n) * bits;
             return;
         else
-            if obj.precIndex(level) ~= 0
+            if obj.precIndex(level) ~= 1
                 bits = obj.prec_settings{obj.precIndex(level)}.bits;
             else 
                 bits = 64;

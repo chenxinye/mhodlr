@@ -146,11 +146,7 @@ classdef hodlr
 
                 obj.level = 1;
                 min_size = min(size(A));
-                [~, exponent] = log2(abs(min_size));
-                
-                if exponent < obj.max_level + 1
-                    obj.max_level = exponent - 1;
-                end
+                obj.max_level = floor(log2(abs(min_size)));
                 
                 obj = build_hodlr_mat(obj, A, obj.level);
             end

@@ -153,11 +153,7 @@ classdef mphodlr
 
                 obj.level = 1;
                 min_size = min(size(A));
-                [~, exponent] = log2(abs(min_size));
-                
-                if exponent < obj.max_level + 1
-                    obj.max_level = exponent - 1; % Compute the maximum level the tree can reach
-                end
+                obj.max_level = floor(log2(abs(min_size)));
                 
                 obj.check_exception();
                 obj = build_hodlr_mat(obj, A, obj.level);

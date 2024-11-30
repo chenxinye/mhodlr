@@ -194,7 +194,7 @@ classdef hodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
             
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 return;
@@ -224,7 +224,7 @@ classdef hodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
            
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 return;
@@ -254,7 +254,7 @@ classdef hodlr
             obj.shape(1) = rowSize; 
             obj.shape(2) = colSize;
            
-            if rowSize <= obj.min_block_size | colSize <= obj.min_block_size | level > obj.max_level
+            if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 return;

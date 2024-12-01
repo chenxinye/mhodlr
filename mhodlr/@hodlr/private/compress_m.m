@@ -36,6 +36,25 @@ function [U, V] = compress_m(A, method, vareps, varargin)
         else
             error("This norm type is not sopported for truncation. Please use `fro` or `2` for norm type specification.")
         end 
+
+    elseif strcmp(method, 'rsvd')
+        [U, S, V] = rsvd(A, rnk, 1)
+        if nargin <= 3 | norm_type == '2'
+            rnk = sum(abs(diag(S)) > S(1,1) * vareps);
+            U = U(:,1:rnk);
+            V = S(1:rnk,1:rnk) * V(:,1:rnk)';
+        elseif norm_type == 'fro'
+            sq_dS = diag(S).^2;
+            normf = sum(sq_dS);
+            cusm = cumsum(sq_dS, "reverse") / normf;
+            in_eq = cusm > vareps^2;
+            rnk = min(sum(in_eq) + 1, size(U, 2));
+            U = U(:,1:rnk);
+            V = S(1:rnk,1:rnk) * V(:,1:rnk)';
+        else
+            error("This norm type is not sopported for truncation. Please use `fro` or `2` for norm type specification.")
+        end 
+
         
     elseif strcmp(method, 'qr')
         [U, V, P] = qr(A);
@@ -49,3 +68,15 @@ function [U, V] = compress_m(A, method, vareps, varargin)
         V = sparse(V);
     end
 end
+
+
+
+function [U, S, V] = rsvd(A, k, p)
+    n = size(A, 2);
+    Omega = randn(n, k+p);
+    [Q,~,~] = qr(A*Omega, "econ");
+    [U,S,V]  = svd(Q'*A);
+    U = Q*U(:,1:k);
+    S = S(1:k,1:k);
+    V = V(:,1:k);
+return

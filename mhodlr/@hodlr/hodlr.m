@@ -57,6 +57,7 @@ classdef hodlr
         max_level {mustBeInteger} = 20
         bottom_level {mustBeInteger} = 0
         vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
+        max_rnk = 999
         min_block_size {mustBeInteger} = 20
         issparse = false
     end
@@ -125,17 +126,26 @@ classdef hodlr
                     obj.min_block_size = varargin{2};
                     obj.method = varargin{3};
                     obj.vareps = varargin{4};
-                    obj.trun_norm_tp = varargin{5};
+                    obj.max_rnk = varargin{5};
 
                 elseif nargin == 7
                     obj.max_level = varargin{1};
                     obj.min_block_size = varargin{2};
                     obj.method = varargin{3};
                     obj.vareps = varargin{4};
-                    obj.trun_norm_tp = varargin{5};
-                    obj.issparse = varargin{6};
+                    obj.max_rnk = varargin{5};
+                    obj.trun_norm_tp = varargin{6};
+                
+                elseif nargin == 8
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                    obj.max_rnk = varargin{5};
+                    obj.trun_norm_tp = varargin{6};
+                    obj.issparse= varargin{7};
 
-                elseif nargin > 7
+                elseif nargin > 8
                     disp(['Please enter the correct number or type of' ...
                         ' parameters.']);
                 end
@@ -149,7 +159,7 @@ classdef hodlr
                 max_level = floor(log2(abs(min_size)));
 
                 if obj.max_level > max_level
-                    obj.max_level = max_level
+                    obj.max_level = max_level;
                 end
                 
                 obj = build_hodlr_mat(obj, A, obj.level);
@@ -330,7 +340,7 @@ classdef hodlr
 
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.vareps, obj.issparse, obj.trun_norm_tp);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
         end
     end
 

@@ -45,7 +45,7 @@ function X = htrsu(B, U, varargin)
                 X.V1 = htrsu(B.V1, U.A11, 1);
 
                 U12 = U.U1*U.V2;
-                [X.U1, X.V2] = compress_m(htrsu(B.U1*B.V2 - hdot(X.A11, U12, 'dense'), U.A22, 1), U.method, U.vareps, U.issparse);
+                [X.U1, X.V2] = compress_m(htrsu(B.U1*B.V2 - hdot(X.A11, U12, 'dense'), U.A22, 1), U.method, U.vareps, U.max_rnk, U.trun_norm_tp, U.issparse);
             
                 X.A22 = htrsu(hadd(B.A22, X.U2*X.V1*U12, '-'), U.A22);
             else

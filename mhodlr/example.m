@@ -1,27 +1,30 @@
 
 rng(0); %fix randomness
-A = rand(500);
+A = rand(50);
 depth = 5;
 min_block_size = 2;
 epsilon = 1e-8;
-hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon, 20); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+
+rA = recover(hA);
+disp(norm(rA - A, 2));
 
 disp(hA);
 disp(hA.A11);
 
 %%% Matrix transpose and inverse
 
-rng(0); %fix randomness
-A = rand(500);
+rng(1); %fix randomness
+A = rand(50);
 depth = 5;
 min_block_size = 2;
 epsilon = 1e-8;
-hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon, 20); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 iA = inverse(hA); 
-disp(norm(hdot(hA, iA, 'dense') - eye(500), 'fro'))
+disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
 
 iA = inverse(hA, 'dense');  % return an the inverse in dense format
-disp(norm(iA * A - eye(500), 'fro'))
+disp(norm(iA * A - eye(50), 'fro'))
 
 disp(norm(hadd(hA.transpose(), A', '-', 'dense'), 'fro'))
 
@@ -128,7 +131,7 @@ disp(err);
 %%% H-Cholesky factorization
 
 rng(0);
-R = rand(100);
+R = rand(80);
 A = R'*R; % Generate symmetric positive definite matrix
 
 % Usual call for full working precision 
@@ -161,7 +164,7 @@ disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))
 
 %%% QR factorization
 rng(0);
-A = rand(500);
+A = rand(100);
 depth = 5;
 min_block_size = 2;
 epsilon = 1e-8;
@@ -169,7 +172,7 @@ hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hod
 
 [Q, R] = hqr(hA, 'lintner');
 
-disp(norm(hdot(Q.transpose(), Q, 'dense') - eye(500), 'fro'))
+disp(norm(hdot(Q.transpose(), Q, 'dense') - eye(100), 'fro'))
 disp(norm(hdot(Q, R, 'dense') - A, 'fro'))
 
 

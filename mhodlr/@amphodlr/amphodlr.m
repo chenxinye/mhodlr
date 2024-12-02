@@ -67,6 +67,7 @@ classdef amphodlr
 
         min_block_size {mustBeInteger} = 20
         vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
+        max_rnk = 999
         prec_settings
         issparse = false
     end
@@ -142,14 +143,23 @@ classdef amphodlr
                     obj.min_block_size = varargin{2};
                     obj.method = varargin{3};
                     obj.vareps = varargin{4};
-                    obj.trun_norm_tp = varargin{5};
+                    obj.max_rnk = varargin{5};
 
                 elseif nargin == 8
                     obj.max_level = varargin{1};
                     obj.min_block_size = varargin{2};
                     obj.method = varargin{3};
                     obj.vareps = varargin{4};
-                    obj.trun_norm_tp = varargin{5};
+                    obj.max_rnk = varargin{5};
+                    obj.trun_norm_tp = varargin{6};
+
+                elseif nargin == 9
+                    obj.max_level = varargin{1};
+                    obj.min_block_size = varargin{2};
+                    obj.method = varargin{3};
+                    obj.vareps = varargin{4};
+                    obj.max_rnk = varargin{5};
+                    obj.trun_norm_tp = varargin{6};
                     obj.issparse = varargin{6};
 
                 elseif nargin > 8
@@ -166,7 +176,7 @@ classdef amphodlr
                 max_level = floor(log2(abs(min_size)));
 
                 if obj.max_level > max_level
-                    obj.max_level = max_level
+                    obj.max_level = max_level;
                 end
 
                 obj.normOrder = zeros(1, obj.max_level+1);
@@ -407,11 +417,11 @@ classdef amphodlr
    
     methods(Access=private)
         function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.vareps, obj.issparse, obj.trun_norm_tp);
+            [U, V] = compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
         end
 
         function [U, V] = mp_compress(obj, A)
-            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.issparse, obj.trun_norm_tp);
+            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
         end
         
         function [sortu, sortIdx] = sort_by_u(obj, u_chain)

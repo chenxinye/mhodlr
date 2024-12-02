@@ -12,7 +12,7 @@ classdef hodlr
         The minimum size for HODLR blocks.
 
     method - str, default='svd'
-        The method to perform compression for off-diagonal blocks.
+        The method to perform compression for off-diagonal blocks. Options: 'rsvd' and 'qr' used for randomized SVD or QR factorization.
 
     vareps - double, default=1.0e-12
         The vareps value used for truncation of low rank approximation.

@@ -16,13 +16,19 @@ classdef amphodlr
         The minimum size for HODLR blocks.
 
     method - str, default='svd'
-        The method to perform compression for off-diagonal blocks.
+        The method to perform compression for off-diagonal blocks. Options: 'rsvd' and 'qr' used for randomized SVD or QR factorization.
 
     vareps - double, default=1.0e-12
         The vareps value used for truncation of low rank approximation.
+    
+    max_rnk - int, default=999
+        The maximum rank of the off-diagonal block used for low rank truncation.
 
     trun_norm_tp - str, default='2'
         Norm type for the the off-diagonal block truncation ``||A - B||_trun_norm_tp <= vareps * ||B||``.
+        
+    issparse - bool, default=false:
+        Whether or not store the generators U and V in sparse format.
     
     Properties
     --------------------

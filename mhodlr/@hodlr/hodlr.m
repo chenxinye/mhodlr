@@ -16,11 +16,16 @@ classdef hodlr
 
     vareps - double, default=1.0e-12
         The vareps value used for truncation of low rank approximation.
+    
+    max_rnk - int, default=999
+        The maximum rank of the off-diagonal block used for low rank truncation.
 
     trun_norm_tp - str, default='2'
         Norm type for the the off-diagonal block truncation ``||A - B||_trun_norm_tp <= vareps * ||B||``.
         
-        
+    issparse - bool, default=false:
+        Whether or not store the generators U and V in sparse format.
+    
     Properties
     --------------------
     U1, V2, U2, V1 - double 

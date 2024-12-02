@@ -16,7 +16,7 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
     else 
         max_rnk = 999;
         norm_type = '2';
-        issparse = true;
+        issparse = false;
     end 
 
     [m, n] = size(A);

@@ -3,9 +3,11 @@ rng(0); %fix randomness
 A = rand(50);
 depth = 5;
 min_block_size = 2;
-epsilon = 1e-8;
-hA = hodlr(A, depth, min_block_size, 'svd', epsilon, 20); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+epsilon = 1e-14;
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
+
+hA = htruncate(hA, 10);
 rA = recover(hA);
 disp(norm(rA - A, 2));
 

@@ -1,8 +1,15 @@
 function H = htruncate(H, rnk)
 %{
-    Function to truncate the off-diagonal blocks of HODLR matrix to rank ``rnk``.      
-
-    rnk: the maximum rank for off-diagonal blocks.
+    Function to truncate the off-diagonal blocks of HODLR matrix to rank ``rnk``.
+    
+    Parameters
+    --------------------
+    
+    H - hodlr, mphodlr, and amphodlr
+        The input of HODLR matrix.
+    
+    rnk - int
+        the maximum rank for off-diagonal blocks.
 %}
     if ~isempty(H.D)
         return

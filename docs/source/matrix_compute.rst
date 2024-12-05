@@ -37,6 +37,15 @@ The transpose of the HODLR matrix can be simply performed by
     disp(norm(hadd(tA, A', '-', 'dense'), 'fro')); % print error
 
 
+
+
+Note that we provide explicit way to truncate HODLR matrix to rank-p HODLR matrix, to do that, one can simply perform 
+
+.. code:: matlab
+
+    hA = htruncate(hA, 3) # return rank-3 HODLR matrix
+
+
 Matrix summation and subtraction
 ------------------------------------------------
 

@@ -6,6 +6,7 @@ min_block_size = 2;
 epsilon = 1e-14;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
+disp([norm(A, 'fro'), hnorm(hA, 'fro')])
 
 hA = htruncate(hA, 10);
 rA = recover(hA);

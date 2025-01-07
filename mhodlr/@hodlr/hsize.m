@@ -23,7 +23,7 @@ function varargout = hsize(H, varargin)
     [m, n, su1, su2, sv1, sv2] - int
         Indicates the size of rows and columns for H, size(H.U1, 1), size(H.U2, 1), size(H.V1, 2), size(H.V2, 2), respectively.
 %}     
-    if ~(isa(H, 'hodlr') | isa(H, 'mphodlr'))
+    if ~(isa(H, 'hodlr') | isa(H, 'mphodlr')  | isa(H, 'amphodlr'))
         error('Please ensure the first input is of a HODLR matrix.');
     end
     

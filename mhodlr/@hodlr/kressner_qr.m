@@ -10,8 +10,6 @@ function [Y, T, A] = kressner_qr(hA)
     %     representation: Q = I-Y*T*Y' with an upper triangular matrix T and a
     %     lower triangular matrix Y.
     %
-    % Currently, only square matrices are supported.
-    %
     % [1] D. Kressner and A. Šusnjara. (2018). Fast QR decomposition of HODLR
     %     matrices. Technical report, September 2018.
 
@@ -29,8 +27,9 @@ function [Y, T, A] = kressner_qr(hA)
     [Y, YBL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A);
 
     if nargout <= 2,
-        [r, c] = cluster(Y);
-        Q = hodlr_minus( hodlr('eye', n, 'cluster', r), Y*T*Y');
+        [r, c] = get_partitions(Y);
+        Q = hdot(hdot(Y, T), Y.transpose())
+        Q = hadd(hodlr('eye', Q.level, Q.min_block_size), Q, '-', 'hodlr')
         Y = Q;
         T = A;
     end
@@ -38,38 +37,37 @@ function [Y, T, A] = kressner_qr(hA)
 end
 
 function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
-
-    m = hsize(hA, 1);
+    """BL, BR, C, nrm_A are dense matrices"""
+    [m, n] = hsize(hA, 1);
     q = size(C, 1);
     
-    if size(BL,1) > 0,
-        [BL,R] = qr(BL,0);
+    if size(BL,1 ) > 0,
+        [BL,R] = qr(BL, 0);
         BR = R*BR;
     end
     
     p = size(BR, 1);
     
-    
     if not isempty(hA.D)
         [Y, T, R] = qrWY([hA.D; BR; C]);
-        YA  = hodlr(Y(1:m,:), 'cluster', m);
+        YA  = hodlr(Y(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
         YBR = Y(m+1:m+p,:);
         YC  = Y(m+p+1:end,:);
-        hA = hodlr(R(1:m,:), 'cluster', m);
-        T = hodlr(T);
+        hA = hodlr(R(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
+        T = hodlr(T, hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
     else
         % Compute QR decomposition of first block column
         [m1, n1] = hsize(hA.A11);
         BC = [BR; C];
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = qr_iter(hA.A11, hA.U2, hA.V1, BC(:,1:n1), nrm_A);
-        SL = [YA11'*hA.U1, YBR1', YC1'];
+        SL = [hdot(YA11.transpose(), hA.U1, 'dense'), YBR1', YC1'];
         SR = [hA.V2, hA.A22'*YBL1, BC(:,n1+1:end)'];
-        [SL, SR] = compress_factors(SL, SR, nrm_A);
+        [SL, SR] = hrank_truncate(SL, SR, nrm_A);
         SL = T1'*SL;
         
         % Update second block column
-        [hA.U1, hA.V2] = compress_factors( [hA.U1, -YA11*SL] , [hA.V2, SR], nrm_A );
-        hA.A22 = hodlr_rank_update(A.A22, YBL1, -SR* ( YBR1 * SL )', nrm_A);
+        [hA.U1, hA.V2] = hrank_truncate( [hA.U1, -YA11*SL] , [hA.V2, SR], nrm_A );
+        hA.A22 = fusedma(A.A22, YBL1, -SR* ( YBR1 * SL )', nrm_A);
         BC(:, n1+1:end) = BC(:, n1+1:end) - (YC1*SL)*SR';
         
         % Compute QR decomposition of second block column
@@ -82,10 +80,10 @@ function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
         YA.A11 = YA11; 
         YA.A22 = YA22; 
         YA.sz = hsize(hA);
-        YA.U21 = YBL1; 
-        YA.V21 = YBR1';
-        YA.U12 = zeros(m1,0); 
-        YA.V12 = zeros(n2,0);
+        YA.U2 = YBL1; 
+        YA.V1 = YBR1';
+        YA.U1 = zeros(m1,0); 
+        YA.V2 = zeros(n2,0);
         
         YBR = [YC1(1:p,:), YC2(1:p,:)];
         YC = [YC1(p+1:end,:), YC2(p+1:end,:)];
@@ -102,7 +100,7 @@ function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
         T.U21 = zeros(n2,0); T.V21 = zeros(n1,0);
         T12L = [YBR1', YC1(1:p,:)', YC1(p+1:end,:)'];
         T12R = [YA22'*YBL1, YBR2', YC2'];
-        [T12L, T12R] = compress_factors(T12L, T12R, 1);
+        [T12L, T12R] = hrank_truncate(T12L, T12R, 1);
         T.U12 = -T1*T12L;
         T.V12 = T2'*T12R;
     end
@@ -112,18 +110,11 @@ function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
 
 
 function [Y, T, A] = qrWY(A)
-    %QRWY Computes QR decomposition in compact WY representation for dense matrix.
-    %
-    % [Y,T,R] = QRWY(A) computes a QR decomposition A = Q*R of a dense matrix
-    %     A where Q is represented in terms of its compact WY representation:
-    %     Q = I - Y*T*Y', with T upper triangular and Y lower triangular.
-    
     [m,n] = size(A);
     if m < n,
         error('Input matrix must have more rows than columns.');
     end
     
-    % NB - hard coded block size. Adjust if needed.
     nb = 10;
     
     if n <= nb,
@@ -189,4 +180,27 @@ function [Y, T, A] = qrWY(A)
         beta = 0;
     end
     
+    end
+
+
+
+    function [p, q] = get_partitions(hA)
+       
+        if ~isempty(hA.D)
+            [m, n] = hsize(hA);
+        else
+            [m1, n1] = get_partitions(hA.A11);
+            [m2, n2] = get_partitions(hA.A22);
+            
+            m = max(length(m1), length(m2));
+            
+            m1 = [ m1, ones(1, m - length(m1)) * m1(end) ];
+            m2 = [ m2, ones(1, m - length(m2)) * m2(end) ];
+            n1 = [ n1, ones(1, m - length(n1)) * n1(end) ];
+            n2 = [ n2, ones(1, m - length(n2)) * n2(end) ];
+            
+            m = [ m1, m2 + m1(end) ];
+            n = [ n1, n2 + n1(end) ];
+        end
+        
     end

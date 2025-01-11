@@ -19,40 +19,43 @@ function [Y, T, A] = kressner_qr(hA)
         error("ValueError, please enter a square matrix. ")
     end
 
-    BL = zeros(0,0); 
+    BL = zeros(0,0);
     BR = zeros(0,n);
     C = zeros(0,n);
     nrm_A = hnorm(hA, 2);
     
     [Y, YBL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A);
 
+    % Y is HODLR matrix 
     if nargout <= 2,
         [r, c] = get_partitions(Y);
         Q = hdot(hdot(Y, T), Y.transpose())
-        Q = hadd(hodlr('eye', Q.level, Q.min_block_size), Q, '-', 'hodlr')
+        Q = sub(hodlr('eye', Q.level, Q.min_block_size), Q)
         Y = Q;
         T = A;
     end
-
 end
 
-function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
-    """BL, BR, C, nrm_A are dense matrices"""
+
+function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
+    """hA is HODLR matrix, BL, BR, C, are dense matrices, nrm_A is a scalar."""
+
+    """Return: T: hodlr"""
     [m, n] = hsize(hA, 1);
     q = size(C, 1);
     
-    if size(BL,1 ) > 0,
+    if size(BL, 1) > 0,
         [BL,R] = qr(BL, 0);
         BR = R*BR;
     end
     
     p = size(BR, 1);
     
-    if not isempty(hA.D)
+    if ~isempty(hA.D)
         [Y, T, R] = qrWY([hA.D; BR; C]);
-        YA  = hodlr(Y(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
-        YBR = Y(m+1:m+p,:);
-        YC  = Y(m+p+1:end,:);
+        YA  = hodlr(Y(1:m, :), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
+        YBR = Y(m+1:m+p, :);
+        YC  = Y(m+p+1:end, :);
         hA = hodlr(R(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
         T = hodlr(T, hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
     else
@@ -60,26 +63,27 @@ function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
         [m1, n1] = hsize(hA.A11);
         BC = [BR; C];
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = qr_iter(hA.A11, hA.U2, hA.V1, BC(:,1:n1), nrm_A);
+        
         SL = [hdot(YA11.transpose(), hA.U1, 'dense'), YBR1', YC1'];
-        SR = [hA.V2, hA.A22'*YBL1, BC(:,n1+1:end)'];
-        [SL, SR] = hrank_truncate(SL, SR, nrm_A);
-        SL = T1'*SL;
+        SR = [hA.V2, hdot(hA.A22.transpose(), YBL1, 'dense'), BC(:,n1+1:end)'];
+        
+        [SL, SR] = hrank_truncate(SL, SR', nrm_A);
+        SL = hdot(T1.transpose(), SL, 'dense');
         
         % Update second block column
-        [hA.U1, hA.V2] = hrank_truncate( [hA.U1, -YA11*SL] , [hA.V2, SR], nrm_A );
-        hA.A22 = fusedma(A.A22, YBL1, -SR* ( YBR1 * SL )', nrm_A);
-        BC(:, n1+1:end) = BC(:, n1+1:end) - (YC1*SL)*SR';
+        [hA.U1, hA.V2] = hrank_truncate( [hA.U1, -hdot(YA11, SL, 'dense')], [hA.V2, SR], nrm_A );
+        hA.A22 = fusedma(hA.A22, YBL1, -SR'* ( YBR1 * SL )', nrm_A);
+        BC(:, n1+1:end) = BC(:, n1+1:end) - (YC1*SL)*SR;
         
         % Compute QR decomposition of second block column
         [m2, n2] = size(hA.A22);
         
-        [YA22, YBL2, YBR2, YC2, T2, hA.A22] = qr_iter(hA.A22, zeros(0,0), zeros(0,n2), BC(:,n1+1:end), nrm_A);
+        [YA22, YBL2, YBR2, YC2, T2, hA.A22] = qr_iter(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A);
         
         % Set Y
         YA = hodlr;
         YA.A11 = YA11; 
         YA.A22 = YA22; 
-        YA.sz = hsize(hA);
         YA.U2 = YBL1; 
         YA.V1 = YBR1';
         YA.U1 = zeros(m1,0); 
@@ -88,21 +92,21 @@ function [YA, BL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A)
         YBR = [YC1(1:p,:), YC2(1:p,:)];
         YC = [YC1(p+1:end,:), YC2(p+1:end,:)];
         
-        % Clean up A
         hA.U2 = zeros(m2,0); 
-        hA.V1 = zeros(n1,0);
+        hA.V1 = zeros(n1,0)';
         
-        % Set T
         T = hodlr; 
-        T.sz = [n1+n2, n1+n2];
-        T.A11 = T1; 
+       
+        T.A11 = T1;
         T.A22 = T2;
-        T.U21 = zeros(n2,0); T.V21 = zeros(n1,0);
+
+        T.U2 = zeros(n2,0); 
+        T.V1 = zeros(n1,0);
         T12L = [YBR1', YC1(1:p,:)', YC1(p+1:end,:)'];
-        T12R = [YA22'*YBL1, YBR2', YC2'];
-        [T12L, T12R] = hrank_truncate(T12L, T12R, 1);
-        T.U12 = -T1*T12L;
-        T.V12 = T2'*T12R;
+        T12R = [hdot(YA22.transpose(), YBL1, 'dense'), YBR2', YC2'];
+        [T12L, T12R] = hrank_truncate(T12L, T12R', 1);
+        T.U1 = -hdot(T1, T12L, 'dense');
+        T.V2 = -hdot(T2.transpose(), T12R', 'dense')';
     end
     
     end

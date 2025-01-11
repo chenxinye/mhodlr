@@ -74,7 +74,10 @@ classdef hodlr
 
     methods(Access=public)
         function obj = hodlr(A, varargin)
-            if strcmp(class(A), 'char')
+            if nargin == 0
+                obj.D = []
+                
+            elseif strcmp(class(A), 'char')
                 
                 if strcmp(A, 'eye')
                     A = eye(varargin{1});

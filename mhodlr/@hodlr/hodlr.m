@@ -75,7 +75,7 @@ classdef hodlr
     methods(Access=public)
         function obj = hodlr(A, varargin)
             if nargin == 0
-                obj.D = []
+                obj.D = [];
                 
             elseif strcmp(class(A), 'char')
                 

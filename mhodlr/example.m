@@ -1,7 +1,7 @@
 
 rng(0); %fix randomness
-A = rand(50);
-depth = 5;
+A = rand(10);
+depth = 99;
 min_block_size = 2;
 epsilon = 1e-14;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default

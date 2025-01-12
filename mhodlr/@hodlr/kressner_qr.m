@@ -24,15 +24,15 @@ function [Y, T, A] = kressner_qr(hA)
     C = zeros(0, n);
     nrm_A = hnorm(hA, 2);
     
-    [Y, YBL, YBR, YC, T, A] = qr_iter(hA, BL, BR, C, nrm_A);
+    [Y, YBL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A);
 
     % Y is HODLR matrix 
-    if nargout <= 2,
+    if nargout <= 2
         [r, c] = get_partitions(Y);
-        Q = hdot(hdot(Y, T), Y.transpose())
-        Q = sub(hodlr('eye', Q.level, Q.min_block_size), Q)
+        Q = hdot(hdot(Y, T), Y.transpose());
+        Q = sub(hodlr('eye', Q.shape(1), Q.level, Q.min_block_size), Q);
         Y = Q;
-        T = A;
+        T = hA;
     end
 end
 
@@ -42,48 +42,54 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
 
     % """Return: T: hodlr"""
     [m, n] = hsize(hA, 1);
-    disp([m, n])
+    
     q = size(C, 1);
     
     if size(BL, 1) > 0
         [BL, R] = qr(BL, 0);
         BR = R*BR;
     end
-
+    % disp(size(BR));
     p = size(BR, 1);
-    
+    % disp([p, m])
     if ~isempty(hA.D)
         [Y, T, R] = qrWY([hA.D; BR; C]);
         YA  = hodlr(Y(1:m, :), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
+        
         YBR = Y(m+1:m+p, :);
         YC  = Y(m+p+1:end, :);
+        
         hA = hodlr(R(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
         T = hodlr(T, hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
     else
         % Compute QR decomposition of first block column
-        [m1, n1] = hsize(hA.A11);
+        [m1, n1] = hsize(hA.A11, 1);
         BC = [BR; C];
-        [YA11, YBL1, YBR1, YC1, T1, hA.A11] = qr_iter(hA.A11, hA.U2, hA.V1, BC(:,1:n1), nrm_A);
+        % disp(size(BC))
+        [YA11, YBL1, YBR1, YC1, T1, hA.A11] = qr_iter(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
         
-        disp(size(hdot(YA11.transpose(), hA.U1, 'dense')))
-        disp(size(YBR1'))
-        disp(size(YC1'))
+        % disp(size(hdot(YA11.transpose(), hA.U1, 'dense')))
+        % disp(size(YBR1'))
+        % disp(size(YC1'))
         SL = [hdot(YA11.transpose(), hA.U1, 'dense'), YBR1', YC1'];
         SR = [hA.V2', hdot(hA.A22.transpose(), YBL1, 'dense'), BC(:,n1+1:end)'];
         
-        [SL, SR] = hrank_truncate(SL, SR', nrm_A);
+        [SL, SR] = hrank_truncate(SL, SR', nrm_A*hA.vareps);
         SR = SR';
+        % disp(size(SR))
+
         SL = hdot(T1.transpose(), SL, 'dense');
         
         % Update second block column
-        [hA.U1, hA.V2] = hrank_truncate( [hA.U1, -hdot(YA11, SL, 'dense')], [hA.V2', SR], nrm_A );
-        hA.A22 = fusedma(hA.A22, YBL1, -SR* ( YBR1 * SL )', nrm_A);
+        [hA.U1, hA.V2] = hrank_truncate( [hA.U1, -hdot(YA11, SL, 'dense')], [hA.V2', SR]', nrm_A*hA.vareps);
+        hA.V2 = hA.V2';
+        hA.A22 = fusedma(hA.A22, YBL1, (-SR* ( YBR1 * SL )')', nrm_A*hA.vareps);
         BC(:, n1+1:end) = BC(:, n1+1:end) - (YC1*SL)*SR';
         
         % Compute QR decomposition of second block column
         [m2, n2] = hsize(hA.A22, 1);
         
-        [YA22, YBL2, YBR2, YC2, T2, hA.A22] = qr_iter(hA.A22, zeros(0,0), zeros(0, n2)', BC(:, n1+1:end), nrm_A);
+        [YA22, YBL2, YBR2, YC2, T2, hA.A22] = qr_iter(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A*hA.vareps);
         
         % Set Y
         YA = hodlr;
@@ -95,12 +101,12 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         YA.V2 = zeros(n2,0)';
         
         YBR = [YC1(1:p,:), YC2(1:p,:)];
-        disp(size(YC1(p+1:end,:)))
-        disp(size(YC2(p+1:end,:)))
-        YC = [YC1(p+1:end,:); YC2(p+1:end,:)]';
+        % disp(size(YC1(p+1:end,:)))
+        % disp(size(YC2(p+1:end,:)))
+        YC = [YC1(p+1:end,:), YC2(p+1:end,:)];
         
-        hA.U2 = zeros(m2,0); 
-        hA.V1 = zeros(n1,0)';
+        hA.U2 = zeros(m2, 0); 
+        hA.V1 = zeros(n1, 0)';
         
         T = hodlr; 
        
@@ -111,7 +117,7 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         T.V1 = zeros(n1, 0)';
         T12L = [YBR1', YC1(1:p,:)', YC1(p+1:end,:)'];
         T12R = [hdot(YA22.transpose(), YBL1, 'dense'), YBR2', YC2'];
-        [T12L, T12R] = hrank_truncate(T12L, T12R', 1);
+        [T12L, T12R] = hrank_truncate(T12L, T12R', hA.vareps);
         T12R = T12R';
         T.U1 = -hdot(T1, T12L, 'dense');
         T.V2 = -hdot(T2.transpose(), T12R, 'dense')';
@@ -196,7 +202,7 @@ function [Y, T, A] = qrWY(A)
 
 
 
-    function [p, q] = get_partitions(hA)
+    function [m, n] = get_partitions(hA)
        
         if ~isempty(hA.D)
             [m, n] = hsize(hA);

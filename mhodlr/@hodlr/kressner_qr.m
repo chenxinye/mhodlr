@@ -2,16 +2,16 @@ function [Y, T, A] = kressner_qr(hA)
     % It is important to note that all operations, except for matrix-vector
     % multiplication, are combined with low-rank truncation, as discussed above, to limit rank growth
     % in the off-diagonal blocks. 
-    % [Q,R] = QR(A) computes a QR decomposition A = Q*R of a HODLR matrix
+    % [Q,R] = kressner_qr(A) computes a QR decomposition A = Q*R of a HODLR matrix
     %     such that Q is a numerically orthogonal HODLR matrix and R is an upper
     %     triangular matrix.
     %
-    % [Y,T,R] = QR(A) returns the factor Q in terms of its compact WY
+    % [Y,T,R] = kressner_qr(A) returns the factor Q in terms of its compact WY
     %     representation: Q = I-Y*T*Y' with an upper triangular matrix T and a
     %     lower triangular matrix Y.
     %
-    % [1] D. Kressner and A. Šusnjara. (2018). Fast QR decomposition of HODLR
-    %     matrices. Technical report, September 2018.
+    % We follow the paper  ``D. Kressner and A. Šusnjara. (2018). Fast QR decomposition of HODLR
+    %     matrices. Technical report, September 2018.``
 
     [m,n] = hsize(hA);
 

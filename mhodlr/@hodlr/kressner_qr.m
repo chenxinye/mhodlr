@@ -24,7 +24,7 @@ function [Y, T, A] = kressner_qr(hA)
     C = zeros(0, n);
     nrm_A = hnorm(hA, 2);
     
-    [Y, YBL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A);
+    [Y, YBL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A);
 
     % Y is HODLR matrix 
     if nargout <= 2
@@ -37,7 +37,7 @@ function [Y, T, A] = kressner_qr(hA)
 end
 
 
-function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
+function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
     % """hA is HODLR matrix, BL, BR, C, are dense matrices, nrm_A is a scalar."""
 
     % """Return: T: hodlr"""
@@ -49,6 +49,7 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         [BL, R] = qr(BL, 0);
         BR = R*BR;
     end
+    
     % disp(size(BR));
     p = size(BR, 1);
     % disp([p, m])
@@ -60,13 +61,13 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         YC  = Y(m+p+1:end, :);
         
         hA = hodlr(R(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
-        T = hodlr(T, hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
+        T = hodlr(T, 0); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
         [m1, n1] = hsize(hA.A11, 1);
         BC = [BR; C];
         % disp(size(BC))
-        [YA11, YBL1, YBR1, YC1, T1, hA.A11] = qr_iter(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
+        [YA11, YBL1, YBR1, YC1, T1, hA.A11] = iter_qr(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
         
         % disp(size(hdot(YA11.transpose(), hA.U1, 'dense')))
         % disp(size(YBR1'))
@@ -82,14 +83,14 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         
         % Update second block column
         [hA.U1, hA.V2] = hrank_truncate( [hA.U1, -hdot(YA11, SL, 'dense')], [hA.V2', SR]', nrm_A*hA.vareps);
-        hA.V2 = hA.V2';
+        
         hA.A22 = fusedma(hA.A22, YBL1, (-SR* ( YBR1 * SL )')', nrm_A*hA.vareps);
         BC(:, n1+1:end) = BC(:, n1+1:end) - (YC1*SL)*SR';
         
         % Compute QR decomposition of second block column
         [m2, n2] = hsize(hA.A22, 1);
         
-        [YA22, YBL2, YBR2, YC2, T2, hA.A22] = qr_iter(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A*hA.vareps);
+        [YA22, YBL2, YBR2, YC2, T2, hA.A22] = iter_qr(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A*hA.vareps);
         
         % Set Y
         YA = hodlr;
@@ -106,7 +107,7 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         YC = [YC1(p+1:end,:), YC2(p+1:end,:)];
         
         hA.U2 = zeros(m2, 0); 
-        hA.V1 = zeros(n1, 0)';
+        hA.V1 = zeros(0, n1);
         
         T = hodlr; 
        
@@ -114,13 +115,15 @@ function [YA, BL, YBR, YC, T, hA] = qr_iter(hA, BL, BR, C, nrm_A)
         T.A22 = T2;
 
         T.U2 = zeros(n2, 0); 
-        T.V1 = zeros(n1, 0)';
+        T.V1 = zeros(0, n1);
         T12L = [YBR1', YC1(1:p,:)', YC1(p+1:end,:)'];
         T12R = [hdot(YA22.transpose(), YBL1, 'dense'), YBR2', YC2'];
         [T12L, T12R] = hrank_truncate(T12L, T12R', hA.vareps);
         T12R = T12R';
+        
         T.U1 = -hdot(T1, T12L, 'dense');
-        T.V2 = -hdot(T2.transpose(), T12R, 'dense')';
+        T.V2 = hdot(T2.transpose(), T12R, 'dense')';
+
     end
     
     end

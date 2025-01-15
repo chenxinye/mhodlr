@@ -1,6 +1,6 @@
 
 rng(0); %fix randomness
-A = rand(10);
+A = rand(20);
 depth = 99;
 min_block_size = 2;
 epsilon = 1e-14;

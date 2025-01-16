@@ -42,6 +42,9 @@ classdef hodlr
     
     max_level - int
         The maximum level of cluster tree after transformation.
+    
+    bottom_level - int
+        The bottom level of cluster tree after transformation.
 
 %}
     properties(Access=public)
@@ -87,7 +90,7 @@ classdef hodlr
                         obj.min_block_size = varargin{3};
                     end
 
-                    obj = build_hodlr_eye(obj, A, obj.level);
+                    obj = build_hodlr_eye(obj, A, 1);
 
                 elseif strcmp(A, 'ones')
                     A = ones(varargin{1});
@@ -97,7 +100,7 @@ classdef hodlr
                         obj.min_block_size = varargin{3};
                     end
                     
-                    obj = build_hodlr_ones(obj, A, obj.level);
+                    obj = build_hodlr_ones(obj, A, 1);
                 
                 elseif strcmp(A, 'zeros')
                     A = zeros(varargin{1});
@@ -107,7 +110,7 @@ classdef hodlr
                         obj.min_block_size = varargin{3};
                     end
 
-                    obj = build_hodlr_zeros(obj, A, obj.level);
+                    obj = build_hodlr_zeros(obj, A, 1);
                 end
                   
             else

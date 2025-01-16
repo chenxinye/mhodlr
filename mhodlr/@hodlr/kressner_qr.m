@@ -24,15 +24,17 @@ function [Y, T, A] = kressner_qr(hA)
     C = zeros(0, n);
     nrm_A = hnorm(hA, 2);
     
-    [Y, YBL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A);
+    [Y, YBL, YBR, YC, T, A] = iter_qr(hA, BL, BR, C, nrm_A);
 
     % Y is HODLR matrix 
     if nargout <= 2
-        [r, c] = get_partitions(Y);
         Q = hdot(hdot(Y, T), Y.transpose());
-        Q = sub(hodlr('eye', Q.shape(1), Q.level, Q.min_block_size), Q);
+
+        I = hodlr('eye', Q.shape(1), A.bottom_level, A.min_block_size);
+        
+        Q = sub(I, Q);
         Y = Q;
-        T = hA;
+        T = A;
     end
 end
 
@@ -55,13 +57,14 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
     % disp([p, m])
     if ~isempty(hA.D)
         [Y, T, R] = qrWY([hA.D; BR; C]);
-        YA  = hodlr(Y(1:m, :), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
-        
+
+        YA  = hodlr(Y(1:m, :), 0, hA.min_block_size);
+
         YBR = Y(m+1:m+p, :);
         YC  = Y(m+p+1:end, :);
         
-        hA = hodlr(R(1:m,:), hA.max_level, hA.min_block_size, hA.method, hA.vareps, hA.max_rnk, hA.trun_norm_tp);
-        T = hodlr(T, 0); % generate matrix of 0 depths
+        hA = hodlr(R(1:m,:), 0, hA.min_block_size);
+        T = hodlr(T, 0, hA.min_block_size); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
         [m1, n1] = hsize(hA.A11, 1);
@@ -94,6 +97,11 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         
         % Set Y
         YA = hodlr;
+        YA.min_block_size = hA.min_block_size;
+
+        YA.max_level = YA.max_level;
+        YA.bottom_level = max(YA11.bottom_level, YA22.bottom_level) + 1;
+
         YA.A11 = YA11; 
         YA.A22 = YA22; 
         YA.U2 = YBL1; 
@@ -101,6 +109,9 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         YA.U1 = zeros(m1,0); 
         YA.V2 = zeros(n2,0)';
         
+        
+
+
         YBR = [YC1(1:p,:), YC2(1:p,:)];
         % disp(size(YC1(p+1:end,:)))
         % disp(size(YC2(p+1:end,:)))
@@ -110,9 +121,12 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         hA.V1 = zeros(0, n1);
         
         T = hodlr; 
-       
+        T.min_block_size = hA.min_block_size;
         T.A11 = T1;
         T.A22 = T2;
+
+        T.max_level = hA.max_level;
+        T.bottom_level = max(T1.bottom_level, T2.bottom_level) + 1;
 
         T.U2 = zeros(n2, 0); 
         T.V1 = zeros(0, n1);

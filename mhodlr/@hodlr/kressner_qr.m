@@ -29,8 +29,7 @@ function [Y, T, A] = kressner_qr(hA)
     % Y is HODLR matrix 
     if nargout <= 2
         Q = hdot(hdot(Y, T), Y.transpose());
-
-        I = hodlr('eye', Q.shape(1), A.bottom_level, A.min_block_size);
+        I = hodlr('eye', m, A.bottom_level, A.min_block_size);
         
         Q = sub(I, Q);
         Y = Q;

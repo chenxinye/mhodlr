@@ -31,10 +31,12 @@ function C = hdot(A, B, varargin)
         end
     end
 
-    C = hdot_dense(A, B); 
     
     if strcmp(oformat, 'hodlr')
-        C = hodlr(C, A.max_level, A.min_block_size, A.method);
+        C = hdot_hodlr(A, B); 
+        % C = hodlr(C, A.max_level, A.min_block_size, A.method);
+    else
+        C = hdot_dense(A, B); 
     end
-    
+
 end

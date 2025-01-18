@@ -74,16 +74,16 @@ For example:
     disp(norm(hadd(hA, B, '-', 'dense') - (A-B), 'fro'));
     disp(norm(hadd(hA, hB, '-', 'dense') - (A-B), 'fro'));
     disp(norm(hadd(A, hB, '-', 'dense') - (A-B), 'fro'));
-    disp(norm(recover(hadd(hA, B, '-', 'hodlr')) - (A-B), 'fro'));
-    disp(norm(recover(hadd(hA, hB, '-', 'hodlr')) - (A-B), 'fro'));
-    disp(norm(recover(hadd(A, hB, '-', 'hodlr')) - (A-B), 'fro'));
+    disp(norm(dense(hadd(hA, B, '-', 'hodlr')) - (A-B), 'fro'));
+    disp(norm(dense(hadd(hA, hB, '-', 'hodlr')) - (A-B), 'fro'));
+    disp(norm(dense(hadd(A, hB, '-', 'hodlr')) - (A-B), 'fro'));
 
     disp(norm(hadd(hA, B, '+', 'dense') - (A+B), 'fro'));  % print error
     disp(norm(hadd(hA, hB, '+', 'dense') - (A+B), 'fro')); % print error
     disp(norm(hadd(A, hB, '+', 'dense') - (A+B), 'fro')); % print error
-    disp(norm(recover(hadd(hA, B, '+', 'hodlr')) - (A+B), 'fro')); % print error
-    disp(norm(recover(hadd(hA, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
-    disp(norm(recover(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
+    disp(norm(dense(hadd(hA, B, '+', 'hodlr')) - (A+B), 'fro')); % print error
+    disp(norm(dense(hadd(hA, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
+    disp(norm(dense(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
 
 
 
@@ -111,11 +111,11 @@ The code example for working precision is as below:
 
     % Usual call for full working precision 
     hA = hodlr(A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
-    rA = recover(hA);
+    rA = dense(hA);
     disp(norm(rA - A, 2)); % print error
 
     b = hdot(hA, x); 
-    err = norm(recover(b) - A * x, 'fro');
+    err = norm(dense(b) - A * x, 'fro');
     disp(err); % print error
  
     b = hdot(hA, x, 'dense');
@@ -123,7 +123,7 @@ The code example for working precision is as below:
     disp(err); % print error
 
     B = hdot(hA, X);
-    err = norm(recover(B) - A * X, 'fro');
+    err = norm(dense(B) - A * X, 'fro');
     disp(err); % print error
 
     B = hdot(hA, X, 'dense');
@@ -157,7 +157,7 @@ To simulate specific precision for matrix-matrix product or matrix-vector produc
     disp(err); % print error
 
     B = mhdot(hA, X, u);
-    err = norm(recover(B) - A * X, 'fro');
+    err = norm(dense(B) - A * X, 'fro');
     disp(err); % print error
 
     B = mhdot(hA, X, u, 'dense');
@@ -287,7 +287,7 @@ The usage of ``mhchol`` is similar, it proceeds by simply adding one additional 
 
     % Call mixed precision HODLR representation
     amphA = amphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
-    amprA = recover(amphA);
+    amprA = dense(amphA);
     norm(amprA - A,2) % Compute the error
 
     R = mhchol(amphA, u4); % or R = mhchol(hA, u4);

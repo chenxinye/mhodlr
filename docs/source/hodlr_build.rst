@@ -39,7 +39,10 @@ The following example illustrates the usage:
    aphA = amphodlr(u_chain, A, depth, min_block_size, 'svd', epsilon); 
    aprA = recover(aphA); % recover from the HODLR format
 
+.. admonition:: Note
 
+   ``recover`` API is to transform the HODLR matrix to dense matrix, which can also be replaced with ``full``.   
+   Similarly, we can also simply use ``hA.todense`` or  ``hA.todense()``. 
 
 Now we plain the HODLR format. First we need print out the variables ``hA``, ``mphA``, and ``aphA``: 
 

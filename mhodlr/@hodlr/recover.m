@@ -23,19 +23,24 @@ function A = recover(H, varargin)
 end
 
 function A = recover_mat(H)
-    if isempty(H.D) 
-        su1 = size(H.U1, 1);
-        su2 = size(H.U2, 1);
-        sv1 = size(H.V1, 2);
-        sv2 = size(H.V2, 2);
-        rowSize = su1 + su2;
-        colSize = sv1 + sv2;
-        A = zeros(rowSize, colSize);
-        A(1:su1, sv1+1:end) = H.U1 * H.V2;
-        A(su1+1:end, 1:sv1) = H.U2 * H.V1;
-        A(1:su1, 1:sv1) = recover_mat(H.A11);
-        A(su1+1:end, sv1+1:end) = recover_mat(H.A22);
+    if ismember('D', properties(H))
+        if isempty(H.D) 
+            su1 = size(H.U1, 1);
+            su2 = size(H.U2, 1);
+            sv1 = size(H.V1, 2);
+            sv2 = size(H.V2, 2);
+            rowSize = su1 + su2;
+            colSize = sv1 + sv2;
+            A = zeros(rowSize, colSize);
+            A(1:su1, sv1+1:end) = H.U1 * H.V2;
+            A(su1+1:end, 1:sv1) = H.U2 * H.V1;
+            A(1:su1, 1:sv1) = recover_mat(H.A11);
+            A(su1+1:end, sv1+1:end) = recover_mat(H.A22);
+        else
+            A = H.D;
+        end
+            
     else
-        A = H.D;
+        A = [];
     end
 end

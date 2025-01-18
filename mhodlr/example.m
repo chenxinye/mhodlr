@@ -61,7 +61,7 @@ disp(norm(recover(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro'))
 %%% Build/Recover/Product
 rng(0);
 A = rand(100);
-x = rand(100, 1); % define vector
+x = rand(100, 2); % define vector
 X = rand(100, 80); % define matrix
 
 % Usual call for full working precision 

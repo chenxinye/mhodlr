@@ -292,3 +292,20 @@ The usage of ``mhchol`` is similar, it proceeds by simply adding one additional 
 
     R = mhchol(amphA, u4); % or R = mhchol(hA, u4);
     disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro')); % print error
+
+
+
+
+Matrix QR factorization
+------------------------------------------------
+
+We provide three implementations for QR factorizations. 
+
+.. code:: matlab
+
+    [Q, R] = hqr(hA, 'lintner');
+    [Q, R] = hqr(hA, 'bebendorf');
+    [Q, R] = hqr(hA, 'kressner');
+    
+
+

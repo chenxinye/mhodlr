@@ -72,7 +72,7 @@ Basic support routines
 | Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hchol.m), [``mhchol(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhchol.m)|
 | QR factorization  | [``hqr(H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hqr.m)|
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsu.m)|
-| Linear solver (Ax = b) |[``lu_solve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/lu_solve.m)|
+| Linear solver (Ax = b) |[``lu_solve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/lu_solve.m) [``qr_solve(method, H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/qr_solve.m)|
 
 Contributions
 ---------------

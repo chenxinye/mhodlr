@@ -35,7 +35,6 @@ function x = lu_solve(varargin)
         b = varargin{2}; 
         [L, U] = hlu(H, 'hodlr');
         y = htrsl(L, b);
-        [m, n] = size(y);
         x = htrsu(U, y, 2);
 
     elseif nargin == 3

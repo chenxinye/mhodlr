@@ -25,7 +25,7 @@ function R = hchol(H, varargin)
 
     if strcmp(oformat, 'dense')
         if isempty(H.D)
-            [m, n, m1, m2, n1, n2] = hsize(H);
+            [m, n, m1, m2, n1, n2] = size_t(H);
             R11 = hchol(H.A11, varargin{1});
             R12 = mldivide(R11', H.U1 * H.V2);
             R22 = hchol(fusedma(H.A22, -R12', R12, H.vareps), oformat);

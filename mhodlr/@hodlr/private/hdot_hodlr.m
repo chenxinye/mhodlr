@@ -37,7 +37,7 @@ function C = hdot_hodlr(A, B)
             [m, n] = size(D);
             C.shape = [m, n];
         else
-            [mA, ~, ~, ~, sv1, ~] = hsize(A, 1);
+            [mA, ~, ~, ~, sv1, ~] = size_t(A, 1);
             
             C = A;
             C.vareps = vareps;
@@ -64,7 +64,7 @@ function C = hdot_hodlr(A, B)
             [m, n] = size(D);
             C.shape = [m, n];
         else
-            [~, nB, su1, ~, ~, ~] = hsize(B, 1);
+            [~, nB, su1, ~, ~, ~] = size_t(B, 1);
             C = B;
             C.vareps = vareps;
             C.A11 = hadd_partial_hodlr(hdot_hodlr(A(1:midA, 1:su1), B.A11), A(1:midA, su1+1:end)*(B.U2*B.V1), '+', true);

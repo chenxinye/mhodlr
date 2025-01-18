@@ -1,4 +1,4 @@
-function varargout = hsize(H, varargin)
+function varargout = size_t(H, varargin)
 %{
     The function is to return the shape of HOLDR matrix.
 

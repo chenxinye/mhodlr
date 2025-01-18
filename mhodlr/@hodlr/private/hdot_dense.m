@@ -1,8 +1,8 @@
 function C = hdot_dense(A, B)
 
     if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
-        [mA, nA] = hsize(A);
-        [mB, nB] = hsize(B);
+        [mA, nA] = size_t(A);
+        [mB, nB] = size_t(B);
         if nA ~= mB
             error('Please enter the inputs with correct dimensions.');
         end
@@ -29,7 +29,7 @@ function C = hdot_dense(A, B)
             
     elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
         if isempty(A.D)
-            [mA, nA, su1, su2, sv1, sv2] = hsize(A);
+            [mA, nA, su1, su2, sv1, sv2] = size_t(A);
             [mB, nB] = size(B);
             
             if nA ~= mB
@@ -50,7 +50,7 @@ function C = hdot_dense(A, B)
 
     elseif ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         if isempty(B.D)
-            [mB, nB, su1, su2, sv1, sv2] = hsize(B);
+            [mB, nB, su1, su2, sv1, sv2] = size_t(B);
             [mA, nA] = size(A);
             
             if nA ~= mB

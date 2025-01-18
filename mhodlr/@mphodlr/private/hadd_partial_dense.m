@@ -4,7 +4,7 @@ function C = hadd_partial_dense(A, B, operator)
     C = zeros(mb, nb);
         
     if isempty(A.D) 
-        [m, n, m1, m2, n1, n2] = hsize(A);
+        [m, n, m1, m2, n1, n2] = size_t(A);
         
         if m ~= mb | n ~= nb
             error('Please enter the inputs with consistent dimensions.');

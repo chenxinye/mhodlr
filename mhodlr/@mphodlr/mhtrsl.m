@@ -38,9 +38,9 @@ function X = mhtrsl(L, B, varargin)
         B = mchop(B);
         % B is dense format 
         if isempty(L.D) % think B is a block matrix
-            m1 = hsize(L, 2);
+            m1 = size_t(L, 2);
             if itype == 1
-                [m, n] = hsize(L, 1);
+                [m, n] = size_t(L, 1);
                 [a, b] = size(B);
                 
                 X11 = mchop(mhtrsl(L.A11, B(1:m1, 1:m1)));

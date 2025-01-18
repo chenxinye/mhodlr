@@ -23,7 +23,7 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
     min_size = min([m, n]);
 
     if max_rnk > min_size
-        max_rnk = min_size
+        max_rnk = min_size;
     end
 
     if min_size == 0

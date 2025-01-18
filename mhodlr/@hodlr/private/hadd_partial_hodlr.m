@@ -6,7 +6,7 @@ function C = hadd_partial_hodlr(A, B, operator, B_is_dense)
         C = A;
 
         if isempty(A.D) 
-            [m, n, m1, ~, n1, ~] = hsize(A);
+            [m, n, m1, ~, n1, ~] = size_t(A);
             
             if mB == 0 | nB == 0 | m == 0 | n == 0
                 C = hodlr;
@@ -37,7 +37,7 @@ function C = hadd_partial_hodlr(A, B, operator, B_is_dense)
         C = B;
         if isempty(B.D) 
             [m, n] = size(A);
-            [mB, nB, m1, ~, n1, ~] = hsize(B);
+            [mB, nB, m1, ~, n1, ~] = size_t(B);
 
             if mB == 0 | nB == 0 | m == 0 | n == 0
                 C = hodlr;

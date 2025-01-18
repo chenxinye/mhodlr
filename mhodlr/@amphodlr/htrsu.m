@@ -55,7 +55,7 @@ function X = htrsu(B, U, varargin)
         else
             % B is dense format 
             if isempty(U.D) % XU = B
-                [~, ~, n1] = hsize(U, 2);
+                [~, ~, n1] = size_t(U, 2);
                 X1 = htrsu(B(:, 1:n1), U.A11);
                 U12 = U.U1*U.V2;
                 X2 = htrsu(B(:, n1+1:end) - X1 * U12, U.A22);
@@ -83,7 +83,7 @@ function X = htrsu(B, U, varargin)
     else
         % BX = U
         if isempty(B.D)
-            m1 = hsize(B, 2);
+            m1 = size_t(B, 2);
             X2 = htrsu(B.A22, U(m1+1:end, :), 2);
             B12 = B.U1*B.V2;
             X1 = htrsu(B.A11, U(1:m1, :) - B12*X2, 2);

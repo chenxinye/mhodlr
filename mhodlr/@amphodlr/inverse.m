@@ -52,7 +52,7 @@ end
 
 function C = inverse_nonrecursive_hodlr(H)
     %% This member method implement inverse of hodlr matrix in nonrecursive manner
-    [m, n] = hsize(H);
+    [m, n] = size_t(H);
 
     if m ~= n
         error('Inverse is only applied to a square HODLR matrix.');
@@ -80,7 +80,7 @@ end
 
 function C = inverse_nonrecursive_dense(H)
     %% This member method implement inverse of hodlr matrix in nonrecursive manner
-    [m, n] = hsize(H);
+    [m, n] = size_t(H);
 
     if m ~= n
         error('Inverse is only applied to a square HODLR matrix.');

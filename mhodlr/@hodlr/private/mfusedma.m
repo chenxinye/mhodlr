@@ -1,7 +1,7 @@
 function H = mfusedma(H, U, V, epsilon)
     % Similar to hadd.m, but result in a HODLR format
     if isempty(H.D)
-        [~, ~, m1, ~, n1, ~] = hsize(H);
+        [~, ~, m1, ~, n1, ~] = size_t(H);
         [H.U1, H.V2] = hrank_truncate([H.U1, U(1:m1, :)], [H.V2', V(:, n1+1:end)']', epsilon);
         [H.U2, H.V1] = hrank_truncate([H.U2, U(m1+1:end, :)], [H.V1', V(:, 1:n1)']', epsilon);
         H.A11 = mfusedma(H.A11, U(1:m1,:), V(:,1:n1), epsilon);

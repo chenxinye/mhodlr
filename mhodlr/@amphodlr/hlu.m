@@ -36,7 +36,7 @@ function [L, U] = hlu(H, varargin)
             vareps = varargin{2};
         end 
         
-        [m, n] = hsize(H);
+        [m, n] = size_t(H);
         
     
         if strcmp(oformat, 'dense')

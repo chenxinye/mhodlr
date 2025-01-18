@@ -13,11 +13,11 @@ function [Y, T, A] = kressner_qr(hA)
     % We follow the paper  ``D. Kressner and A. Šusnjara. (2018). Fast QR decomposition of HODLR
     %     matrices. Technical report, September 2018.``
 
-    [m,n] = hsize(hA);
+    [m,n] = size_t(hA);
 
-    if m~=n
-        error("ValueError, please enter a square matrix. ")
-    end
+    % if m~=n
+    %     error("ValueError, please enter a square matrix. ")
+    % end
 
     BL = zeros(0, 0);
     BR = zeros(0, n);
@@ -42,7 +42,7 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
     % """hA is HODLR matrix, BL, BR, C, are dense matrices, nrm_A is a scalar."""
 
     % """Return: T: hodlr"""
-    [m, n] = hsize(hA, 1);
+    [m, n] = size_t(hA, 1);
     
     q = size(C, 1);
     
@@ -66,7 +66,7 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         T = hodlr(T, 0, hA.min_block_size); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
-        [m1, n1] = hsize(hA.A11, 1);
+        [m1, n1] = size_t(hA.A11, 1);
         BC = [BR; C];
         % disp(size(BC))
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = iter_qr(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
@@ -90,7 +90,7 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         BC(:, n1+1:end) = BC(:, n1+1:end) - (YC1*SL)*SR';
         
         % Compute QR decomposition of second block column
-        [m2, n2] = hsize(hA.A22, 1);
+        [m2, n2] = size_t(hA.A22, 1);
         
         [YA22, YBL2, YBR2, YC2, T2, hA.A22] = iter_qr(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A*hA.vareps);
         

@@ -1,7 +1,7 @@
 function C = mhdot_dense(A, B)
     if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
-        [mA, nA] = hsize(A);
-        [mB, nB] = hsize(B);
+        [mA, nA] = size_t(A);
+        [mB, nB] = size_t(B);
 
         A = hmchop(A);
         B = hmchop(B);
@@ -36,7 +36,7 @@ function C = mhdot_dense(A, B)
         B = mchop(B);
 
         if isempty(A.D)
-            [mA, nA, su1, ~, sv1, ~] = hsize(A);
+            [mA, nA, su1, ~, sv1, ~] = size_t(A);
             [mB, nB] = size(B);
             
             if nA ~= mB
@@ -62,7 +62,7 @@ function C = mhdot_dense(A, B)
         B = hmchop(B);
 
         if isempty(B.D)
-            [mB, nB, su1, ~, sv1, ~] = hsize(B);
+            [mB, nB, su1, ~, sv1, ~] = size_t(B);
             [mA, nA] = size(A);
             
             if nA ~= mB

@@ -25,7 +25,7 @@ function R = hchol(H, varargin)
 
     if strcmp(oformat, 'dense')
         if isempty(H.D)
-            [~, ~, ~, m2, n1, ~] = hsize(H);
+            [~, ~, ~, m2, n1, ~] = size_t(H);
             R11 = hchol(H.A11, oformat);
             R12 = mldivide(R11', H.U1 * H.V2);
             R22 = hchol(fusedma(H.A22, -R12', R12, H.vareps), oformat);
@@ -62,7 +62,7 @@ function R = hchol(H, varargin)
         epsilon = 1.0e-12;
 
     if isempty(H.D)
-        [m, n, m1, m2, n1, n2] = hsize(H);
+        [m, n, m1, m2, n1, n2] = size_t(H);
         R11 = hchol(H.A11);
         R12 = mldivide(R11', H.U1*H.V2);
         R22 = hchol(hadd_partial_hodlr(H.A22, R12' * R12, '-'));

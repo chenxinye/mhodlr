@@ -39,7 +39,7 @@ function [L, U] = mhlu(H, prec, varargin)
         vareps = varargin{2};
     end 
     
-    [m, n] = hsize(H);
+    [m, n] = size_t(H);
     
     if H.level <= 1
         set_prec(prec);

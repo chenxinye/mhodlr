@@ -33,7 +33,7 @@ function R = mhchol(H, prec, varargin)
 
     if strcmp(oformat, 'dense')
         if isempty(H.D)
-            [m, n, m1, m2, n1, n2] = hsize(H);
+            [m, n, m1, m2, n1, n2] = size_t(H);
             R11 = mhchol(H.A11, prec, oformat);
             R12 = mchop(mldivide(R11', mchop(H.U1 * H.V2)));
             R22 = mhchol(mfusedma(H.A22, -R12', R12, H.vareps), prec, oformat);

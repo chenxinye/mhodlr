@@ -15,9 +15,9 @@ function [Y, T, A] = kressner_qr(hA)
 
     [m,n] = hsize(hA);
 
-    if m~=n
-        error("ValueError, please enter a square matrix. ")
-    end
+    % if m~=n
+    %     error("ValueError, please enter a square matrix. ")
+    % end
 
     BL = zeros(0, 0);
     BR = zeros(0, n);
@@ -29,7 +29,7 @@ function [Y, T, A] = kressner_qr(hA)
     % Y is HODLR matrix 
     if nargout <= 2
         Q = hdot(hdot(Y, T), Y.transpose());
-        I = hodlr('eye', m, A.bottom_level, A.min_block_size);
+        I = mphodlr('eye', m, A.bottom_level, A.min_block_size);
         
         Q = sub(I, Q);
         Y = Q;
@@ -57,13 +57,13 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
     if ~isempty(hA.D)
         [Y, T, R] = qrWY([hA.D; BR; C]);
 
-        YA  = hodlr(Y(1:m, :), 0, hA.min_block_size);
+        YA  = mphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
 
         YBR = Y(m+1:m+p, :);
         YC  = Y(m+p+1:end, :);
         
-        hA = hodlr(R(1:m,:), 0, hA.min_block_size);
-        T = hodlr(T, 0, hA.min_block_size); % generate matrix of 0 depths
+        hA = mphodlr(prec_chain(precision('d')), R(1:m,:), 0, hA.min_block_size);
+        T = mphodlr(prec_chain(precision('d')), T, 0, hA.min_block_size); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
         [m1, n1] = hsize(hA.A11, 1);

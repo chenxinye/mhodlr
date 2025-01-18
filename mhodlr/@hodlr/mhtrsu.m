@@ -61,7 +61,7 @@ function X = mhtrsu(B, U, varargin)
                 % B is dense format 
                 B = mchop(B);
                 if isempty(U.D) % XU = B
-                    [~, ~, n1] = hsize(U, 2);
+                    [~, ~, n1] = size_t(U, 2);
                     X1 = mhtrsu(B(:, 1:n1), U.A11);
                     U12 = mchop(U.U1*U.V2);
                     X2 = mhtrsu(B(:, n1+1:end) - X1 * U12, U.A22);
@@ -73,7 +73,7 @@ function X = mhtrsu(B, U, varargin)
         else
             % BX = U
             if isempty(B.D)
-                m1 = hsize(B, 2);
+                m1 = size_t(B, 2);
                 X2 = mhtrsu(B.A22, U(m1+1:end, :), 2);
                 B12 = mchop(B.U1*B.V2);
                 X1 = mhtrsu(B.A11, U(1:m1, :) - B12*X2, 2);

@@ -1,6 +1,6 @@
 function [Q, R] = bebendorf_qr(hA)
     if isempty(hA.D)
-       [m, n, m1, m2, n1, n2]  = hsize(hA);
+       [m, n, m1, m2, n1, n2]  = size_t(hA);
        
        if m ~= n
            error('Only square matrix is supported.')

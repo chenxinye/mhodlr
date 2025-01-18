@@ -32,7 +32,7 @@ function C = hdot(A, B, varargin)
     end
 
     
-    if strcmp(oformat, 'hodlr') & size(B, 2) > 1
+    if strcmp(oformat, 'hodlr') 
         C = hdot_hodlr(A, B); 
         % C = hodlr(C, A.max_level, A.min_block_size, A.method);
     else

@@ -194,47 +194,26 @@ function [Y, T, A] = qrWY(A)
     
     end
     
-    function [v,beta] = house(x)
-    % HOUSE
-    %
-    % Given a vector x in R^n, this computes v in R^n
-    % and beta in R, such that (eye - beta v*v') x = [* 0]';
-    %
-    
-    n = length(x);
-    nrm = norm(x);
-    if nrm ~= 0
-        v1 = x(1)/nrm;
-        v1 = v1 + sign(v1) + ( v1==0 );
-        beta = abs(v1);
-        v1 = v1*nrm;
-        v = [1; x(2:end) / v1];
-    else
-        v = [1; x(2:n)];
-        beta = 0;
-    end
-    
-    end
+function [v,beta] = house(x)
+% HOUSE
+%
+% Given a vector x in R^n, this computes v in R^n
+% and beta in R, such that (eye - beta v*v') x = [* 0]';
+%
+
+n = length(x);
+nrm = norm(x);
+if nrm ~= 0
+    v1 = x(1)/nrm;
+    v1 = v1 + sign(v1) + ( v1==0 );
+    beta = abs(v1);
+    v1 = v1*nrm;
+    v = [1; x(2:end) / v1];
+else
+    v = [1; x(2:n)];
+    beta = 0;
+end
+
+end
 
 
-
-    function [m, n] = get_partitions(hA)
-       
-        if ~isempty(hA.D)
-            [m, n] = hsize(hA);
-        else
-            [m1, n1] = get_partitions(hA.A11);
-            [m2, n2] = get_partitions(hA.A22);
-            
-            m = max(length(m1), length(m2));
-            
-            m1 = [ m1, ones(1, m - length(m1)) * m1(end) ];
-            m2 = [ m2, ones(1, m - length(m2)) * m2(end) ];
-            n1 = [ n1, ones(1, m - length(n1)) * n1(end) ];
-            n2 = [ n2, ones(1, m - length(n2)) * n2(end) ];
-            
-            m = [ m1, m2 + m1(end) ];
-            n = [ n1, n2 + n1(end) ];
-        end
-        
-    end

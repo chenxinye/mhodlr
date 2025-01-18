@@ -81,7 +81,10 @@ classdef mphodlr
 
     methods(Access=public)
         function obj = mphodlr(precs, A, varargin)
-            if strcmp(class(precs), 'char')
+            if nargin == 0
+                obj.D = [];
+                
+            elseif strcmp(class(precs), 'char')
                 if strcmp(precs, 'eye')
                     A = eye(A);
                     obj.max_level = varargin{1};
@@ -90,7 +93,7 @@ classdef mphodlr
                         obj.min_block_size = varargin{2};
                     end
 
-                    obj = build_hodlr_eye(obj, A, obj.level);
+                    obj = build_hodlr_eye(obj, A, 1);
 
                 elseif strcmp(precs, 'ones')
                     A = ones(A);
@@ -100,7 +103,7 @@ classdef mphodlr
                         obj.min_block_size = varargin{2};
                     end
                     
-                    obj = build_hodlr_ones(obj, A, obj.level);
+                    obj = build_hodlr_ones(obj, A, 1);
                 
                 elseif strcmp(precs, 'zeros')
                     A = zeros(A);
@@ -110,7 +113,7 @@ classdef mphodlr
                         obj.min_block_size = varargin{2};
                     end
 
-                    obj = build_hodlr_zeros(obj, A, obj.level);
+                    obj = build_hodlr_zeros(obj, A, 1);
                 end
                   
             else
@@ -324,6 +327,9 @@ classdef mphodlr
         end
 
         
+        function [A] = todense(obj)
+            A = recover(obj);
+        end
 
         function [varargout] = load_params(obj, varargin)
             %% Load parameters of HODLR matrix

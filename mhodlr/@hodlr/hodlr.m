@@ -62,7 +62,7 @@ classdef hodlr
         
         level {mustBeInteger} = 0
         shape {mustBeNumeric} = []
-        max_level {mustBeInteger} = 20
+        max_level = 20
         bottom_level {mustBeInteger} = 0
         vareps {mustBeNonNan, mustBeFinite, mustBeNumeric} = 1.0e-12
         max_rnk = 999
@@ -315,6 +315,10 @@ classdef hodlr
         end
 
         
+        function [A] = todense(obj)
+            A = recover(obj);
+
+        end
 
         function [varargout] = load_params(obj, varargin)
             %% Load parameters of HODLR matrix

@@ -3,6 +3,11 @@ Matrix operations
 
 This section is concerned with the matrix computations with HODLR matrix. 
 
+.. admonition:: Note
+
+    All the following, we recover the HODLR representation to dense matrix via ``dense(.)``, the alternative way is to use ``recover(.)`` or simply use the member function of the HODLR representation via ``H.dense`` or ``H.dense()``. 
+
+
 Matrix transpose and inverse
 ------------------------------------------------
 
@@ -45,6 +50,11 @@ Note that we provide explicit way to truncate HODLR matrix to rank-p HODLR matri
 
     hA = htruncate(hA, 3) # return rank-3 HODLR matrix
 
+
+
+.. admonition:: Note
+
+    The HODLR matrix arithmetic for summation, subtraction, and multiplication can be completed via the shortcut ``add(A, B)``, ``sub(A, B)`` and ``dot(A, B)`` if one just want the HODLR output. If one want a dense output, please following the interfaces as below. 
 
 Matrix summation and subtraction
 ------------------------------------------------

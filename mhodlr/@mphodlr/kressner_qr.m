@@ -2,6 +2,7 @@ function [Y, T, A] = kressner_qr(hA)
     % It is important to note that all operations, except for matrix-vector
     % multiplication, are combined with low-rank truncation, as discussed above, to limit rank growth
     % in the off-diagonal blocks. 
+    % 
     % [Q,R] = kressner_qr(A) computes a QR decomposition A = Q*R of a HODLR matrix
     %     such that Q is a numerically orthogonal HODLR matrix and R is an upper
     %     triangular matrix.
@@ -12,7 +13,8 @@ function [Y, T, A] = kressner_qr(hA)
     %
     % We follow the paper  ``D. Kressner and A. Šusnjara. (2018). Fast QR decomposition of HODLR
     %     matrices. Technical report, September 2018.``
-
+    % Modified from https://github.com/numpi/hm-toolbox/blob/master/%40hodlr/qr.m
+    % Not that our implementation is not limited to square matrix, it can be also extended to rectangular matrix.
     [m,n] = hsize(hA);
 
     % if m~=n
@@ -51,11 +53,9 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         BR = R*BR;
     end
     
-    % disp(size(BR));
     p = size(BR, 1);
-    % disp([p, m])
     if ~isempty(hA.D)
-        [Y, T, R] = qrWY([hA.D; BR; C]);
+        [Y, T, R] = wyqr([hA.D; BR; C]);
 
         YA  = mphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
 
@@ -68,18 +68,13 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         % Compute QR decomposition of first block column
         [m1, n1] = hsize(hA.A11, 1);
         BC = [BR; C];
-        % disp(size(BC))
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = iter_qr(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
         
-        % disp(size(hdot(YA11.transpose(), hA.U1, 'dense')))
-        % disp(size(YBR1'))
-        % disp(size(YC1'))
         SL = [hdot(YA11.transpose(), hA.U1, 'dense'), YBR1', YC1'];
         SR = [hA.V2', hdot(hA.A22.transpose(), YBL1, 'dense'), BC(:,n1+1:end)'];
         
         [SL, SR] = hrank_truncate(SL, SR', nrm_A*hA.vareps);
         SR = SR';
-        % disp(size(SR))
 
         SL = hdot(T1.transpose(), SL, 'dense');
         
@@ -108,12 +103,7 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         YA.U1 = zeros(m1,0); 
         YA.V2 = zeros(n2,0)';
         
-        
-
-
         YBR = [YC1(1:p,:), YC2(1:p,:)];
-        % disp(size(YC1(p+1:end,:)))
-        % disp(size(YC2(p+1:end,:)))
         YC = [YC1(p+1:end,:), YC2(p+1:end,:)];
         
         hA.U2 = zeros(m2, 0); 
@@ -143,12 +133,9 @@ end
 
 
 
-function [Y, T, A] = qrWY(A)
+function [Y, T, A] = wyqr(A)
+    % modified from https://github.com/numpi/hm-toolbox/blob/master/%40hodlr/private/qrWY.m
     [m,n] = size(A);
-    if m < n,
-        error('Input matrix must have more rows than columns.');
-    end
-    
     nb = 10;
     
     if n <= nb,
@@ -177,11 +164,11 @@ function [Y, T, A] = qrWY(A)
         n1 = floor(n/2);
         j1 = n1+1;
         
-        [Y1, T1, A(:, 1:n1)] = qrWY( A(:, 1:n1) );
+        [Y1, T1, A(:, 1:n1)] = wyqr( A(:, 1:n1) );
         x = Y1*T1';
         A(:, j1:n) = A(:, j1:n) - (x*(Y1'*A(1:m, j1:n)));
         
-        [Y2, T2, A(j1:m,j1:n)] = qrWY( A(j1:m,j1:n) );
+        [Y2, T2, A(j1:m,j1:n)] = wyqr( A(j1:m,j1:n) );
         Y2 = [zeros(size(Y1,1)-size(Y2,1),size(Y2,2));Y2];
         
         Y = [Y1,Y2];
@@ -194,13 +181,8 @@ function [Y, T, A] = qrWY(A)
     
 end
     
-function [v,beta] = house(x)
-    % HOUSE
-    %
-    % Given a vector x in R^n, this computes v in R^n
-    % and beta in R, such that (eye - beta v*v') x = [* 0]';
-    %
-    
+function [v,beta] = house(x) 
+    % from https://github.com/numpi/hm-toolbox/blob/master/%40hodlr/private/qrWY.m
     n = length(x);
     nrm = norm(x);
     if nrm ~= 0

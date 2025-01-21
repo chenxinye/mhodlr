@@ -1,6 +1,6 @@
 function [Q, R] = hqr(H, method)
 %{
-    The function is used for the operation of summation or subtraction for HODLR matrix A and B.
+    The function is to perform QR factorization based on HODLR representation.
 
     Parameters
     --------------------

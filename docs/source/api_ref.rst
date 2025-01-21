@@ -570,3 +570,27 @@ hstorage.m
 
     rnk - int
         the maximum rank for off-diagonal blocks.
+
+
+
+
+hqr.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+    The function is to perform QR factorization based on HODLR representation.
+
+    Parameters
+    --------------------
+    A - hodlr
+        Input matrix - hodlr class / dense tyle.
+
+    method - str
+        Options: 'lintner', 'bebendorf' and 'kressner'.
+    
+    Returns
+    --------------------
+    Q, R - hodlr 
+        Return matrix in hodlr class.
+

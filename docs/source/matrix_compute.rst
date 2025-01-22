@@ -11,6 +11,15 @@ This section is concerned with the matrix computations with HODLR matrix.
 Matrix transpose and inverse
 ------------------------------------------------
 
+The transpose of the HODLR matrix can be simply performed by 
+
+.. code:: matlab
+    
+    tA = hA.transpose();
+    disp(norm(hadd(tA, A', '-', 'dense'), 'fro')); % print error
+
+
+
 The inverse of the HODLR matrix is 
 
 .. code:: matlab
@@ -33,22 +42,29 @@ The second parameter will be defaulted as 'hodlr', which determine the output as
     disp(norm(iA * A - eye(500), 'fro')); % print error
     
 
+We provide the optional parameters to specify the output format, namely, `hodlr` and `dense`, and the third parameter is the algorithm to perform.
 
-The transpose of the HODLR matrix can be simply performed by 
+
+Regarding the specified-precision inverse, one can use 
 
 .. code:: matlab
     
-    tA = hA.transpose();
-    disp(norm(hadd(tA, A', '-', 'dense'), 'fro')); % print error
+    u = precision('s');
+    iA = minverse(hA, u); 
+    disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
 
+    iA = minverse(hA, u, 'dense');  % return an the inverse in dense format
+    disp(norm(iA * A - eye(50), 'fro'))
+    
+which is similar to the native inverse, but the second parameter is specifed as the precision, while the other two remain the same. 
 
+.. admonition:: Note
+    
+    Note that we provide explicit way to truncate HODLR matrix to rank-p HODLR matrix, to do that, one can simply perform 
 
+    .. code:: matlab
 
-Note that we provide explicit way to truncate HODLR matrix to rank-p HODLR matrix, to do that, one can simply perform 
-
-.. code:: matlab
-
-    hA = htruncate(hA, 3) # return rank-3 HODLR matrix
+        hA = htruncate(hA, 3) # return rank-3 HODLR matrix
 
 
 

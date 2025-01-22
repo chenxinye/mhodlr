@@ -32,7 +32,7 @@ disp(norm(iA * A - eye(50), 'fro'))
 disp(norm(hadd(hA.transpose(), A', '-', 'dense'), 'fro'))
 
 % mixed precision
-u = precision('b');
+u = precision('s');
 iA = minverse(hA, u); 
 disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
 

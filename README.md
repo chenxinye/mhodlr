@@ -15,8 +15,6 @@
 [![Documentation Status](https://readthedocs.org/projects/mhodlr/badge/?version=latest)](https://mhodlr.readthedocs.io/en/latest/?badge=stable)
 [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=chenxinye/mhodlr&file=mhodlr)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fchenxinye%2Fmhodlr&count_bg=%23C550DA&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://github.com/chenxinye/mhodlr/)
-
-
 </h1>
 
 
@@ -38,7 +36,6 @@ Our software mainly contains three modules
 |  [``@hodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hodlr.m) | Compute HODLR matrix|
 |  [``@mphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m) | Compute HODLR matrix in mixed precision (precisions are defined by the users) |
 |  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
-
 
 
 Setup
@@ -70,7 +67,7 @@ Basic support routines
 | Matrix (vector) multiplication | [``hdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hdot.m), [``mphdot(A/H, H/B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphdot.m) |
 | LU factorization   | [``hlu(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hlu.m), [``mhlu(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhlu.m)|
 | Cholesky factorization  | [``hchol(H/A)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hchol.m), [``mhchol(H/A, prec)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhchol.m)|
-| QR factorization  | [``hqr(method, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hqr.m)|
+| QR factorization  | [``hqr(H, method)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hqr.m) [``mhqr(H, method, precs)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhqr.m)|
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsu.m)|
 | Linear solver (Ax = b) |[``lu_solve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/lu_solve.m) [``qr_solve(method, H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/qr_solve.m)|
 

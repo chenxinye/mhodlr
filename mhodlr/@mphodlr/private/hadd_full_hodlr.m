@@ -22,10 +22,32 @@ function C = hadd_full_hodlr(A, B, operator)
         end
 
     else
+        % if operator == '+'
+        %     C.D = A.D + B.D;
+        %
+        % else
+        %    disp(A)
+        %    disp(B)
+        %    disp(A.D)
+        %    disp(B.D)
+        %    disp("-----")
+        %    C.D = A.D - B.D;
+        % end
+        % >> % QR 
+        % >> rng(0); %fix randomness
+        % >> A = rand(60, 50);
+        % >> depth = 88;
+        % >> min_block_size = 2;
+        % >> epsilon = 1e-14;
+        % >> hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+        % >> 
+        % >> [Q, R] = hqr(hA, 'kressner');
+        % Error using -
+        % Arrays have incompatible sizes for this operation.
         if operator == '+'
-            C.D = A.D + B.D;
+            C.D = A.dense + B.dense;
         else
-            C.D = A.D - B.D;
+            C.D = A.dense - B.dense;
         end
     end 
 end

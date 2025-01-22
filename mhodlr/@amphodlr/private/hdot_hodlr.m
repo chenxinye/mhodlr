@@ -1,10 +1,26 @@
 function C = hdot_hodlr(A, B)
     if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
-        if A.bottom_level ~= B.bottom_level
-            error("Please ensure the two input matrices are of the same cluster structure.")
-        else
-            vareps = max(A.vareps, B.vareps);
-        end
+        % if A.bottom_level ~= B.bottom_level
+        %     error("Please ensure the two input matrices are of the same cluster structure.")
+        % else 
+        %     vareps = max(A.vareps, B.vareps);
+        % end
+
+        % error info: 
+        %>> rng(0); %fix randomness        
+        %>> A = rand(60, 50);
+        %>> depth = 4;
+        %>> min_block_size = 2;
+        %>> epsilon = 1e-14;
+        %>> hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+        %>> 
+        %>> [Q, R] = hqr(hA, 'kressner');
+        %>> hdot(Q, R) % -- cause errors 
+        % disp(A);
+        % disp(B);
+        % disp("-------");
+
+        vareps = max(A.vareps, B.vareps);
 
         if ~isempty(A.D)
             D = A.D * B.D;

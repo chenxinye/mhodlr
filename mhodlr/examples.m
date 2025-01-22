@@ -202,3 +202,17 @@ C = amphodlr('ones', 100, 10);
 disp(norm(recover(A) - ones(100), 'fro'))
 disp(norm(recover(B) - ones(100), 'fro'))
 disp(norm(recover(C) - ones(100), 'fro'))
+
+
+
+% QR 
+rng(0); %fix randomness
+A = rand(60, 50);
+depth = 88;
+min_block_size = 2;
+epsilon = 1e-14;
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+
+[Q, R] = hqr(hA, 'kressner');
+
+disp(norm(hdot(Q,R).dense -A))

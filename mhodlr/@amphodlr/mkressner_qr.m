@@ -32,7 +32,7 @@ function [Y, T, A] = mkressner_qr(hA)
     % Y is HODLR matrix 
     if nargout <= 2
         Q = hdot(hdot(Y, T), Y.transpose());
-        I = mphodlr('eye', m, A.bottom_level, A.min_block_size);
+        I = amphodlr('eye', m, A.bottom_level, A.min_block_size);
         
         Q = sub(I, Q);
         Y = Q;
@@ -62,13 +62,13 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
     if ~isempty(hA.D)
         [Y, T, R] = mwyqr([hA.D; BR; C]);
 
-        YA  = mphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
+        YA  = amphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
 
         YBR = Y(m+1:m+p, :);
         YC  = Y(m+p+1:end, :);
         
-        hA = mphodlr(prec_chain(precision('d')), R(1:m,:), 0, hA.min_block_size);
-        T = mphodlr(prec_chain(precision('d')), T, 0, hA.min_block_size); % generate matrix of 0 depths
+        hA = amphodlr(prec_chain(precision('d')), R(1:m,:), 0, hA.min_block_size);
+        T = amphodlr(prec_chain(precision('d')), T, 0, hA.min_block_size); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
         [m1, n1] = hsize(hA.A11, 1);

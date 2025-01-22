@@ -76,7 +76,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = miter_qr(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
         
         SL = mchop([hdot(YA11.transpose(), hA.U1, 'dense'), YBR1', YC1']);
-        SR = mchop([hA.V2', mchop(hdot(hA.A22.transpose()), YBL1, 'dense'), BC(:,n1+1:end)']);
+        SR = mchop([hA.V2', mchop(hdot(hA.A22.transpose(), YBL1, 'dense')), BC(:,n1+1:end)']);
         
         [SL, SR] = mhrank_truncate(SL, SR', nrm_A*hA.vareps);
         SR = SR';
@@ -110,7 +110,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         YA.V2 = zeros(n2,0)';
         
         YBR = mchop([YC1(1:p,:), YC2(1:p,:)]);
-        YC = mchop([YC1(p+1:end,:), YC2(p+1:end,:)]_;
+        YC = mchop([YC1(p+1:end,:), YC2(p+1:end,:)]);
         
         hA.U2 = zeros(m2, 0); 
         hA.V1 = zeros(0, n1);

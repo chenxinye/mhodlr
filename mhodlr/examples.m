@@ -226,3 +226,7 @@ hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hod
 [Q, R] = hqr(hA, 'kressner');
 
 disp(norm(hdot(Q,R).dense -A))
+
+
+u = precision('s');
+[Q, R] = mhqr(hA, 'kressner', u);

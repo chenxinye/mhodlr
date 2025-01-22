@@ -15,7 +15,7 @@ function [Y, T, A] = mkressner_qr(hA)
     %     matrices. Technical report, September 2018.``
     % Modified from https://github.com/numpi/hm-toolbox/blob/master/%40hodlr/qr.m
     % Not that our implementation is not limited to square matrix, it can be also extended to rectangular matrix.
-    [m,n] = hsize(hA);
+    [m,n] = size_t(hA);
 
     % if m~=n
     %     error("ValueError, please enter a square matrix. ")
@@ -27,7 +27,7 @@ function [Y, T, A] = mkressner_qr(hA)
     C = zeros(0, n);
     nrm_A = hnorm(hA, 2);
     
-    [Y, YBL, YBR, YC, T, A] = iter_qr(hA, BL, BR, C, nrm_A);
+    [Y, YBL, YBR, YC, T, A] = miter_qr(hA, BL, BR, C, nrm_A);
 
     % Y is HODLR matrix 
     if nargout <= 2
@@ -45,7 +45,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
     % """hA is HODLR matrix, BL, BR, C, are dense matrices, nrm_A is a scalar."""
 
     % """Return: T: hodlr"""
-    [m, n] = hsize(hA, 1);
+    [m, n] = size_t(hA, 1);
 
     q = size(C, 1);
     
@@ -71,12 +71,13 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         T = hodlr(T, 0, hA.min_block_size); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
-        [m1, n1] = hsize(hA.A11, 1);
+        [m1, n1] = size_t(hA.A11, 1);
         BC = [BR; C];
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = miter_qr(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
         
         SL = mchop([hdot(YA11.transpose(), hA.U1, 'dense'), YBR1', YC1']);
-        SR = mchop([hA.V2', mchop(hdot(hA.A22.transpose()), YBL1, 'dense'), BC(:,n1+1:end)']);
+
+        SR = mchop([hA.V2', mchop(hdot(hA.A22.transpose(), YBL1, 'dense')), BC(:,n1+1:end)']);
         
         [SL, SR] = mhrank_truncate(SL, SR', nrm_A*hA.vareps);
         SR = SR';
@@ -91,7 +92,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         BC(:, n1+1:end) = mchop(BC(:, n1+1:end) - mchop(mchop(YC1*SL)*SR'));
         
         % Compute QR decomposition of second block column
-        [m2, n2] = hsize(hA.A22, 1);
+        [m2, n2] = size_t(hA.A22, 1);
         
         [YA22, YBL2, YBR2, YC2, T2, hA.A22] = miter_qr(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A*hA.vareps);
         
@@ -110,7 +111,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         YA.V2 = zeros(n2,0)';
         
         YBR = mchop([YC1(1:p,:), YC2(1:p,:)]);
-        YC = mchop([YC1(p+1:end,:), YC2(p+1:end,:)]_;
+        YC = mchop([YC1(p+1:end,:), YC2(p+1:end,:)]);
         
         hA.U2 = zeros(m2, 0); 
         hA.V1 = zeros(0, n1);

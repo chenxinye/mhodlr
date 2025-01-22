@@ -21,7 +21,7 @@ rng(1); %fix randomness
 A = rand(50);
 depth = 5;
 min_block_size = 2;
-epsilon = 1e-8;
+epsilon = 1e-12;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon, 20); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 iA = inverse(hA); 
 disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
@@ -30,6 +30,16 @@ iA = inverse(hA, 'dense');  % return an the inverse in dense format
 disp(norm(iA * A - eye(50), 'fro'))
 
 disp(norm(hadd(hA.transpose(), A', '-', 'dense'), 'fro'))
+
+% mixed precision
+u = precision('b');
+iA = minverse(hA, u); 
+disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
+
+iA = minverse(hA, u, 'dense');  % return an the inverse in dense format
+disp(norm(iA * A - eye(50), 'fro'))
+
+
 
 %%% Matrix summation and subtraction
 rng(0); %fix randomness

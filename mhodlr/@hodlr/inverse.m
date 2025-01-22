@@ -7,11 +7,11 @@ function C = inverse(H, varargin)
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
-    algorithm - int, default=1
-        The algorithm to implement inverse
-    
     oformat - str, default = 'hodlr'
         The format of returns.
+    
+    algorithm - int, default=1
+        The algorithm to implement inverse
     
     Returns
     --------------------
@@ -22,8 +22,8 @@ function C = inverse(H, varargin)
     
     switch nargin
         case 1 
-            algorithm = 1;
             oformat = 'hodlr';
+            algorithm = 1;
 
         case 2
             oformat = varargin{1};
@@ -132,7 +132,7 @@ function C = inverse_dense(H)
         error('Inverse is only applied to a square HODLR matrix.');
     end
     
-    if strcmp(class(H), 'amphodlr') | strcmp(class(H), 'hodlr')
+    if strcmp(class(H), 'amphodlr') | strcmp(class(H), 'hodlr') | strcmp(class(H), 'mphodlr')
         if isempty(H.D)
             X22 = inverse_dense(H.A22);
             A12 = H.U1*H.V2;

@@ -1,4 +1,4 @@
-function [Q, R] = hqr(H, method)
+function [Q, R] = hqr(H, method, prec)
 %{
     The function is to perform QR factorization based on HODLR representation.
 

@@ -87,6 +87,7 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
         U = sparse(U);
         V = sparse(V);
     end
+    
 end
 
 

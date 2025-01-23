@@ -1,4 +1,4 @@
-function C = mhdot(A, B, prec, varargin) 
+function C = mhdot(A, B, varargin) 
 %{
     Compute dot product of A and B.
 
@@ -10,9 +10,6 @@ function C = mhdot(A, B, prec, varargin)
     B - hodlr | double
         Matrix in HODLR format or double array.
 
-    prec - precision
-        Precision for the matrix-vector product.
-
     oformat - str, default='hodlr'
         Output format: 'hodlr' or 'dense'.
     
@@ -23,7 +20,7 @@ function C = mhdot(A, B, prec, varargin)
         The matrix of product. 
 %}
  
-    if nargin == 3 
+    if nargin == 2 
         oformat = 'hodlr';
     else
         if strcmp(varargin{1}, 'hodlr')
@@ -33,7 +30,8 @@ function C = mhdot(A, B, prec, varargin)
         end
     end
     
-    set_prec(prec);
+    global opt;
+    set_prec(opt);
     
     C = mhdot_dense(A, B); 
     

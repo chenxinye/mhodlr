@@ -33,10 +33,11 @@ disp(norm(hadd(hA.transpose(), A', '-', 'dense'), 'fro'))
 
 % mixed precision
 u = precision('s');
-iA = minverse(hA, u); 
+set_prec(u);
+iA = minverse(hA); 
 disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
 
-iA = minverse(hA, u, 'dense');  % return an the inverse in dense format
+iA = minverse(hA, 'dense');  % return an the inverse in dense format
 disp(norm(iA * A - eye(50), 'fro'))
 
 
@@ -119,22 +120,24 @@ u4 = precision('b');
 
 u_chain = prec_chain(u1, u2, u3, u4);
 depth=5;
-eps=1e-5;
 aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
 mphA = mphodlr(u_chain, A, depth, 10, 'svd', eps); 
 
 u = precision('h');
-[L, U] = mhlu(hA, u, 'hodlr');
+set_prec(u);
+[L, U] = mhlu(hA, 'hodlr');
 err = norm(hdot(L, U, 'dense') - A, 'fro');
 disp(err);
 
-u = precision('h');
-[L, U] = mhlu(mphA, u, 'hodlr');
+u = precision('b');
+set_prec(u);
+[L, U] = mhlu(mphA, 'hodlr');
 err = norm(hdot(L, U, 'dense') - A, 'fro');
 disp(err);
 
-u = precision('h');
-[L, U] = mhlu(aphA, u, 'hodlr');
+u = precision('s');
+set_prec(u);
+[L, U] = mhlu(aphA, 'hodlr');
 err = norm(hdot(L, U, 'dense') - A, 'fro');
 disp(err);
 
@@ -170,7 +173,8 @@ amphA = amphodlr(u_chain, A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum 
 amprA = recover(amphA);
 norm(amprA - A,2) % Compute the error
 
-R = mhchol(amphA, u4); % or R = mhchol(hA, u4);
+set_prec(u4);
+R = mhchol(amphA); % or R = mhchol(hA, u4);
 disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro'))
 
 
@@ -229,4 +233,5 @@ disp(norm(hdot(Q,R).dense -A))
 
 
 u = precision('s');
-[Q, R] = mhqr(hA, 'kressner', u);
+set_prec(u);
+[Q, R] = mhqr(hA, 'kressner');

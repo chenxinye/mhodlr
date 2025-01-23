@@ -1,4 +1,4 @@
-function C = minverse(H, prec, varargin)
+function C = minverse(H, varargin)
 %{
     The function is to return the minverse of HOLDR matrix.
     
@@ -7,9 +7,6 @@ function C = minverse(H, prec, varargin)
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
-    prec - precision
-        Precision to simulate the factorization.
-
     oformat - str, default = 'hodlr'
         The format of returns.
         
@@ -23,17 +20,18 @@ function C = minverse(H, prec, varargin)
         Return matrix in hodlr class or dense array.
     
 %}  
-    set_prec(prec);
+    global opt;
+    set_prec(opt);
 
-    if nargin ==  2
+    if nargin ==  1
         oformat = 'hodlr';
         algorithm = 1;
             
-    elseif nargin ==  3
+    elseif nargin ==  2
         oformat = varargin{1};
         algorithm = 1;
             
-    elseif nargin > 3
+    elseif nargin > 2
         oformat = varargin{1};
         algorithm = varargin{2};
     end

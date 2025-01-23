@@ -1,5 +1,5 @@
 
-function [Q, R] = mhqr(H, method, prec)
+function [Q, R] = mhqr(H, method)
 %{
     The function is to perform QR factorization based on HODLR representation.
 
@@ -11,8 +11,6 @@ function [Q, R] = mhqr(H, method, prec)
     method - str
         Options: 'lintner', 'bebendorf' and 'kressner'.
     
-    prec - precision
-        Precision to simulate the factorization.
 
     Returns
     --------------------
@@ -20,7 +18,9 @@ function [Q, R] = mhqr(H, method, prec)
         Return matrix in hodlr class.
 %}
 
-    set_prec(prec);
+    global opt;
+    set_prec(opt);
+
     if strcmp(method, "lintner")
         [Q, R] = mlintner_qr(H);
 

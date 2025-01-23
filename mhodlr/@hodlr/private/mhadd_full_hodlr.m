@@ -5,6 +5,8 @@ function C = mhadd_full_hodlr(A, B, operator)
     [mb, nb] = size_t(B);
     C = A;
 
+    vareps = max(A.vareps, B.vareps);
+    
     if isempty(A.D) & isempty(B.D) 
         if m ~= mb | n ~= nb
             error('Please enter the inputs with consistent dimensions.');

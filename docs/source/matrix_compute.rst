@@ -53,7 +53,7 @@ Regarding the specified-precision inverse, one can use
     iA = minverse(hA, u); 
     disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
 
-    iA = minverse(hA, u, 'dense');  % return an the inverse in dense format
+    iA = minverse(hA, 'dense');  % return an the inverse in dense format
     disp(norm(iA * A - eye(50), 'fro'))
     
 which is similar to the native inverse, but the second parameter is specifed as the precision, while the other two remain the same. 
@@ -178,7 +178,7 @@ To simulate specific precision for matrix-matrix product or matrix-vector produc
     % Usual call for full working precision 
     hA = hodlr(A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
  
-    b = mhdot(hA, x, u, 'dense');
+    b = mhdot(hA, x, 'dense');
     err = norm(b - A * x, 'fro');
     disp(err); % print error
 
@@ -186,7 +186,7 @@ To simulate specific precision for matrix-matrix product or matrix-vector produc
     err = norm(dense(B) - A * X, 'fro');
     disp(err); % print error
 
-    B = mhdot(hA, X, u, 'dense');
+    B = mhdot(hA, X, 'dense');
     err = norm(B - A * X, 'fro');
     disp(err); % print error
 
@@ -230,7 +230,7 @@ The working preicion for LU factorization can be specified by the method ``mhlu`
 .. code:: matlab
 
     u = precision('h');
-    [L, U] = mhlu(hA, u, 'hodlr');
+    [L, U] = mhlu(hA, 'hodlr');
     err = norm(hdot(L, U, 'dense') - A, 'fro');
     disp(err); % print error
 
@@ -251,12 +251,12 @@ One can also load the mixed precision ``mhodlr`` objects via, for example:
     mphA = mphodlr(u_chain, A, depth, 10, 'svd', eps); 
 
     u = precision('h'); % set the working precision to half
-    [L, U] = mhlu(mphA, u, 'hodlr');
+    [L, U] = mhlu(mphA, 'hodlr');
     err = norm(hdot(L, U, 'dense') - A, 'fro');
     disp(err);
 
     u = precision('s'); % set the working precision to single
-    [L, U] = mhlu(aphA, u, 'hodlr');
+    [L, U] = mhlu(aphA, 'hodlr');
     err = norm(hdot(L, U, 'dense') - A, 'fro'); 
     disp(err); % print error
 

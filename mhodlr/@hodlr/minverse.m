@@ -138,12 +138,12 @@ function C = minverse_hodlr(H)
         
         C.A11  = minverse_hodlr(hadd(H.A11, mhdot_dense(hdot(A12, X22), A21), '-'));
     
-        [C.U1, C.V2] = compress_m(mhdot_dense(mhdot_dense(C.A11, -A12), X22), H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
+        [C.U1, C.V2, ~] = compress_m(mhdot_dense(mhdot_dense(C.A11, -A12), X22), H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
         C.U1 = mchop(C.U1);
         C.V2 = mchop(C.V2);
 
         C21 = mchop(-mhdot_dense(mhdot_dense(X22, A21), C.A11));
-        [C.U2, C.V1] = compress_m(C21, H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
+        [C.U2, C.V1, ~] = compress_m(C21, H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
         C.U2 = mchop(C.U2);
         C.V1 = mchop(C.V1);
         XX = mchop(mhdot_dense(mchop(mchop(C21) * mchop(A12)), X22));

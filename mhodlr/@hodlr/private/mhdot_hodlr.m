@@ -37,8 +37,8 @@ function C = mhdot_hodlr(A, B)
             
             A12 = mhdot_dense(A.A11, B.U1*B.V2) + mhdot_dense(A.U1*A.V2, B.A22);
             A21 = mhdot_dense(A.U2*A.V1, B.A11) + mhdot_dense(A.A22, B.U2*B.V1);
-            [C.U1, C.V2] = mp_compress_m(A12, 'svd', vareps);
-            [C.U2, C.V1] = mp_compress_m(A21, 'svd', vareps);
+            [C.U1, C.V2, ~] = mp_compress_m(A12, 'svd', vareps);
+            [C.U2, C.V1, ~] = mp_compress_m(A21, 'svd', vareps);
         end
 
     elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
@@ -62,8 +62,8 @@ function C = mhdot_hodlr(A, B)
 
             A12 = mhdot_dense(A.A11, B(1:sv1, midB+1:end)) + mhdot_dense(A.U1*A.V2, B(sv1+1:end, midB+1:end));
             A21 = mhdot_dense(A.U2*A.V1, B(1:sv1, 1:midB)) + mhdot_dense(A.A22, B(sv1+1:end, 1:midB));
-            [C.U1, C.V2] = mp_compress_m(A12, 'svd', vareps);
-            [C.U2, C.V1] = mp_compress_m(A21, 'svd', vareps);
+            [C.U1, C.V2, ~] = mp_compress_m(A12, 'svd', vareps);
+            [C.U2, C.V1, ~] = mp_compress_m(A21, 'svd', vareps);
             C.shape = [mA, nB];
         end
 
@@ -88,8 +88,8 @@ function C = mhdot_hodlr(A, B)
 
             A12 = mhdot_dense(A(1:midA, 1:su1), B.U1*B.V2) + mhdot_dense(A(1:midA, su1+1:end), B.A22);
             A21 = mhdot_dense(A(midA+1:end, 1:su1), B.A11) + mhdot_dense(A(midA+1:end, su1+1:end), B.U2*B.V1);
-            [C.U1, C.V2] = mp_compress_m(A12, 'svd', vareps);
-            [C.U2, C.V1] = mp_compress_m(A21, 'svd', vareps);
+            [C.U1, C.V2, ~] = mp_compress_m(A12, 'svd', vareps);
+            [C.U2, C.V1, ~] = mp_compress_m(A21, 'svd', vareps);
             C.shape = [mA, nB];
         end
     else

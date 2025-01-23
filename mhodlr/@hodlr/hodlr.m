@@ -295,6 +295,7 @@ classdef hodlr
                 obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
                 [obj.U1, obj.V2, max_rnk1] = compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1, max_rnk2] = compress(obj, A(rowSplit+1:end, 1:colSplit));
+                
                 if obj.level < obj.bottom_level - 1
                     obj.max_rnk = max([max_rnk1, max_rnk2]);
                 else

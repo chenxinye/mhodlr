@@ -23,9 +23,9 @@ function C = hadd_partial_dense(A, B, operator)
 
     else
         if operator == '+'
-            C = A.D + B;
+            C = A.dense + B;
         else
-            C = A.D - B;
+            C = A.dense - B;
         end
     end 
 end

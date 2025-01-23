@@ -284,6 +284,7 @@ classdef mphodlr
             if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
+                obj.max_rnk = min(rowSize, colSize);
                 return;
             else
                 obj.level = level;
@@ -300,13 +301,21 @@ classdef mphodlr
                 obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
                 if obj.level <= length(obj.prec_settings)
                     set_prec(obj.prec_settings{obj.level});
-                    [obj.U1, obj.V2] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
-                    [obj.U2, obj.V1] = mp_compress(obj, A(rowSplit+1:end, 1:colSplit));
+                    [obj.U1, obj.V2, max_rnk1] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
+                    [obj.U2, obj.V1, max_rnk2] = mp_compress(obj, A(rowSplit+1:end, 1:colSplit));
                 else
-                    [obj.U1, obj.V2] = compress(obj, A(1:rowSplit, colSplit+1:end));
-                    [obj.U2, obj.V1] = compress(obj, A(rowSplit+1:end, 1:colSplit));
+                    [obj.U1, obj.V2, max_rnk] = compress(obj, A(1:rowSplit, colSplit+1:end));
+                    [obj.U2, obj.V1, max_rnk] = compress(obj, A(rowSplit+1:end, 1:colSplit));
                 end
+
+                if obj.level < obj.bottom_level - 1
+                    obj.max_rnk = max([max_rnk1, max_rnk2]);
+                else
+                    obj.max_rnk = max([max_rnk1, max_rnk2, obj.A11.max_rnk, obj.A22.max_rnk]);
+                end
+                
             end
+
         end
         
 
@@ -365,12 +374,12 @@ classdef mphodlr
     end
    
     methods(Access=private)
-        function [U, V] = compress(obj, A)
-            [U, V] = compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
+        function [U, V, max_rnk] = compress(obj, A)
+            [U, V, max_rnk] = compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
         end
 
-        function [U, V] = mp_compress(obj, A)
-            [U, V] = mp_compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
+        function [U, V, max_rnk] = mp_compress(obj, A)
+            [U, V, max_rnk] = mp_compress_m(A, obj.method, obj.vareps, obj.max_rnk, obj.trun_norm_tp, obj.issparse);
         end
         
         function check_exception(obj)

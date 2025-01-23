@@ -14,11 +14,19 @@ function C = hadd_full_hodlr(A, B, operator)
         C.A22 = hadd_full_hodlr(A.A22, B.A22, operator);
         
         if operator == '+'
-            [C.U2, C.V1] = A.compress(A.U2 * A.V1 + B.U2 * B.V1);
-            [C.U1, C.V2] = A.compress(A.U1 * A.V2 + B.U1 * B.V2);
+            C.U2 = [A.U2, B.U2];
+            C.V1 = [A.V1; B.V1];
+            C.U1 = [A.U1, B.U1];
+            C.V2 = [A.V2; B.V2];
+            %[C.U2, C.V1] = A.compress(A.U2 * A.V1 + B.U2 * B.V1);
+            %[C.U1, C.V2] = A.compress(A.U1 * A.V2 + B.U1 * B.V2);
         else
-            [C.U2, C.V1] = A.compress(A.U2 * A.V1 - B.U2 * B.V1);
-            [C.U1, C.V2] = A.compress(A.U1 * A.V2 - B.U1 * B.V2);
+            C.U2 = [A.U2, -B.U2];
+            C.V1 = [A.V1; B.V1];
+            C.U1 = [A.U1, -B.U1];
+            C.V2 = [A.V2; B.V2];
+            %[C.U2, C.V1] = A.compress(A.U2 * A.V1 - B.U2 * B.V1);
+            %[C.U1, C.V2] = A.compress(A.U1 * A.V2 - B.U1 * B.V2);
         end
 
     else

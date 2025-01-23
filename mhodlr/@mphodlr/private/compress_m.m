@@ -1,5 +1,5 @@
 %% FOR TEST ONLY
-function [U, V] = compress_m(A, method, vareps, varargin)
+function [U, V, max_rnk] = compress_m(A, method, vareps, varargin)
 
     if nargin == 4
         max_rnk = varargin{1};
@@ -92,6 +92,8 @@ function [U, V] = compress_m(A, method, vareps, varargin)
         U = sparse(U);
         V = sparse(V);
     end
+
+    max_rnk = rnk;
 end
 
 

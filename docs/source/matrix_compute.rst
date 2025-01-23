@@ -182,7 +182,7 @@ To simulate specific precision for matrix-matrix product or matrix-vector produc
     err = norm(b - A * x, 'fro');
     disp(err); % print error
 
-    B = mhdot(hA, X, u);
+    B = mhdot(hA, X);
     err = norm(dense(B) - A * X, 'fro');
     disp(err); % print error
 
@@ -282,7 +282,6 @@ Working precision
     hA = hodlr(A, 3, 2, 'svd'); % Use maxmium level of 3 and minimum block size of 2, and perform SVD (default) low rank approximation.
 
     R = hchol(hA); % return a block upper triangular HODLR matrix
-
     disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro')) % print error
 
 
@@ -316,7 +315,7 @@ The usage of ``mhchol`` is similar, it proceeds by simply adding one additional 
     amprA = dense(amphA);
     norm(amprA - A,2) % Compute the error
 
-    R = mhchol(amphA, u4); % or R = mhchol(hA, u4);
+    R = mhchol(amphA); % or R = mhchol(hA);
     disp(norm(hdot(R.transpose(), R, 'dense') - A, 'fro')); % print error
 
 

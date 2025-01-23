@@ -81,6 +81,8 @@ u = precision('h'); % or ther precision customization
 set_prec(u);
 ```
 
+Then all the HODLR arithmetic will performed in precision ``u``.
+
 
 
 Contributions

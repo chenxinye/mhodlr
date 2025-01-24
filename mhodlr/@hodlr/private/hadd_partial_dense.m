@@ -4,7 +4,7 @@ function C = hadd_partial_dense(A, B, operator)
     C = zeros(mb, nb);
         
     if isempty(A.D) 
-        [m, n, m1, m2, n1, n2] = size_t(A);
+        [m, n, m1, ~, n1, ~] = size_t(A);
         
         if m ~= mb | n ~= nb
             error('Please enter the inputs with consistent dimensions.');
@@ -23,9 +23,9 @@ function C = hadd_partial_dense(A, B, operator)
 
     else
         if operator == '+'
-            C = A.D + B;
+            C = A.dense + B;
         else
-            C = A.D - B;
+            C = A.dense - B;
         end
     end 
 end

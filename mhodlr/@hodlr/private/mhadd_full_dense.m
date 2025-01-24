@@ -26,9 +26,9 @@ function C = mhadd_full_dense(A, B, operator)
 
     else
         if operator == '+'
-            C = mchop(A.D + B.D);
+            C = mchop(A.dense + B.dense);
         else
-            C = mchop(A.D - B.D);
+            C = mchop(A.dense - B.dense);
         end
     end 
 end

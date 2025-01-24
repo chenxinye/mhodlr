@@ -55,9 +55,9 @@ function C = mhadd_full_hodlr(A, B, operator)
         % Error using -
         % Arrays have incompatible sizes for this operation.
         if operator == '+'
-            C.D = A.dense + B.dense;
+            C.D = mchop(A.dense + B.dense);
         else
-            C.D = A.dense - B.dense;
+            C.D = mchop(A.dense - B.dense);
         end
     end 
 end

@@ -39,12 +39,12 @@ function C = hadd(varargin)
         error('Please enter the correct number of inputs.');
     end
     
-    if (isa(varargin{1}, 'hodlr') | isa(varargin{1}, 'mphodlr') | isa(varargin{1}, 'amphodlr') ...
-            ) & (isa(varargin{2}, 'hodlr') | isa(varargin{2}, 'mphodlr') | isa(varargin{2}, 'amphodlr'))
+    if (isa(A, 'hodlr') | isa(A, 'mphodlr') | isa(A, 'amphodlr') ...
+            ) & (isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr'))
         input_number = 0;
-    elseif isa(varargin{1}, 'hodlr') | isa(varargin{1}, 'mphodlr') | isa(varargin{1}, 'amphodlr') 
+    elseif isa(A, 'hodlr') | isa(A, 'mphodlr') | isa(A, 'amphodlr') 
         input_number = 1;
-    elseif isa(varargin{2}, 'hodlr') | isa(varargin{2}, 'mphodlr') | isa(varargin{2}, 'amphodlr') 
+    elseif isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr') 
         input_number = 2;
     else
         input_number = 3;
@@ -53,35 +53,35 @@ function C = hadd(varargin)
     if strcmp(oformat, 'hodlr')
         switch input_number
             case 0
-                C = hadd_full_hodlr(varargin{1}, varargin{2}, operator);
+                C = hadd_full_hodlr(A, B, operator);
             case 1
-                C = hadd_partial_hodlr(varargin{1}, varargin{2}, operator, true);
+                C = hadd_partial_hodlr(A, B, operator, true);
             case 2
-                C = hadd_partial_hodlr(varargin{1}, varargin{2}, operator, false);
+                C = hadd_partial_hodlr(A, B, operator, false);
             case 3
                 if strcmp(operator, '-')
-                    C = hodlr(varargin{1} + varargin{2});
+                    C = hodlr(A + B);
                 else
-                    C = hodlr(varargin{1} - varargin{2});
+                    C = hodlr(A - B);
                 end
         end
     else
         switch input_number
             case 0
-                C = hadd_full_dense(varargin{1}, varargin{2}, operator);
+                C = hadd_full_dense(A, B, operator);
             case 1
-                C = hadd_partial_dense(varargin{1}, varargin{2}, operator);
+                C = hadd_partial_dense(A, B, operator);
             case 2
-                C = hadd_partial_dense(varargin{2}, varargin{1}, operator);
+                C = hadd_partial_dense(B, A, operator);
                 
                 if strcmp(operator, '-')
                     C = -C;
                 end
             case 3
                 if strcmp(operator, '-')
-                    C = varargin{1} + varargin{2};
+                    C = A + B;
                 else
-                    C = varargin{1} - varargin{2};
+                    C = A - B;
                 end
         end
     end

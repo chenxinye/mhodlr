@@ -39,6 +39,9 @@ function C = hadd(varargin)
         error('Please enter the correct number of inputs.');
     end
     
+    A = varargin{1};
+    B = varargin{2};
+
     if (isa(A, 'hodlr') | isa(A, 'mphodlr') | isa(A, 'amphodlr') ...
             ) & (isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr'))
         input_number = 0;

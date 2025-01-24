@@ -68,6 +68,8 @@ disp(norm(recover(hadd(hA, B, '+', 'hodlr')) - (A+B), 'fro'))
 disp(norm(recover(hadd(hA, hB, '+', 'hodlr')) - (A+B), 'fro'))
 disp(norm(recover(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro'))
 
+u = precision('h');
+set_prec(u);
 C1 = add(hA, hB, hA);
 C2 = A + B + A;
 disp(norm(C1.dense - C2, 'fro'));
@@ -76,6 +78,13 @@ C1 = sub(hA, hB, hA);
 C2 = A - B - A;
 disp(norm(C1.dense - C2, 'fro'));
 
+C1 = madd(hA, hB, hA);
+C2 = A + B + A;
+disp(norm(C1.dense - C2, 'fro'));
+
+C1 = msub(hA, hB, hA);
+C2 = A - B - A;
+disp(norm(C1.dense - C2, 'fro'));
 
 %%% Build/Recover/Product
 rng(0);

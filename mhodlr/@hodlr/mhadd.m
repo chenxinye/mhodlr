@@ -39,7 +39,6 @@ function C = mhadd(varargin)
         error('Please enter the correct number of inputs.');
     end
 
-
     A = varargin{1};
     B = varargin{2};
     

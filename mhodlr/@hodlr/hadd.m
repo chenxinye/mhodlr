@@ -42,12 +42,11 @@ function C = hadd(varargin)
     A = varargin{1};
     B = varargin{2};
 
-    if (isa(A, 'hodlr') | isa(A, 'mphodlr') | isa(A, 'amphodlr') ...
-            ) & (isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr'))
+    if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         input_number = 0;
-    elseif isa(A, 'hodlr') | isa(A, 'mphodlr') | isa(A, 'amphodlr') 
+    elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
         input_number = 1;
-    elseif isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr') 
+    elseif ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         input_number = 2;
     else
         input_number = 3;

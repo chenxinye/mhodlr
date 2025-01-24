@@ -1,5 +1,5 @@
 %% FOR TEST ONLY
-function [U, V] = mp_compress_m(A, method, vareps, varargin)
+function [U, V, max_rnk] = mp_compress_m(A, method, vareps, varargin)
     
     if nargin == 4
         max_rnk = varargin{1};
@@ -69,6 +69,11 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
             cusm = cumsum(sq_dS, "reverse") / normf;
             in_eq = cusm > vareps^2;
             rnk = min(sum(in_eq) + 1, size(U, 2));
+            
+            if rnk > max_rnk
+                rnk = max_rnk;
+            end
+            
             U = mchop(U(:,1:rnk));
             V = S(1:rnk,1:rnk) * mchop(V(:,1:rnk)');
         else
@@ -88,6 +93,8 @@ function [U, V] = mp_compress_m(A, method, vareps, varargin)
         V = sparse(V);
     end
     
+    max_rnk = rnk;
+
 end
 
 

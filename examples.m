@@ -86,6 +86,15 @@ C1 = msub(hA, hB, hA);
 C2 = A - B - A;
 disp(norm(C1.dense - C2, 'fro'));
 
+
+C1 = madd(hA, B, hA);
+C2 = A + B + A;
+disp(norm(C1.dense - C2, 'fro'));
+
+C1 = msub(hA, B, hA);
+C2 = A - B - A;
+disp(norm(C1.dense - C2, 'fro'));
+
 %%% Build/Recover/Product
 rng(0);
 A = rand(100);
@@ -113,6 +122,8 @@ disp(err);
 
 B = hdot(hA, X, 'dense');
 err = norm(B - A * X, 'fro');
+
+
 disp(err);
 
 

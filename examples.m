@@ -1,4 +1,5 @@
 
+addpath("./mhodlr/")
 rng(0); %fix randomness
 A = rand(20, 20);
 depth = 99;
@@ -67,6 +68,13 @@ disp(norm(recover(hadd(hA, B, '+', 'hodlr')) - (A+B), 'fro'))
 disp(norm(recover(hadd(hA, hB, '+', 'hodlr')) - (A+B), 'fro'))
 disp(norm(recover(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro'))
 
+C1 = add(hA, hB, hA);
+C2 = A + B + A;
+disp(norm(C1.dense - C2, 'fro'));
+
+C1 = sub(hA, hB, hA);
+C2 = A - B - A;
+disp(norm(C1.dense - C2, 'fro'));
 
 
 %%% Build/Recover/Product

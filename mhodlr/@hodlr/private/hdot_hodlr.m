@@ -48,7 +48,7 @@ function C = hdot_hodlr(A, B)
         midB = ceil(nB / 2);
         
         if ~isempty(A.D)
-            D = A.D * B;
+            D = A.dense * B;
             C = hodlr(D, 0, A.min_block_size);
             C.vareps = vareps;
             [m, n] = size(D);

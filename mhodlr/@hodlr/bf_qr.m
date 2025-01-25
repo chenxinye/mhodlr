@@ -1,4 +1,4 @@
-function [Q, R] = bebendorf_qr(hA)
+function [Q, R] = bf_qr(hA)
     if isempty(hA.D)
        [m, n, m1, m2, n1, n2]  = size_t(hA);
        
@@ -8,25 +8,30 @@ function [Q, R] = bebendorf_qr(hA)
 
        M12 = hA.U1 * hA.V2;
        M21 = hA.U2 * hA.V1;
-       X = hdot(M21, hA.A11.inverse()); 
-  
-       IXX1 = hadd(eye(n1), hdot(X.transpose(), X), '+');
-       IXX2 = hadd(eye(m2), hdot(X, X.transpose()), '+');
+       X = hdot(M21, hA.A11.inverse())
+       XTX =  hdot(X.transpose(), X)
+       XXT =  hdot(X, X.transpose())
+       disp(size(XTX.dense))
+
+       disp(size(XXT.dense))
+       IXX1 = hadd(XTX, eye(n1), '+');
+       IXX2 = hadd(XXT, eye(m2), '+');
 
        L1 = hchol(IXX1);
        L2 = hchol(IXX2);
 
        R11 = hdot(L1, hA.A11);
-       R12 = hadd(M12, hdot(X.transpose(), hA.A22), '+');
+
+       R12 = M12 + X.transpose().dense * hA.A22.dense;
        R12 = hdot(L1.transpose().inverse(), R12, 'dense');
 
        R22 = hadd(hA.A22, hdot(X, M12), '-');
-       R22 = hdot(L2.transpose().inverse(), R22);
+       R22 = hdot(L2.transpose().inverse.dense, R22);
        
-       [Q1, R11] = bebendorf_qr(R11);
+       [Q1, R11] = bf_qr(R11);
        R12 = hdot(Q1.transpose(), R12, 'dense');
 
-       [Q2, R22] = bebendorf_qr(R22);
+       [Q2, R22] = bf_qr(R22);
        
        Q11 = hdot(L1.inverse(), Q1, 'dense');
        Q12 = hdot(L2.inverse(), Q2, 'dense');

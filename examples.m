@@ -266,3 +266,14 @@ disp(norm(hdot(Q,R).dense -A))
 u = precision('s');
 set_prec(u);
 [Q, R] = mhqr(hA, 'kressner');
+
+
+rng(0); %fix randomness
+A = rand(30, 30);
+depth = 5;
+min_block_size = 2;
+epsilon = 1e-14;
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+[Q, R] = hqr(hA, 'bebendorf');
+
+norm(Q.dense*R.dense - A)

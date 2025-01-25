@@ -1,5 +1,6 @@
 function C = hdot_hodlr(A, B)
     if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
+
         % if A.bottom_level ~= B.bottom_level
         %     error("Please ensure the two input matrices are of the same cluster structure.")
         % else 
@@ -21,7 +22,7 @@ function C = hdot_hodlr(A, B)
         % disp("-------");
 
         vareps = max(A.vareps, B.vareps);
-
+        
         if ~isempty(A.D)
             D = A.D * B.D;
             C = hodlr(D, 0, A.min_block_size);
@@ -37,8 +38,8 @@ function C = hdot_hodlr(A, B)
             
             A12 = hdot_dense(A.A11, B.U1*B.V2) + hdot_dense(A.U1*A.V2, B.A22);
             A21 = hdot_dense(A.U2*A.V1, B.A11) + hdot_dense(A.A22, B.U2*B.V1);
-            [C.U1, C.V2] = compress_m(A12, 'svd', vareps);
-            [C.U2, C.V1] = compress_m(A21, 'svd', vareps);
+            [C.U1, C.V2, ~] = compress_m(A12, 'svd', vareps);
+            [C.U2, C.V1, ~] = compress_m(A21, 'svd', vareps);
         end
 
     elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
@@ -62,8 +63,8 @@ function C = hdot_hodlr(A, B)
 
             A12 = hdot_dense(A.A11, B(1:sv1, midB+1:end)) + hdot_dense(A.U1*A.V2, B(sv1+1:end, midB+1:end));
             A21 = hdot_dense(A.U2*A.V1, B(1:sv1, 1:midB)) + hdot_dense(A.A22, B(sv1+1:end, 1:midB));
-            [C.U1, C.V2] = compress_m(A12, 'svd', vareps);
-            [C.U2, C.V1] = compress_m(A21, 'svd', vareps);
+            [C.U1, C.V2, ~] = compress_m(A12, 'svd', vareps);
+            [C.U2, C.V1, ~] = compress_m(A21, 'svd', vareps);
             C.shape = [mA, nB];
         end
 
@@ -88,8 +89,8 @@ function C = hdot_hodlr(A, B)
 
             A12 = hdot_dense(A(1:midA, 1:su1), B.U1*B.V2) + hdot_dense(A(1:midA, su1+1:end), B.A22);
             A21 = hdot_dense(A(midA+1:end, 1:su1), B.A11) + hdot_dense(A(midA+1:end, su1+1:end), B.U2*B.V1);
-            [C.U1, C.V2] = compress_m(A12, 'svd', vareps);
-            [C.U2, C.V1] = compress_m(A21, 'svd', vareps);
+            [C.U1, C.V2, ~] = compress_m(A12, 'svd', vareps);
+            [C.U2, C.V1, ~] = compress_m(A21, 'svd', vareps);
             C.shape = [mA, nB];
         end
     else

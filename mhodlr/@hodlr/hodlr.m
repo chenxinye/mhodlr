@@ -313,6 +313,9 @@ classdef hodlr
 
                 obj.U1 = copyV1.';
                 obj.V2 = copyU2.';
+                temp = obj.shape(1);
+                obj.shape(1) = obj.shape(2);
+                obj.shape(2) = temp;
                 obj.A11 = transpose(obj.A11);
                 obj.A22 = transpose(obj.A22);
             else

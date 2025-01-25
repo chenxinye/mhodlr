@@ -25,7 +25,7 @@ function [Q, R] = mhqr(H, method)
         [Q, R] = mlintner_qr(H);
 
     elseif strcmp(method, "bebendorf")
-        [Q, R] = bebendorf_qr(H);
+        [Q, R] = mbf_qr(H);
 
     elseif strcmp(method, "kressner")
         [Q, R] = mkressner_qr(H);

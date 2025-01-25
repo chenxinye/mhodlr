@@ -51,8 +51,8 @@ function R = mhchol(H, varargin)
             R12 = mhtrsl(R.A11.transpose(), mchop(H.U1 * H.V2));
             [R.U1, R.V2, ~] = compress_m(R12, H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
             R.A22 = mhchol(fusedma(H.A22, -R12', R12, H.vareps), oformat);
-            R.U2 = zeros(size(R.U2,1),0);
-            R.V1 = zeros(0,size(R.V1,2));
+            R.U2 = zeros(size(R.U2,1), 1);
+            R.V1 = zeros(1, size(R.V1,2));
         else
             R.D = mchop(chol(H.D));
         end

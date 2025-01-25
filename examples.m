@@ -274,6 +274,11 @@ depth = 5;
 min_block_size = 2;
 epsilon = 1e-14;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
-[Q, R] = hqr(hA, 'bebendorf');
 
+[Q, R] = lintner_qr(hA);
 norm(Q.dense*R.dense - A)
+norm(Q.transpose.dense*Q.dense - eye(30))
+
+[Q, R] = lintner2_qr(hA);
+norm(Q.dense*R.dense - A)
+norm(Q.transpose.dense*Q.dense - eye(30))

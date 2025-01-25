@@ -320,6 +320,10 @@ classdef mphodlr
         
 
         function obj = transpose(obj)
+            temp = obj.shape(1);
+            obj.shape(1) = obj.shape(2);
+            obj.shape(2) = temp;
+            
             if isempty(obj.D)
                 copyU2 = obj.U2;
                 copyV1 = obj.V1;

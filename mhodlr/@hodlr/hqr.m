@@ -20,7 +20,7 @@ function [Q, R] = hqr(H, method, prec)
         [Q, R] = lintner_qr(H);
 
     elseif strcmp(method, 'bebendorf')
-        [Q, R] = bebendorf_qr(H);
+        [Q, R] = bf_qr(H);
 
     elseif strcmp(method, 'kressner')
         [Q, R] = kressner_qr(H);

@@ -122,9 +122,12 @@ disp(err);
 
 B = hdot(hA, X, 'dense');
 err = norm(B - A * X, 'fro');
-
-
 disp(err);
+
+B = dot(hA, hA, hA);
+err = norm(B.dense - A * A * A, 'fro');
+disp(err);
+
 
 
 %%% H-LU factorization

@@ -72,44 +72,78 @@ which is similar to the native inverse, but the second parameter is specifed as 
 
     The HODLR matrix arithmetic for summation, subtraction, and multiplication can be completed via the shortcut ``add(A, B)``, ``sub(A, B)`` and ``dot(A, B)`` if one just want the HODLR output. If one want a dense output, please following the interfaces as below. 
 
+
 Matrix summation and subtraction
 ------------------------------------------------
 
-The summation and subtraction of HODLR matrices (A + B and A - B, A or B are not necessarily of hodlr format) are performed by the method ``hadd``. The are four dominant parameters, i.e., input matrix A, input matrix B, symbol ('+' for summation, and '-' for subtraction) denoting summation and subtraction, and output format ('dense' or 'hodlr', the 'hodlr' is default).
-To perform the operation of summation (subtraction is similar), one can use
 
-.. code:: 
+Working precision
+^^^^^^^^^^^^^^^^^^
 
-    hadd(A, B, operation('+'/'-'), 'dense'/'hodlr')
-    
-
-For example: 
+One can simply perform the HODLR summation and substraction via the method ``add`` and ``sub``. where the inside parameters can be a varying number of inputs, and output is a HODLR matrix. 
 
 .. code:: matlab
+
+    C1 = add(hA, B, hA);
+    C2 = A + B + A;
+    disp(norm(C1.dense - C2, 'fro'));
     
-    rng(0); %fix randomness
-    A = rand(500);
-    B = rand(500);
+    C1 = sub(hA, B, hA);
+    C2 = A - B - A;
+    disp(norm(C1.dense - C2, 'fro'));
 
-    depth = 5;
-    min_block_size = 2;
-    epsilon = 1e-8;
-    hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
-    hB = hodlr(B, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
-    disp(norm(hadd(hA, B, '-', 'dense') - (A-B), 'fro'));
-    disp(norm(hadd(hA, hB, '-', 'dense') - (A-B), 'fro'));
-    disp(norm(hadd(A, hB, '-', 'dense') - (A-B), 'fro'));
-    disp(norm(dense(hadd(hA, B, '-', 'hodlr')) - (A-B), 'fro'));
-    disp(norm(dense(hadd(hA, hB, '-', 'hodlr')) - (A-B), 'fro'));
-    disp(norm(dense(hadd(A, hB, '-', 'hodlr')) - (A-B), 'fro'));
+Multiple precision
+^^^^^^^^^^^^^^^^^^^^
 
-    disp(norm(hadd(hA, B, '+', 'dense') - (A+B), 'fro'));  % print error
-    disp(norm(hadd(hA, hB, '+', 'dense') - (A+B), 'fro')); % print error
-    disp(norm(hadd(A, hB, '+', 'dense') - (A+B), 'fro')); % print error
-    disp(norm(dense(hadd(hA, B, '+', 'hodlr')) - (A+B), 'fro')); % print error
-    disp(norm(dense(hadd(hA, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
-    disp(norm(dense(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
+.. code:: matlab
+
+    C1 = madd(hA, B, hA);
+    C2 = A + B + A;
+    disp(norm(C1.dense - C2, 'fro'));
+    
+    C1 = msub(hA, B, hA);
+    C2 = A - B - A;
+    disp(norm(C1.dense - C2, 'fro'));
+    
+
+.. admonition:: Note
+
+    The lower level of the summation and subtraction of HODLR matrices (A + B and A - B, A or B are not necessarily of hodlr format) are performed by the method ``hadd``. The are four dominant parameters, i.e., input matrix A, input matrix B, symbol ('+' for summation, and '-' for subtraction) denoting summation and subtraction, and output format ('dense' or 'hodlr', the 'hodlr' is default).
+    To perform the operation of summation (subtraction is similar), one can use
+    
+    .. code:: 
+    
+        hadd(A, B, operation('+'/'-'), 'dense'/'hodlr')
+        
+    
+    For example: 
+    
+    .. code:: matlab
+        
+        rng(0); %fix randomness
+        A = rand(500);
+        B = rand(500);
+    
+        depth = 5;
+        min_block_size = 2;
+        epsilon = 1e-8;
+        hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+        hB = hodlr(B, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+    
+        disp(norm(hadd(hA, B, '-', 'dense') - (A-B), 'fro'));
+        disp(norm(hadd(hA, hB, '-', 'dense') - (A-B), 'fro'));
+        disp(norm(hadd(A, hB, '-', 'dense') - (A-B), 'fro'));
+        disp(norm(dense(hadd(hA, B, '-', 'hodlr')) - (A-B), 'fro'));
+        disp(norm(dense(hadd(hA, hB, '-', 'hodlr')) - (A-B), 'fro'));
+        disp(norm(dense(hadd(A, hB, '-', 'hodlr')) - (A-B), 'fro'));
+    
+        disp(norm(hadd(hA, B, '+', 'dense') - (A+B), 'fro'));  % print error
+        disp(norm(hadd(hA, hB, '+', 'dense') - (A+B), 'fro')); % print error
+        disp(norm(hadd(A, hB, '+', 'dense') - (A+B), 'fro')); % print error
+        disp(norm(dense(hadd(hA, B, '+', 'hodlr')) - (A+B), 'fro')); % print error
+        disp(norm(dense(hadd(hA, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
+        disp(norm(dense(hadd(A, hB, '+', 'hodlr')) - (A+B), 'fro')); % print error
 
 
 

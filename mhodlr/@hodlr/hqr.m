@@ -8,7 +8,7 @@ function [Q, R] = hqr(H, method, prec)
         Input matrix - hodlr class / dense tyle.
 
     method - str
-        Options: 'lintner', 'bebendorf' and 'kressner'.
+        Options: 'lt', 'lt2' and 'dk'.
     
     Returns
     --------------------
@@ -16,13 +16,13 @@ function [Q, R] = hqr(H, method, prec)
         Return matrix in hodlr class.
 %}
 
-    if strcmp(method, 'lintner')
+    if strcmp(method, 'lt')
         [Q, R] = lintner_qr(H);
 
-    elseif strcmp(method, 'bebendorf')
-        [Q, R] = bf_qr(H);
+    elseif strcmp(method, 'lt2')
+        [Q, R] = lintner2_qr(H);
 
-    elseif strcmp(method, 'kressner')
+    elseif strcmp(method, 'dk')
         [Q, R] = kressner_qr(H);
     end
 end

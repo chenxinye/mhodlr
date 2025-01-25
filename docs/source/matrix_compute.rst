@@ -8,6 +8,16 @@ This section is concerned with the matrix computations with HODLR matrix.
     All the following, we recover the HODLR representation to dense matrix via ``dense(.)``, the alternative way is to use ``recover(.)`` or simply use the member function of the HODLR representation via ``H.dense`` or ``H.dense()``. 
 
 
+mhodlr enables multiple precision control for matrix computation based on HODLR representation. It allows users to control the precision in a global environment, without the need to specify the precision everytime when the function is called.
+
+The precision setting is performed by
+
+.. code:: matlab
+
+    u = precision('h'); % or ther precision customization
+    set_prec(u);
+
+
 Matrix transpose and inverse
 ------------------------------------------------
 

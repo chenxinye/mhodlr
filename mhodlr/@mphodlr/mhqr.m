@@ -9,7 +9,7 @@ function [Q, R] = mhqr(H, method)
         Input matrix - hodlr class / dense tyle.
 
     method - str
-        Options: 'lintner', 'bebendorf' and 'kressner'.
+        Options: 'lt', lt2' and 'kd'.
     
     Returns
     --------------------
@@ -19,6 +19,7 @@ function [Q, R] = mhqr(H, method)
 
     global opt;
     set_prec(opt);
+    
     if strcmp(method, 'lt')
         [Q, R] = mlintner_qr(H);
     

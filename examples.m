@@ -258,15 +258,9 @@ min_block_size = 2;
 epsilon = 1e-14;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
-[Q, R] = hqr(hA, 'kressner');
+[Q, R] = hqr(hA, 'dk');
 
 disp(norm(hdot(Q,R).dense -A))
-
-
-u = precision('s');
-set_prec(u);
-[Q, R] = mhqr(hA, 'kressner');
-
 
 rng(0); %fix randomness
 A = rand(30, 30);
@@ -282,3 +276,11 @@ norm(Q.transpose.dense*Q.dense - eye(30))
 [Q, R] = lintner2_qr(hA);
 norm(Q.dense*R.dense - A)
 norm(Q.transpose.dense*Q.dense - eye(30))
+
+
+% multiple precision QR 
+
+u = precision('s');
+set_prec(u);
+[Q, R] = mhqr(hA, 'lt');
+[Q, R] = mhqr(hA, 'lt2');

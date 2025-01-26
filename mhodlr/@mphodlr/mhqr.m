@@ -9,7 +9,7 @@ function [Q, R] = mhqr(H, method)
         Input matrix - hodlr class / dense tyle.
 
     method - str
-        Options: 'lt', lt2' and 'kd'.
+        Options: 'lt', lt2' and 'dk'.
     
     Returns
     --------------------
@@ -26,7 +26,7 @@ function [Q, R] = mhqr(H, method)
     elseif strcmp(method, 'lt2')
         [Q, R] = mlintner2_qr(H);
 
-    elseif strcmp(method, 'kd')
+    elseif strcmp(method, 'dk')
         [Q, R] = mkressner_qr(H);
     end
 end

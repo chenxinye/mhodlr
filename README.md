@@ -25,7 +25,7 @@
 Differential equations often give rise to rank-structured matrices characterized by low-rank off-diagonal blocks. These matrices can be conveniently represented in a hierarchical format, enabling efficient arithmetic operations such as fast matrix-vector multiplication. Among these, hierarchical matrices [2] form a class of dense rank-structured matrices with a hierarchical low-rank off-diagonal block structure. Such matrices frequently emerge in applications like the finite element discretization of elliptic partial differential equations (PDEs), radial basis function interpolation, and boundary integral equations. A prominent example of hierarchical matrices is the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix, which is constructed by hierarchically partitioning the matrix using a binary cluster tree. At each level of the tree, all off-diagonal blocks are represented as low-rank matrices, enabling efficient storage and computation.
 
 <p align="left">
- <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/docs/fancy_flowchart.png" alt="drawing" width="1180"/>
+ <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/docs/fancy_flowchart.png" alt="drawing" width="1380"/>
 </p>
 
 

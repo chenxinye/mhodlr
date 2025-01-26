@@ -27,11 +27,11 @@ function [Y, T, A] = mkressner_qr(hA)
     C = zeros(0, n);
     nrm_A = hnorm(hA, 2);
     
-    [Y, YBL, YBR, YC, T, A] = iter_qr(hA, BL, BR, C, nrm_A);
+    [Y, YBL, YBR, YC, T, A] = miter_qr(hA, BL, BR, C, nrm_A);
 
     % Y is HODLR matrix 
     if nargout <= 2
-        Q = hdot(hdot(Y, T), Y.transpose());
+        Q = mhdot(hdot(Y, T), Y.transpose());
         I = mphodlr('eye', m, A.bottom_level, A.min_block_size);
         
         Q = sub(I, Q);
@@ -50,8 +50,8 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
     q = size(C, 1);
     
     if size(BL, 1) > 0
-        [BL, R] = qr(BL, 0);
-        BR = R*BR;
+        [BL, R] = qr(mchop(BL), 0);
+        BR = mchop(R*BR);
     end
         
     BL = mchop(BL);
@@ -81,7 +81,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         [SL, SR] = mhrank_truncate(SL, SR', nrm_A*hA.vareps);
         SR = SR';
         SL = mchop(SL);
-        SL = hdot(T1.transpose(), SL, 'dense');
+        SL = mhdot(T1.transpose(), SL, 'dense');
         SR = mchop(SR);
 
         % Update second block column
@@ -130,8 +130,8 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         [T12L, T12R] = mhrank_truncate(T12L, T12R', hA.vareps);
         T12R = mchop(T12R');
         
-        T.U1 = mchop(-hdot(T1, T12L, 'dense'));
-        T.V2 = mchop(hdot(T2.transpose(), T12R, 'dense')');
+        T.U1 = mchop(-mhdot(T1, T12L, 'dense'));
+        T.V2 = mchop(mhdot(T2.transpose(), T12R, 'dense')');
         
     end
     

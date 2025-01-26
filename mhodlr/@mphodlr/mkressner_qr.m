@@ -63,7 +63,6 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         [Y, T, R] = mwyqr([hA.D; BR; C]);
 
         YA  = mphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
-
         YBR = Y(m+1:m+p, :);
         YC  = Y(m+p+1:end, :);
         
@@ -185,7 +184,6 @@ function [Y, T, A] = mwyqr(A)
         T3 = mchop(-x'*mchop(Y2*T2));
         
         T = [T1 T3; zeros(n2,m2) T2];
-
     end
     
 end

@@ -15,7 +15,7 @@ function [Y, T, A] = mkressner_qr(hA)
     %     matrices. Technical report, September 2018.``
     % Modified from https://github.com/numpi/hm-toolbox/blob/master/%40hodlr/qr.m
     % Not that our implementation is not limited to square matrix, it can be also extended to rectangular matrix.
-    [m,n] = size_t(hA);
+    [m,n] = hsize(hA);
 
     % if m~=n
     %     error("ValueError, please enter a square matrix. ")
@@ -27,12 +27,12 @@ function [Y, T, A] = mkressner_qr(hA)
     C = zeros(0, n);
     nrm_A = hnorm(hA, 2);
     
-    [Y, YBL, YBR, YC, T, A] = iter_qr(hA, BL, BR, C, nrm_A);
+    [Y, YBL, YBR, YC, T, A] = miter_qr(hA, BL, BR, C, nrm_A);
 
     % Y is HODLR matrix 
     if nargout <= 2
-        Q = hdot(hdot(Y, T), Y.transpose());
-        I = amphodlr('eye', m, A.bottom_level, A.min_block_size);
+        Q = mhdot(hdot(Y, T), Y.transpose());
+        I = mphodlr('eye', m, A.bottom_level, A.min_block_size);
         
         Q = sub(I, Q);
         Y = Q;
@@ -45,13 +45,13 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
     % """hA is HODLR matrix, BL, BR, C, are dense matrices, nrm_A is a scalar."""
 
     % """Return: T: hodlr"""
-    [m, n] = size_t(hA, 1);
+    [m, n] = hsize(hA, 1);
 
     q = size(C, 1);
     
     if size(BL, 1) > 0
-        [BL, R] = qr(BL, 0);
-        BR = R*BR;
+        [BL, R] = qr(mchop(BL), 0);
+        BR = mchop(R*BR);
     end
         
     BL = mchop(BL);
@@ -62,16 +62,15 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
     if ~isempty(hA.D)
         [Y, T, R] = mwyqr([hA.D; BR; C]);
 
-        YA  = amphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
-
+        YA  = mphodlr(prec_chain(precision('d')), Y(1:m, :), 0, hA.min_block_size);
         YBR = Y(m+1:m+p, :);
         YC  = Y(m+p+1:end, :);
         
-        hA = amphodlr(prec_chain(precision('d')), R(1:m,:), 0, hA.min_block_size);
-        T = amphodlr(prec_chain(precision('d')), T, 0, hA.min_block_size); % generate matrix of 0 depths
+        hA = mphodlr(prec_chain(precision('d')), R(1:m,:), 0, hA.min_block_size);
+        T = mphodlr(prec_chain(precision('d')), T, 0, hA.min_block_size); % generate matrix of 0 depths
     else
         % Compute QR decomposition of first block column
-        [m1, n1] = size_t(hA.A11, 1);
+        [m1, n1] = hsize(hA.A11, 1);
         BC = [BR; C];
         [YA11, YBL1, YBR1, YC1, T1, hA.A11] = miter_qr(hA.A11, hA.U2, hA.V1, BC(:, 1:n1),nrm_A*hA.vareps);
         
@@ -81,7 +80,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         [SL, SR] = mhrank_truncate(SL, SR', nrm_A*hA.vareps);
         SR = SR';
         SL = mchop(SL);
-        SL = hdot(T1.transpose(), SL, 'dense');
+        SL = mhdot(T1.transpose(), SL, 'dense');
         SR = mchop(SR);
 
         % Update second block column
@@ -91,7 +90,7 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         BC(:, n1+1:end) = mchop(BC(:, n1+1:end) - mchop(mchop(YC1*SL)*SR'));
         
         % Compute QR decomposition of second block column
-        [m2, n2] = size_t(hA.A22, 1);
+        [m2, n2] = hsize(hA.A22, 1);
         
         [YA22, YBL2, YBR2, YC2, T2, hA.A22] = miter_qr(hA.A22, zeros(0,0), zeros(0, n2), BC(:, n1+1:end), nrm_A*hA.vareps);
         
@@ -130,8 +129,8 @@ function [YA, BL, YBR, YC, T, hA] = miter_qr(hA, BL, BR, C, nrm_A)
         [T12L, T12R] = mhrank_truncate(T12L, T12R', hA.vareps);
         T12R = mchop(T12R');
         
-        T.U1 = mchop(-hdot(T1, T12L, 'dense'));
-        T.V2 = mchop(hdot(T2.transpose(), T12R, 'dense')');
+        T.U1 = mchop(-mhdot(T1, T12L, 'dense'));
+        T.V2 = mchop(mhdot(T2.transpose(), T12R, 'dense')');
         
     end
     
@@ -185,7 +184,6 @@ function [Y, T, A] = mwyqr(A)
         T3 = mchop(-x'*mchop(Y2*T2));
         
         T = [T1 T3; zeros(n2,m2) T2];
-
     end
     
 end

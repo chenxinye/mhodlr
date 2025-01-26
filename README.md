@@ -24,6 +24,11 @@
 
 Differential equations often give rise to rank-structured matrices characterized by low-rank off-diagonal blocks. These matrices can be conveniently represented in a hierarchical format, enabling efficient arithmetic operations such as fast matrix-vector multiplication. Among these, hierarchical matrices [2] form a class of dense rank-structured matrices with a hierarchical low-rank off-diagonal block structure. Such matrices frequently emerge in applications like the finite element discretization of elliptic partial differential equations (PDEs), radial basis function interpolation, and boundary integral equations. A prominent example of hierarchical matrices is the Hierarchical Off-Diagonal Low-Rank (HODLR) matrix, which is constructed by hierarchically partitioning the matrix using a binary cluster tree. At each level of the tree, all off-diagonal blocks are represented as low-rank matrices, enabling efficient storage and computation.
 
+<p align="left">
+ <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/docs/fancy_flowchart.png" alt="drawing" width="1180"/>
+</p>
+
+
 Leveraging low-precision arithmetic has become increasingly important in computational mathematics due to its potential to reduce data communication, energy consumption, and storage requirements. According to the IEEE floating-point standard, single-precision arithmetic can achieve up to twice the speed of double precision on certain hardware, while half-precision arithmetic can offer up to a fourfold speedup. The trade-offs between precision and computational accuracy are critical when designing algorithms for high-performance computing.
 
 The mhodlr software repository addresses this by providing tools to evaluate and optimize precision requirements for HODLR matrix construction. By simulating various levels of precision, the software allows users to assess reconstruction errors and computational errors associated with HODLR matrix operations. The repository also offers a user-friendly API for constructing HODLR matrices and performing basic matrix computations, facilitating simulations for mixed-precision and adaptive-precision arithmetic in HODLR matrix computing [1]. The low-precision arithmetic simulations employed in this work are based on the methodologies described in [4], ensuring both accuracy and efficiency.
@@ -36,11 +41,6 @@ Our software mainly contains three modules
 |  [``@hodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/hodlr.m) | Compute HODLR matrix|
 |  [``@mphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m) | Compute HODLR matrix in mixed precision (precisions are defined by the users) |
 |  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
-
-<p align="center">
- <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/docs/fancy_flowchart.png" alt="drawing" width="1180"/>
-</p>
-
 
 Setup
 -------

@@ -372,9 +372,9 @@ We provide three implementations for QR factorizations.
 
 .. code:: matlab
 
-    [Q, R] = hqr(hA, 'lintner');
-    [Q, R] = hqr(hA, 'bebendorf');
-    [Q, R] = hqr(hA, 'kressner');
+    [Q, R] = hqr(hA, 'lt');
+    [Q, R] = hqr(hA, 'lt2');
+    [Q, R] = hqr(hA, 'dk');
     
 
 

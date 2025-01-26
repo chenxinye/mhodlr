@@ -19,13 +19,13 @@ function [Q, R] = mhqr(H, method)
 
     global opt;
     set_prec(opt);
-    if strcmp(method, 'lintner')
+    if strcmp(method, 'lt')
         [Q, R] = mlintner_qr(H);
+    
+    elseif strcmp(method, 'lt2')
+        [Q, R] = mlintner2_qr(H);
 
-    elseif strcmp(method, 'bebendorf')
-        [Q, R] = bebendorf_qr(H);
-
-    elseif strcmp(method, 'kressner')
+    elseif strcmp(method, 'kd')
         [Q, R] = mkressner_qr(H);
     end
 end

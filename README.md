@@ -37,6 +37,10 @@ Our software mainly contains three modules
 |  [``@mphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m) | Compute HODLR matrix in mixed precision (precisions are defined by the users) |
 |  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
 
+<p align="center">
+ <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/docs/fancy_flowchart.png" alt="drawing" width="1180"/>
+</p>
+
 
 Setup
 -------

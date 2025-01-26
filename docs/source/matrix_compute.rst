@@ -368,7 +368,21 @@ The usage of ``mhchol`` is similar, it proceeds by simply adding one additional 
 Matrix QR factorization
 ------------------------------------------------
 
+
+Working precision
+^^^^^^^^^^^^^^^^^^
+
 We provide three implementations for QR factorizations. 
+
+.. code:: matlab
+
+    [Q, R] = hqr(hA, 'lt');
+    [Q, R] = hqr(hA, 'lt2');
+    [Q, R] = hqr(hA, 'dk');
+
+
+Multiple precision
+^^^^^^^^^^^^^^^^^^^^
 
 .. code:: matlab
 

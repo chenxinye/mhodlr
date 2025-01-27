@@ -1,6 +1,6 @@
 function [Q, R] = mhqr(H, method)
 %{
-    The function is to perform QR factorization based on HODLR representation.
+    The function is to perform QR factorization in multiple precision based on HODLR representation.
 
     Parameters
     --------------------

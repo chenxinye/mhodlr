@@ -585,3 +585,25 @@ hqr.m
     Q, R - hodlr 
         Return matrix in hodlr class.
 
+
+
+mhqr.m
+^^^^^^^^^^^^^
+
+.. code:: matlab
+
+   The function is to perform QR factorization in multiple precision based on HODLR representation.
+
+    Parameters
+    --------------------
+    A - hodlr
+        Input matrix - hodlr class / dense tyle.
+
+    method - str
+        Options: 'lt', 'lt2' and 'dk'.
+    
+    Returns
+    --------------------
+    Q, R - hodlr 
+        Return matrix in hodlr class.
+    

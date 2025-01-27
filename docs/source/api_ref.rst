@@ -302,9 +302,6 @@ mhdot.m
     B - hodlr | double
         Matrix in HODLR format or double array.
 
-    prec - precision
-        Precision for the matrix-vector product.
-
     oformat - str, default='hodlr'
         Output format: 'hodlr' or 'dense'.
     
@@ -355,9 +352,6 @@ mhlu.m
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
-    prec - precision
-        Precision to simulate the factorization.
-
     oformat - str, default='hodlr'
         The output format. 'dense' or 'hodlr'.
 
@@ -412,9 +406,6 @@ mhchol.m
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
-    prec - precision
-        Precision to simulate the factorization.
-
     oformat - str, default='hodlr'
         The output format, either 'hodlr' or ''dense.
 

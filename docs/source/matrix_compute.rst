@@ -389,6 +389,19 @@ Multiple precision
     [Q, R] = hqr(hA, 'lt');
     [Q, R] = hqr(hA, 'lt2');
     [Q, R] = hqr(hA, 'dk');
+
+
+Linear Solver
+------------------------------------------------
+
+
+Solve AX = B
+
+
+.. code:: matlab
+
+	lu_solve(H, B) 
+    qr_solve(method, H, B) % method is referred to as the method to perform QR factorization
     
 
 

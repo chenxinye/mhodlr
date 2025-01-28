@@ -94,6 +94,7 @@ function C = mhadd(varargin)
                 else
                     C = A - B;
                 end
+                C = mchop(A - B);
         end
     end
 end

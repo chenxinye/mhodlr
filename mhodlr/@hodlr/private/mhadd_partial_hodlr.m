@@ -60,9 +60,9 @@ function C = mhadd_partial_hodlr(A, B, operator, B_is_dense)
             end
         else
             if operator == '+'
-                C.D = A + B.dense;
+                C.D = mchop(A + B.dense);
             else
-                C.D = A - B.dense;
+                C.D = mchop(A - B.dense);
             end
         end
     end

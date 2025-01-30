@@ -31,11 +31,11 @@ function [Q, R] = bf_qr(hA)
 
        [Q2, R22] = bf_qr(R22);
        
-       Q11 = hdot(L1.inverse, Q1);
-       Q22 = hdot(L2.inverse, Q2);
+       Q11 = lu_solve(L1, Q1);
+       Q22 = lu_solve(L2, Q2);
        
-       Q21 = hdot(L1.inverse, Q1, 'dense');
-       Q12 = hdot(L2.inverse, Q2, 'dense');
+       Q21 = lu_solve(L1, Q1).inverse;
+       Q12 = lu_solve(L2, Q2).inverse;
        
        Q12 = hdot(X.transpose(), -Q12, 'dense');
        Q21 = hdot(X, Q21, 'dense');

@@ -5,7 +5,7 @@ function X = htrsl(L, B, varargin)
         error('Please ensure the first input is sqaure matrix.');
     end
     
-    if ~(isa(L, 'hodlr') | isa(L, 'mphodlr')  | isa(L, 'amphodlr'))
+    if ~ismember(class(L), {'hodlr', 'amphodlr', 'mphodlr'})
         error('Please ensure the first input is of a HODLR matrix.');
     end
 
@@ -15,7 +15,7 @@ function X = htrsl(L, B, varargin)
         itype = 0;
     end
 
-    if isa(B, 'hodlr') | isa(B, 'mphodlr') | isa(B, 'amphodlr') 
+    if ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         % B is of hodlr format
         X = B;
         if isempty(L.D)

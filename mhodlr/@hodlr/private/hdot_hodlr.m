@@ -47,7 +47,7 @@ function C = hdot_hodlr(A, B)
 
     elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
         vareps = A.vareps;
-        mA = A.shape(1);
+
         [~, nB] = size(B);
         midB = ceil(nB / 2);
         
@@ -58,6 +58,7 @@ function C = hdot_hodlr(A, B)
             [m, n] = size(D);
             C.shape = [m, n];
         else
+            [mA, ~, ~, ~, sv1, ~] = size_t(A, 1);
             C = A;
             C.vareps = vareps;
             C.A11 = hadd_partial_hodlr(hdot_hodlr(A.A11, B(1:sv1, 1:midB)), (A.U1*A.V2)*B(sv1+1:end, 1:midB), '+', true);
@@ -73,7 +74,7 @@ function C = hdot_hodlr(A, B)
     elseif ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         vareps = B.vareps;
         [mA, ~] = size(A);
-        nB = B.shape(2);
+        
         midA = ceil(mA / 2);
 
         if ~isempty(B.D)
@@ -83,6 +84,7 @@ function C = hdot_hodlr(A, B)
             [m, n] = size(D);
             C.shape = [m, n];
         else
+            [~, nB, su1, ~, ~, ~] = size_t(B, 1);
             C = B;
             C.vareps = vareps;
             C.A11 = hadd_partial_hodlr(hdot_hodlr(A(1:midA, 1:su1), B.A11), A(1:midA, su1+1:end)*(B.U2*B.V1), '+', true);

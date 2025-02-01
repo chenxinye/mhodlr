@@ -8,9 +8,9 @@ function [Q, R] = bf_qr(hA)
 
        H12 = hA.U1 * hA.V2;
        H21 = hA.U2 * hA.V1;
-       X = hdot(H21, hA.A11.inverse)
-       XTX =  hdot(X.transpose(), X)
-       XXT =  hdot(X, X.transpose())
+       X = hdot(H21, hA.A11.inverse);
+       XTX =  hdot(X.transpose(), X);
+       XXT =  hdot(X, X.transpose());
        
        IXX1 = hadd(XTX, eye(n1), '+');
        IXX2 = hadd(XXT, eye(m2), '+');
@@ -19,34 +19,42 @@ function [Q, R] = bf_qr(hA)
        L2 = hchol(IXX2);
 
        R11 = hdot(L1, hA.A11);
+        
+       B1 = H12 + hdot(X.transpose, hA.A22, 'dense');
+       R12 = hdot(L1.inverse, B1);
 
-       B1 = hadd(M12, hdot(X.transpose, hA.A22));
-       R12 = lu_solve(L1, B1);
+       R22 = hadd(hA.A22, hdot(X, H12), '-');
+        
+       R22 = lu_solve(L2.transpose, R22.dense);
+        
+       R22 = hodlr(R22, L2.bottom_level, L2.min_block_size, 'svd', L2.vareps);
 
-       R22 = hadd(hA.A22, hdot(X, M12), '-');
-       R22 = lu_solve(L2.transpose, R22);
-       
+
        [Q1, R11] = bf_qr(R11);
-       R12 = hdot(Q1.transpose(), R12, 'dense');
+        
+       disp(Q1)
+       R12 = hdot(Q1.transpose, R12, 'dense');
 
        [Q2, R22] = bf_qr(R22);
        
-       Q11 = lu_solve(L1, Q1);
-       Q22 = lu_solve(L2, Q2);
+       Q11 = lu_solve(L1, Q1.dense);
+       Q22 = lu_solve(L2, Q2.dense);
        
-       Q21 = lu_solve(L1, Q1).inverse;
-       Q12 = lu_solve(L2, Q2).inverse;
+       Q21 = inv(lu_solve(L1, Q1.dense));
+       Q12 = inv(lu_solve(L2, Q2.dense));
        
-       Q12 = hdot(X.transpose(), -Q12, 'dense');
+       Q12 = -hdot(X.transpose(), Q12, 'dense');
        Q21 = hdot(X, Q21, 'dense');
-
+        
+       Q = hodlr;
+       Q.shape = [m, m];
        Q.A11 = Q11;
        Q.A22 = Q22;
        
        [Q.U1, Q.V2] = hA.compress(Q12);
        [Q.U2, Q.V1] = hA.compress(Q21);
        
-       Q = hA.bottom_level;
+       Q.bottom_level = hA.bottom_level;
 
        R.A11 = R11;
        R.A22 = R22;

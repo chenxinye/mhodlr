@@ -21,8 +21,10 @@ function C = hdot_hodlr(A, B)
         % disp(B);
         % disp("-------");
 
-        vareps = max(A.vareps, B.vareps);
-        
+        vareps = min(A.vareps, B.vareps);
+        mA = A.shape(1);
+        nB = B.shape(2);
+
         if ~isempty(A.D)
             D = A.D * B.D;
             C = hodlr(D, 0, A.min_block_size);
@@ -40,22 +42,23 @@ function C = hdot_hodlr(A, B)
             A21 = hdot_dense(A.U2*A.V1, B.A11) + hdot_dense(A.A22, B.U2*B.V1);
             [C.U1, C.V2, ~] = compress_m(A12, 'svd', vareps);
             [C.U2, C.V1, ~] = compress_m(A21, 'svd', vareps);
+
+            C.shape = [mA, nB];
         end
 
     elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
         vareps = A.vareps;
-        [mB, nB] = size(B);
+        mA = A.shape(1);
+        [~, nB] = size(B);
         midB = ceil(nB / 2);
         
         if ~isempty(A.D)
-            D = A.D * B;
+            D = A.dense * B;
             C = hodlr(D, 0, A.min_block_size);
             C.vareps = vareps;
             [m, n] = size(D);
             C.shape = [m, n];
         else
-            [mA, ~, ~, ~, sv1, ~] = size_t(A, 1);
-            
             C = A;
             C.vareps = vareps;
             C.A11 = hadd_partial_hodlr(hdot_hodlr(A.A11, B(1:sv1, 1:midB)), (A.U1*A.V2)*B(sv1+1:end, 1:midB), '+', true);
@@ -70,8 +73,8 @@ function C = hdot_hodlr(A, B)
 
     elseif ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
         vareps = B.vareps;
-        
         [mA, ~] = size(A);
+        nB = B.shape(2);
         midA = ceil(mA / 2);
 
         if ~isempty(B.D)
@@ -81,7 +84,6 @@ function C = hdot_hodlr(A, B)
             [m, n] = size(D);
             C.shape = [m, n];
         else
-            [~, nB, su1, ~, ~, ~] = size_t(B, 1);
             C = B;
             C.vareps = vareps;
             C.A11 = hadd_partial_hodlr(hdot_hodlr(A(1:midA, 1:su1), B.A11), A(1:midA, su1+1:end)*(B.U2*B.V1), '+', true);

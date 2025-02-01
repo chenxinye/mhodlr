@@ -37,7 +37,6 @@ function C = hdot_hodlr(A, B)
             C.A11 = hadd_partial_hodlr(hdot_hodlr(A.A11, B.A11), A.U1*(A.V2*B.U2)*B.V1, '+', true);
             C.A22 = hadd_partial_hodlr(hdot_hodlr(A.A22, B.A22), A.U2*(A.V1*B.U1)*B.V2, '+', true);
 
-            
             A12 = hdot_dense(A.A11, B.U1*B.V2) + hdot_dense(A.U1*A.V2, B.A22);
             A21 = hdot_dense(A.U2*A.V1, B.A11) + hdot_dense(A.A22, B.U2*B.V1);
             [C.U1, C.V2, ~] = compress_m(A12, 'svd', vareps);

@@ -63,7 +63,9 @@ end
 
 
 function check_point = product3(seed)
-    rng(0);
+    rng(seed);
+    addpath("../mhodlr/")
+    
     u1 = precision('d');
     u2 = precision('s');
     u3 = precision('h');
@@ -86,7 +88,9 @@ end
 
 
 function check_point = product4(seed)
-    rng(0);
+    rng(seed);
+    addpath("../mhodlr/")
+    
     u1 = precision('d');
     u2 = precision('s');
     u3 = precision('h');

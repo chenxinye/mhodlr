@@ -63,16 +63,45 @@ end
 
 
 function check_point = product3(seed)
+    rng(0);
+    u1 = precision('d');
+    u2 = precision('s');
+    u3 = precision('h');
+    u4 = precision('b');
+    
+    u_chain = prec_chain(u1, u2, u3, u4);
+    depth = 5;
+    eps = 1e-12;
+    A = rand(100, 80);
+    B = rand(80, 120);
+
     aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
-
-
-
+    aphB = amphodlr(u_chain, B, depth, 10, 'svd', eps); 
+    
+    C = hdot(aphA, aphB);
+    disp("checkpoint3 error:")
+    disp(norm(C - hC.dense));
+    check_point = sum(hC.shape == size(C)) == 2;
 end
 
 
 function check_point = product4(seed)
-    mphA = mphodlr(u_chain, A, depth, 10, 'svd', eps); 
-
-
-
+    rng(0);
+    u1 = precision('d');
+    u2 = precision('s');
+    u3 = precision('h');
+    u4 = precision('b');
+    
+    u_chain = prec_chain(u1, u2, u3, u4);
+    depth = 5;
+    eps = 1e-12;
+    A = rand(100, 80);
+    B = rand(80, 120);
+    aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
+    aphB = amphodlr(u_chain, B, depth, 10, 'svd', eps); 
+    
+    C = hdot(aphA, aphB);
+    disp("checkpoint4 error:")
+    disp(norm(C - hC.dense));
+    check_point = sum(hC.shape == size(C)) == 2;
 end

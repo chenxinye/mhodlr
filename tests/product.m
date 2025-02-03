@@ -59,3 +59,20 @@ function check_point = product2(seed)
 
     check_point = sum(hC.shape == size(C)) == 2;
 end
+
+
+
+function check_point = product3(seed)
+    aphA = amphodlr(u_chain, A, depth, 10, 'svd', eps); 
+
+
+
+end
+
+
+function check_point = product4(seed)
+    mphA = mphodlr(u_chain, A, depth, 10, 'svd', eps); 
+
+
+
+end

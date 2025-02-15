@@ -300,6 +300,16 @@ min_block_size = 10;
 epsilon = 1e-14;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
-b = rand(100, 1);
+x = rand(100, 1);
+b = A * x;
+x = pm_solve(hA, b);
+x_truth = A \ b;
+norm(x - x_truth, 2)
 
-pm_solve(hA, b);
+
+
+u = precision('h');
+set_prec(u);
+x = mpm_solve(hA, b);
+x_truth = A \ b;
+norm(x - x_truth, 2)

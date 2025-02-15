@@ -1,33 +1,32 @@
 function x = pm_solve(H, b)
 
-    if ~isempty(H.D)
-        midm = ceil(H.shape[0] / 2)
-        z_alpha = pm_solve(H.A11, b_alpha(1: midm));
-        z_beta  = pm_solve(H.A22, b_beta(midm+1: end));
+    if isempty(H.D)
+        z_alpha = pm_solve(H.A11, b(1: size(H.U1, 1)));
+        z_beta  = pm_solve(H.A22, b(size(H.U1, 1)+1: end));
 
         Y_alpha = pm_solve(H.A11, H.U1);
         Y_beta  = pm_solve(H.A22, H.U2);
-        z = [z_alpha; z_beta];
-
-        K = blkdiag(H.V1 * Y_alpha, H.V2 * Y_beta);
         
-        K(1:midm, midn+1:) = eye(midm);
-        K(midm+1:, 1:midm) = eye(midm);
+        z = [z_alpha; z_beta];
+        K = blkdiag(H.V1, H.V2) * blkdiag(Y_alpha, Y_beta);
 
-        L, U = lu(K);
+        K(1:size(H.V1,1), size(Y_alpha,2)+1:end) = eye(size(H.V1, 1));
+        K(size(H.V1, 1)+1:end, 1:size(Y_alpha,2)) = eye(size(Y_beta, 2));
+
+        [L, U] = lu(K);
         b = blkdiag(H.V1, H.V2) * z;
         w = lu_solve(L, U, b);
     
         x = z - blkdiag(Y_alpha, Y_beta) * w;
         
     else
-        L, U = lu(H.D);
-        x = lu_solve(L, U, b);
+        x = H.D\b;
     end
 
 end
 
 
 function x = lu_solve(L, U, b)
-    x = b / L / U;
+
+    x = U \ L  \ b ;
 end

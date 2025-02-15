@@ -287,3 +287,19 @@ u = precision('s');
 set_prec(u);
 [Q, R] = mhqr(hA, 'lt');
 [Q, R] = mhqr(hA, 'lt2');
+
+
+
+
+%% Linear solver
+addpath("./mhodlr/")
+rng(0); %fix randomness
+A = rand(100, 100);
+depth = 99;
+min_block_size = 10;
+epsilon = 1e-14;
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+
+b = rand(100, 1);
+
+pm_solve(hA, b);

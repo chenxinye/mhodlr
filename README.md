@@ -57,7 +57,43 @@ Then add the destination folder where ``mhodlr`` is installed to MATLAB’s sear
 addpath('mhodlr/mhodlr')
 ```
 
+
+# Examples
+---------------
+
+### Build HODLR matrices
+```matlab
+rng(0); %fix randomness
+A = rand(500);
+depth = 5;
+min_block_size = 2;
+epsilon = 1e-8;
+hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
+```
+
+```matlab
+% define the precisions
+u1 = precision('d');
+u2 = precision('s');
+u3 = precision('h');
+u4 = precision('b');
+u5 = precision('q52');
+
+% build the collection of precisions
+u_chain = prec_chain(u1, u2, u3, u4, u5); % the order matters!
+
+% build the precisions according to u_chain (each layer uses the corresponding preicison)
+mphA = mphodlr(u_chain, A, depth, min_block_size, 'svd', epsilon);
+mprA = recover(mphA); % recover from the HODLR format
+
+% build the precisions automatically
+aphA = amphodlr(u_chain, A, depth, min_block_size, 'svd', epsilon);
+aprA = recover(aphA); % recover from the HODLR format
+```
+
 Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).
+
+For detailed of matrix computations, please check [docs](https://mhodlr.readthedocs.io/en/latest/matrix_compute.html) for detail. 
 
 Basic support routines
 ---------------

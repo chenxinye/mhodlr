@@ -42,7 +42,7 @@ Our software mainly contains three modules
 |  [``@mphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40mphodlr/mphodlr.m) | Compute HODLR matrix in mixed precision (precisions are defined by the users) |
 |  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
 
-Setup
+## Setup
 -------
 
 The environment for running ``mhodlr`` is MATLAB2023a, MATLAB2023b, MATLAB2024a, MATLAB2024b.
@@ -58,10 +58,10 @@ addpath('mhodlr/mhodlr')
 ```
 
 
-# Examples
+##  Examples
 ---------------
 
-### Build HODLR matrices
+#### Build HODLR matrices
 ```matlab
 rng(0); %fix randomness
 A = rand(500);
@@ -95,7 +95,7 @@ Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/m
 
 For detailed of matrix computations, please check [docs](https://mhodlr.readthedocs.io/en/latest/matrix_compute.html) for detail. 
 
-Basic support routines
+## Basic support routines
 ---------------
 
 #### Note these routines work for ``@hodlr``, ``@mphodlr``, and ``@amphodlr`` modules, 
@@ -113,7 +113,7 @@ Basic support routines
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsu.m)|
 | Linear solver (Ax = b) |[``lu_solve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/lu_solve.m) [``qr_solve(method, H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/qr_solve.m)|
 
-Multiple precision routine
+## Multiple precision routine
 ---------------
 ``mhodlr`` enables multiple precision control for matrix computation based on HODLR representation. It allows users to control the precision in a global environment, without the need to specify the precision everytime when the function is called. 
 
@@ -127,13 +127,13 @@ Then all the HODLR arithmetic function starting with ''m'' will performed in pre
 
 
 
-Contributions
+## Contributions
 ---------------
 
 Any forms of contributions are welcomed. Our documents are still in progress; feel free to pull request and submit issues for suggestions. Before contributing code, we suggest to contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://mhodlr.readthedocs.io/en/latest/teams.html).
 
 
-Acknowledgement
+## Acknowledgement
 ---------------
 
 
@@ -144,7 +144,7 @@ authority can be held responsible for them.
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13335429.svg)](https://doi.org/10.5281/zenodo.13335429)
 
 
-References
+## References
 ---------------
 
 [1] C. Erin, X. Chen and X. Liu, Mixed precision HODLR matrices, arXiv:2407.21637, (2024), https://doi.org/10.48550/arXiv.2407.21637.

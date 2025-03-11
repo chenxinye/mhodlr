@@ -43,7 +43,6 @@ Our software mainly contains three modules
 |  [``@amphodlr``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40amphodlr/amphodlr.m) | Compute HODLR matrix in adaptive precision (precisions are provided by the users) |
 
 ## Setup
--------
 
 The environment for running ``mhodlr`` is MATLAB2023a, MATLAB2023b, MATLAB2024a, MATLAB2024b.
 
@@ -59,7 +58,6 @@ addpath('mhodlr/mhodlr')
 
 
 ##  Examples
----------------
 
 #### Build HODLR matrices
 ```matlab
@@ -96,7 +94,6 @@ Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/m
 For detailed of matrix computations, please check [docs](https://mhodlr.readthedocs.io/en/latest/matrix_compute.html) for detail. 
 
 ## Basic support routines
----------------
 
 #### Note these routines work for ``@hodlr``, ``@mphodlr``, and ``@amphodlr`` modules, 
 
@@ -114,7 +111,7 @@ For detailed of matrix computations, please check [docs](https://mhodlr.readthed
 | Linear solver (Ax = b) |[``lu_solve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/lu_solve.m) [``qr_solve(method, H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/qr_solve.m)|
 
 ## Multiple precision routine
----------------
+
 ``mhodlr`` enables multiple precision control for matrix computation based on HODLR representation. It allows users to control the precision in a global environment, without the need to specify the precision everytime when the function is called. 
 
 The precision setting is performed by 
@@ -128,7 +125,6 @@ Then all the HODLR arithmetic function starting with ''m'' will performed in pre
 
 
 ## Contributions
----------------
 
 Any forms of contributions are welcomed. Our documents are still in progress; feel free to pull request and submit issues for suggestions. Before contributing code, we suggest to contact the maintainers. The contact information of maintainers can be found in  [MaintainerList](https://mhodlr.readthedocs.io/en/latest/teams.html).
 

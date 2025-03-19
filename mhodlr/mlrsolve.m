@@ -1,4 +1,4 @@
-function x = lrsolve(A, b, option)
+function x = mlrsolve(A, b, option)
   if strcmp(option, "qr")
     x = mqr_solve(A, b);
   elseif strcmp(option, "lu")

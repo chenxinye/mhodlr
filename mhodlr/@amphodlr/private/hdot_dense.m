@@ -1,75 +1,94 @@
 function C = hdot_dense(A, B)
+    % Optimized matrix-matrix multiplication for HODLR and numeric matrices
+    % A and B can be hodlr, amphodlr, mphodlr, or numeric arrays
+    
+    % Compute class flags once
+    isA_hodlr = is_hodlr_class(A);
+    isB_hodlr = is_hodlr_class(B);
+    
+    % Dispatch to helper function with precomputed flags
+    C = hdot_dense_helper(A, B, isA_hodlr, isB_hodlr);
+end
 
-    if ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'}) & ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
+function C = hdot_dense_helper(A, B, isA_hodlr, isB_hodlr)
+    % Helper function with precomputed HODLR flags
+    
+    % Case 1: Both A and B are HODLR-like
+    if isA_hodlr && isB_hodlr
         [mA, nA] = size_t(A);
         [mB, nB] = size_t(B);
         if nA ~= mB
             error('Please enter the inputs with correct dimensions.');
         end
-
-        if isempty(A.D) & isempty(B.D)
-            A12 = A.U1 * A.V2;
-            A21 = A.U2 * A.V1;
-            
-            B12 = B.U1 * B.V2;
-            B21 = B.U2 * B.V1;
-                
-            C11 = hdot_dense(A.A11, B.A11) + A12 * B21;
-            C12 = hdot_dense(A.A11, B12) + hdot_dense(A12, B.A22);
-            C21 = hdot_dense(A21, B.A11) + hdot_dense(A.A22, B21);
-            C22 = A21 * B12 + hdot_dense(A.A22, B.A22);
-
-            C = [C11, C12; C21, C22];
         
-        elseif ~isempty(A.D)
-            C = hdot_dense(A.D, B);
-        else
-            C = hdot_dense(A, B.D);
-        end
+        if isempty(A.D) && isempty(B.D)
+            % Precompute low-rank products once
+            A12_V2B = A.V2 * B.U2;
+            A21_V1B = A.V1 * B.U1;
             
-    elseif ismember(class(A), {'hodlr', 'amphodlr', 'mphodlr'})
+            % Recursive calls with nested operations
+            C11 = hdot_dense_helper(A.A11, B.A11, true, true) + A.U1 * (A12_V2B * B.V1);
+            C12 = hdot_dense_helper(A.A11, B.U1 * B.V2, true, false) + A.U1 * (A.V2 * B.A22);
+            C21 = hdot_dense_helper(A.U2 * A.V1, B.A11, false, true) + A.U2 * (A21_V1B * B.V2);
+            C22 = A.U2 * (A.V1 * B.U1 * B.V2) + hdot_dense_helper(A.A22, B.A22, true, true);
+            
+            C = [C11, C12; C21, C22];
+        elseif ~isempty(A.D)
+            C = hdot_dense_helper(A.D, B, false, isB_hodlr);
+        else
+            C = hdot_dense_helper(A, B.D, isA_hodlr, false);
+        end
+        
+    % Case 2: A is HODLR-like, B is numeric
+    elseif isA_hodlr
         if isempty(A.D)
             [mA, nA, su1, su2, sv1, sv2] = size_t(A);
             [mB, nB] = size(B);
-            
             if nA ~= mB
                 error('Please enter the inputs with correct dimensions.');
             end
-        
-            C = zeros(mA, nB);
-            y1 = hdot_dense(A.A11, B(1:sv1, :));
-            y2 = A.U1 * (A.V2 * B(sv1+1:end, :));
-            y3 = A.U2 * (A.V1 * B(1:sv1, :));
-            y4 = hdot_dense(A.A22, B(sv1+1:end, :));
             
-            C(1:su1, :) = y1 + y2;
-            C(su1+1:end, :) = y3 + y4;
+            % Preallocate C and compute in-place
+            C = zeros(mA, nB);
+            V2B = A.V2 * B(sv1+1:end, :);
+            V1B = A.V1 * B(1:sv1, :);
+            C(1:su1, :) = hdot_dense_helper(A.A11, B(1:sv1, :), true, false) + A.U1 * V2B;
+            C(su1+1:end, :) = A.U2 * V1B + hdot_dense_helper(A.A22, B(sv1+1:end, :), true, false);
         else
             C = A.D * B;
         end
-
-    elseif ismember(class(B), {'hodlr', 'amphodlr', 'mphodlr'})
+        
+    % Case 3: A is numeric, B is HODLR-like
+    elseif isB_hodlr
         if isempty(B.D)
             [mB, nB, su1, su2, sv1, sv2] = size_t(B);
             [mA, nA] = size(A);
-            
             if nA ~= mB
-                error('Please enter the inputs with correct dimensions.')
+                error('Please enter the inputs with correct dimensions.');
             end
-        
-            C = zeros(mA, nB);
-            y1 = hdot_dense(A(:, 1:su1), B.A11);
-            y2 = (A(:, su1+1:end) * B.U2) * B.V1;
-            y3 = (A(:, 1:su1) * B.U1) * B.V2;
-            y4 = hdot_dense(A(:, su1+1:end), B.A22);
             
-            C(:, 1:sv1) = y1 + y2;
-            C(:, sv1+1:end) = y3 + y4;
+            % Preallocate C and compute in-place
+            C = zeros(mA, nB);
+            AU1 = A(:, 1:su1) * B.U1;
+            AU2 = A(:, su1+1:end) * B.U2;
+            C(:, 1:sv1) = hdot_dense_helper(A(:, 1:su1), B.A11, false, true) + AU2 * B.V1;
+            C(:, sv1+1:end) = AU1 * B.V2 + hdot_dense_helper(A(:, su1+1:end), B.A22, false, true);
         else
             C = A * B.D;
         end
         
+    % Case 4: Both A and B are numeric
     else
         C = A * B;
+    end
+end
+
+function is_hodlr = is_hodlr_class(obj)
+    % Helper function to check if obj is a HODLR-like class
+    switch class(obj)
+        case {'hodlr', 'amphodlr', 'mphodlr'}
+            is_hodlr = true;
+        otherwise
+            is_hodlr = false;
     end
 end

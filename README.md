@@ -110,6 +110,11 @@ For detailed of matrix computations, please check [docs](https://mhodlr.readthed
 | Triangular solver (Lower triangular solver LX=B, Upper triangular solver XU=B) |[``htrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsl.m), [``htrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/htrsu.m) [``mhtrsl(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhtrsl.m), [``mhtrsu(B, H)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/%40hodlr/mhtrsu.m)|
 | Linear solver (Ax = b) |[``lrsolve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/lrsolve.m) [``mlrsolve(H, B)``](https://github.com/chenxinye/mhodlr/blob/main/mhodlr/mlrsolve.m) |
 
+
+> **_NOTE:_**
+> ``mhodlr`` allows users to specify output as HODLR format or dense format, normally the output of dense format is faster, but the default option for output is HODLR format.
+
+
 ## Multiple precision routine
 
 ``mhodlr`` enables multiple precision control for matrix computation based on HODLR representation. It allows users to control the precision in a global environment, without the need to specify the precision everytime when the function is called. 

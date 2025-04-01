@@ -89,7 +89,7 @@ aphA = amphodlr(u_chain, A, depth, min_block_size, 'svd', epsilon);
 aprA = recover(aphA); % recover from the HODLR format
 ```
 
-One can easily visualize the constructed ``HODLR`` object's structure: 
+One can easily visualize the constructed ``HODLR`` object's structure (the plot is as depicted below): 
 ```matlab
 visualize_hodlr ( hA )
 ```

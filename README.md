@@ -95,7 +95,7 @@ visualize_hodlr ( hA )
 ```
 
 <p align="left">
- <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/matvis.jpg" alt="drawing" width="1380"/>
+ <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/matvis.jpg" alt="drawing" width="780"/>
 </p>
 
 

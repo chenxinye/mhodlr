@@ -40,7 +40,7 @@ function visualize_hodlr(H, colors)
     hold on;
     axis equal;
     axis off;
-    title('HODLR Matrix Visualization');
+    title('HODLR Structure Visualization');
     
     % Total matrix dimensions
     m = H.shape(1);

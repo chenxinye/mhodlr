@@ -316,5 +316,4 @@ norm(x - x_truth, 2)
 
 
 %% visualize
-
-visualize_hodlr(hA, 3, {})
+visualize_hodlr(hA)

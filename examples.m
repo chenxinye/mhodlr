@@ -313,3 +313,8 @@ set_prec(u);
 x = mpm_solve(hA, b);
 x_truth = A \ b;
 norm(x - x_truth, 2)
+
+
+%% visualize
+
+visualize_hodlr(hA, 3, {})

@@ -89,6 +89,16 @@ aphA = amphodlr(u_chain, A, depth, min_block_size, 'svd', epsilon);
 aprA = recover(aphA); % recover from the HODLR format
 ```
 
+One can easily visualize the constructed ``HODLR`` object's structure: 
+```matlab
+visualize_hodlr ( hA )
+```
+
+<p align="left">
+ <img src="https://raw.githubusercontent.com/chenxinye/mhodlr/refs/heads/main/matvis.jpg" alt="drawing" width="1380"/>
+</p>
+
+
 Simple example on usage is referred to  [EXAMPLE](https://github.com/chenxinye/mhodlr/blob/main/EXAMPLE.md).
 
 For detailed of matrix computations, please check [docs](https://mhodlr.readthedocs.io/en/latest/matrix_compute.html) for detail. 

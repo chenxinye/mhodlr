@@ -9,7 +9,8 @@ function X = htrsu(B, U, varargin)
         Matrix in HODLR format - hodlr class.
 
     itype- int
-        `1`: Solve XU = B, U is upper triangular matrix
+        `1`: Solve XU = B, U is upper triangular matrix, 
+              e.g., QR = A
         
         `2` Solve BX = U, B is upper triangular matrix.
 
@@ -27,27 +28,29 @@ function X = htrsu(B, U, varargin)
     else 
         itype = 1;
     end
+    % Compute class flags once
+    isU_hodlr = is_hodlr_class(U);
+    isB_hodlr = is_hodlr_class(B);
 
     if itype ~= 2 % Solve XU = B where U is upper triangular matrix
         if ~issquare(U)
             error('Please ensure the second input is sqaure matrix.');
         end
         
-        if ~(isa(U, 'hodlr') | isa(U, 'mphodlr') | isa(U, 'amphodlr'))
+        if ~isU_hodlr
             error('Please ensure the second input is of a HODLR matrix.');
         end
     
-        if isa(B, 'hodlr') | isa(B, 'mphodlr')  | isa(B, 'amphodlr') 
+        if isB_hodlr
             % B is of hodlr format
             X = B;
             if isempty(U.D)
                 X.A11 = htrsu(B.A11, U.A11);
                 X.V1 = htrsu(B.V1, U.A11, 1);
 
-                U12 = U.U1*U.V2;
-                [X.U1, X.V2] = compress_m(htrsu(B.U1*B.V2 - hdot(X.A11, U12, 'dense'), U.A22, 1), U.method, U.vareps, U.max_rnk, U.trun_norm_tp, U.issparse);
+                [X.U1, X.V2, ~] = compress_m(htrsu(B.U1*B.V2 - hdot(X.A11, U.U1, 'dense')*U.V2, U.A22, 1), U.method, U.vareps, U.max_rnk, U.trun_norm_tp, U.issparse);
             
-                X.A22 = htrsu(hadd(B.A22, X.U2*X.V1*U12, '-'), U.A22);
+                X.A22 = htrsu(hadd(B.A22, X.U2*(X.V1*U.U1)*U.V2, '-'), U.A22);
             else
                 X.D = mrdivide(B.D, U.D);
             end
@@ -57,8 +60,7 @@ function X = htrsu(B, U, varargin)
             if isempty(U.D) % XU = B
                 [~, ~, n1] = size_t(U, 2);
                 X1 = htrsu(B(:, 1:n1), U.A11);
-                U12 = U.U1*U.V2;
-                X2 = htrsu(B(:, n1+1:end) - X1 * U12, U.A22);
+                X2 = htrsu(B(:, n1+1:end) - (X1 * U.U1) * U.V2, U.A22);
                 X = [X1, X2];
 
                 % [m, n] = size(B);
@@ -91,5 +93,16 @@ function X = htrsu(B, U, varargin)
         else
             X = mldivide(B.D, U);
         end
+    end
+end
+
+
+function is_hodlr = is_hodlr_class(obj)
+    % Helper function to check if obj is a HODLR-like class
+    switch class(obj)
+        case {'hodlr', 'amphodlr', 'mphodlr'}
+            is_hodlr = true;
+        otherwise
+            is_hodlr = false;
     end
 end

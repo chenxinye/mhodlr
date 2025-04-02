@@ -101,6 +101,8 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
 
         YA.A11 = YA11; 
         YA.A22 = YA22; 
+        YA.shape(1) = YA11.shape(1) + YA22.shape(1);
+        YA.shape(2) = YA11.shape(2) + YA22.shape(2);
         YA.U2 = YBL1; 
         YA.V1 = YBR1;
         YA.U1 = zeros(m1,0); 
@@ -115,7 +117,8 @@ function [YA, BL, YBR, YC, T, hA] = iter_qr(hA, BL, BR, C, nrm_A)
         T.min_block_size = hA.min_block_size;
         T.A11 = T1;
         T.A22 = T2;
-
+        T.shape(1) = T1.shape(1) + T2.shape(1);
+        T.shape(2) = T1.shape(2) + T2.shape(2);
         T.max_level = hA.max_level;
         T.bottom_level = max(T1.bottom_level, T2.bottom_level) + 1;
 

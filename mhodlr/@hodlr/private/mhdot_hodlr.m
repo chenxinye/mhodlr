@@ -45,8 +45,8 @@ function C = mhdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
                                        A.U2 * (V1B_U1 * B.V2), '+', true);
             
             % Off-diagonal blocks with nested operations
-            A12 = mhdot_dense(A.A11, B.U1 * B.V2) + A.U1 * (A.V2 * B.A22);
-            A21 = mchop(A.U2 * mchop(A.V1 * B.A11)) + mhdot_dense(A.A22, B.U2 * B.V1);
+            A12 = mmhdot_dense(A.A11, B.U1 * B.V2) + A.U1 * (A.V2 * B.A22);
+            A21 = mchop(A.U2 * mchop(A.V1 * B.A11)) + mmhdot_dense(A.A22, B.U2 * B.V1);
             [C.U1, C.V2] = mp_compress_m(A12, 'svd', vareps);
             [C.U2, C.V1] = mp_compress_m(A21, 'svd', vareps);
         end
@@ -85,8 +85,8 @@ function C = mhdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
                                        A.U2 * V1B(:, midB+1:end), '+', true);
             
             % Off-diagonal blocks
-            A12 = hdot_dense(A.A11, B(1:sv1, midB+1:end)) + A.U1 * V2B_mid(:, midB+1:end);
-            A21 = A.U2 * V1B(:, 1:midB) + hdot_dense(A.A22, B(sv1+1:end, 1:midB));
+            A12 = mhdot_dense(A.A11, B(1:sv1, midB+1:end)) + A.U1 * V2B_mid(:, midB+1:end);
+            A21 = mchop(mchop(A.U2 * V1B(:, 1:midB)) + mhdot_dense(A.A22, B(sv1+1:end, 1:midB)));
             [C.U1, C.V2] = mp_compress_m(A12, 'svd', vareps);
             [C.U2, C.V1] = mp_compress_m(A21, 'svd', vareps);
         end
@@ -126,8 +126,8 @@ function C = mhdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
                                        AU1(midA+1:end, :) * B.V2, '+', true);
             
             % Off-diagonal blocks
-            A12 = AU1(1:midA, :) * B.V2 + hdot_dense(A(1:midA, su1+1:end), B.A22);
-            A21 = hdot_dense(A(midA+1:end, 1:su1), B.A11) + AU2(midA+1:end, :) * B.V1;
+            A12 = mchop(mchop(AU1(1:midA, :) * B.V2) + mhdot_dense(A(1:midA, su1+1:end), B.A22));
+            A21 = mhdot_dense(A(midA+1:end, 1:su1), B.A11) + AU2(midA+1:end, :) * B.V1;
             [C.U1, C.V2] = mp_compress_m(A12, 'svd', vareps);
             [C.U2, C.V1] = mp_compress_m(A21, 'svd', vareps);
         end

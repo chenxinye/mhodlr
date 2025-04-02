@@ -52,9 +52,9 @@ function X = mhtrsu(B, U, varargin)
                     
                     X.U1 = mchop(X.U1);
                     X.V2 = mchop(X.V2);
-                    X.A22 = mhtrsu(mchop(hadd(B.A22, mchop(X.U2*mchop(X.V1*U12)), '-')), U.A22);
+                    X.A22 = mhtrsu(hadd(B.A22, X.U2*mchop(X.V1*U12), '-'), U.A22);
                 else
-                    X.D = mchop(mrdivide(B.D, U.D));
+                    X.D = mrdivide(B.D, U.D);
                 end
                 
             else

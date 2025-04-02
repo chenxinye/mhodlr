@@ -27,8 +27,8 @@ function C = hdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
             C.shape = [m, n];
         else
             % Precompute shared low-rank terms
-            V2B_U2 = A.V2 * B.U2;
-            V1B_U1 = A.V1 * B.U1;
+            AV2_BU2 = A.V2 * B.U2;
+            AV1_BU1 = A.V1 * B.U1;
             
             % Initialize C with A's structure
             C = A;
@@ -37,13 +37,13 @@ function C = hdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
             
             % Recursive diagonal blocks with additions
             C.A11 = hadd_partial_hodlr(hdot_hodlr_helper(A.A11, B.A11, true, true), ...
-                                       A.U1 * (V2B_U2 * B.V1), '+', true);
+                                       A.U1 * (AV2_BU2 * B.V1), '+', true);
             C.A22 = hadd_partial_hodlr(hdot_hodlr_helper(A.A22, B.A22, true, true), ...
-                                       A.U2 * (V1B_U1 * B.V2), '+', true);
+                                       A.U2 * (AV1_BU1 * B.V2), '+', true);
             
             % Off-diagonal blocks with nested operations
-            A12 = hdot_dense(A.A11, B.U1 * B.V2) + A.U1 * (A.V2 * B.A22);
-            A21 = A.U2 * (A.V1 * B.A11) + hdot_dense(A.A22, B.U2 * B.V1);
+            A12 = hdot_dense(A.A11, B.U1 * B.V2) + A.U1 * hdot_dense(A.V2, B.A22);
+            A21 = A.U2 * hdot_dense(A.V1, B.A11) + hdot_dense(A.A22, B.U2 * B.V1);
             [C.U1, C.V2] = compress_m(A12, 'svd', vareps);
             [C.U2, C.V1] = compress_m(A21, 'svd', vareps);
         end

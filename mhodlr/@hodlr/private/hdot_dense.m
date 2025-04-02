@@ -23,14 +23,14 @@ function C = hdot_dense_helper(A, B, isA_hodlr, isB_hodlr)
         
         if isempty(A.D) && isempty(B.D)
             % Precompute low-rank products once
-            A12_V2B = A.V2 * B.U2;
-            A21_V1B = A.V1 * B.U1;
+            AV2_BU2 = A.V2 * B.U2;
+            AV1_BU1 = A.V1 * B.U1;
             
             % Recursive calls with nested operations
-            C11 = hdot_dense_helper(A.A11, B.A11, true, true) + A.U1 * (A12_V2B * B.V1);
-            C12 = hdot_dense_helper(A.A11, B.U1 * B.V2, true, false) + A.U1 * (A.V2 * B.A22);
-            C21 = hdot_dense_helper(A.U2 * A.V1, B.A11, false, true) + A.U2 * (A21_V1B * B.V2);
-            C22 = A.U2 * (A.V1 * B.U1 * B.V2) + hdot_dense_helper(A.A22, B.A22, true, true);
+            C11 = hdot_dense_helper(A.A11, B.A11, true, true) + A.U1 * (AV2_BU2 * B.V1);
+            C12 = hdot_dense_helper(A.A11, B.U1 * B.V2, true, false) + A.U1 * hdot_dense_helper(A.V2, B.A22, false, true);
+            C21 = hdot_dense_helper(A.U2 * A.V1, B.A11, false, true) + hdot_dense_helper(A.A22, B.U2 * B.V1, true, false);
+            C22 = A.U2 * (AV1_BU1 * B.V2) + hdot_dense_helper(A.A22, B.A22, true, true);
             
             C = [C11, C12; C21, C22];
         elseif ~isempty(A.D)

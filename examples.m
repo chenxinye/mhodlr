@@ -27,6 +27,9 @@ epsilon = 1e-12;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon, 20); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 iA = inverse(hA); 
 disp(norm(hdot(hA, iA, 'dense') - eye(50), 'fro'))
+disp(norm(hdot(hA, iA, 'hodlr').dense - eye(50), 'fro'))
+disp(norm(hdot(hA, iA.dense, 'dense') - eye(50), 'fro'))
+disp(norm(hdot(hA.dense, iA, 'hodlr').dense - eye(50), 'fro'))
 
 iA = inverse(hA, 'dense');  % return an the inverse in dense format
 disp(norm(iA * A - eye(50), 'fro'))

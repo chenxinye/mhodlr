@@ -256,15 +256,15 @@ disp(norm(recover(C) - ones(100), 'fro'))
 
 % QR 
 rng(0); %fix randomness
-A = rand(50, 50);
+A = rand(80, 50);
 depth = 88;
-min_block_size = 2;
+min_block_size = 3;
 epsilon = 1e-14;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
 [Q, R] = hqr(hA, 'dk');
 
-disp(norm(hdot(Q,R).dense -A))
+disp(norm(hdot(Q, R).dense -A))
 
 rng(0); %fix randomness
 A = rand(30, 30);
@@ -287,9 +287,10 @@ norm(Q.transpose.dense*Q.dense - eye(30))
 
 u = precision('s');
 set_prec(u);
-[Q, R] = hqr(hA, 'lt');
-[Q, R] = hqr(hA, 'lt2');
-
+[Q, R] = mhqr(hA, 'lt');
+disp(norm(Q.dense*R.dense - A))
+[Q, R] = mhqr(hA, 'lt2');
+disp(norm(Q.dense*R.dense - A))
 
 
 

@@ -222,7 +222,7 @@ min_block_size = 2;
 epsilon = 1e-8;
 hA = hodlr(A, depth, min_block_size, 'svd', epsilon); % or simply use ``hA = hodlr(A)`` by omitting other parameters as default
 
-[Q, R] = hqr(hA, 'lintner');
+[Q, R] = hqr(hA, 'lgt');
 
 disp(norm(hdot(Q.transpose(), Q, 'dense') - eye(100), 'fro'))
 disp(norm(hdot(Q, R, 'dense') - A, 'fro'))

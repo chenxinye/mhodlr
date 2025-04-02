@@ -1,4 +1,4 @@
-function C = hdot_hodlr(A, B)
+function C = mhdot_hodlr(A, B)
     % Optimized serial matrix-matrix multiplication returning a HODLR object
     % A and B can be hodlr, amphodlr, mphodlr, or numeric arrays
     
@@ -70,7 +70,7 @@ function C = mhdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
             C.shape = [m, n];
         else
             % Precompute shared terms
-            V2B_mid = A.V2 * B(sv1+1:end, :);
+            V2B_mid = mchop(A.V2 * B(sv1+1:end, :));
             V1B = mchop(A.V1 * B(1:sv1, :));
             
             % Initialize C
@@ -105,7 +105,7 @@ function C = mhdot_hodlr_helper(A, B, isA_hodlr, isB_hodlr)
         
         if ~isempty(B.D)
             D = mchop(A * B.D);
-            C = hodlr(D, 0, B.min_block_size);
+            C = mphodlr(D, 0, B.min_block_size);
             C.vareps = vareps;
             [m, n] = size(D);
             C.shape = [m, n];

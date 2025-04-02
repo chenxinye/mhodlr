@@ -82,14 +82,14 @@ function C = mhdot_dense_helper(A, B, isA_hodlr, isB_hodlr)
             AU1 = mchop(mchop(A(:, 1:su1)) * B.U1);
             AU2 = mchop(mchop(A(:, su1+1:end)) * B.U2);
             C(:, 1:sv1) = mhdot_dense_helper(A(:, 1:su1), B.A11, false, true) + mchop(mchop(AU2) * B.V1);
-            C(:, sv1+1:end) = mchop(mchop(AU1) * mchop(B.V2)) + mhdot_dense_helper(A(:, su1+1:end), B.A22, false, true);
+            C(:, sv1+1:end) = mchop(mchop(AU1) * B.V2) + mhdot_dense_helper(A(:, su1+1:end), B.A22, false, true);
         else
             C = mchop(A * B.D);
         end
         
     % Case 4: Both A and B are numeric
     else
-        C = mchop(A) * mchop(B);
+        C = mchop(mchop(A) * mchop(B));
     end
 end
 

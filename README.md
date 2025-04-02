@@ -145,7 +145,6 @@ Any forms of contributions are welcomed. Our documents are still in progress; fe
 
 
 ## Acknowledgement
----------------
 
 
 This project is supported by the European Union (ERC, [InEXASCALE](https://www.karlin.mff.cuni.cz/~carson/inexascale), 101075632). Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting

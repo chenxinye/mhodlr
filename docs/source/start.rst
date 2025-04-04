@@ -10,13 +10,13 @@ The support Matlab releases for running ``mhodlr``: MATLAB2023a, MATLAB2023b, MA
 Platform Compatibility: Windows, macOS, Linux.
 
 
-One can easily install ``mhodlr`` by simply downloading the software from the `GitHub Link <https://github.com/inEXASCALE/mhodlr>`_
+One can easily install ``mhodlr`` by simply downloading the software from the `GitHub Link (https://github.com/chenxinye/mhodlr) <https://github.com/chenxinye/mhodlr>`_
 
 Or use the bash command if git is installed:
 
 .. code:: bash
 
-   git clone https://github.com/inEXASCALE/mhodlr.git
+   git clone https://github.com/chenxinye/mhodlr.git
 
 
 After downloading the package, in Matlab terminal, add enviromental variables like

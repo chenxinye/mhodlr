@@ -135,6 +135,7 @@ u = precision('h'); % or ther precision customization
 set_prec(u);
 ```
 
+
 Then all the HODLR arithmetic function starting with ''m'' will performed in precision ``u``.
 
 

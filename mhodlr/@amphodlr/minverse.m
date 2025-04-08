@@ -7,6 +7,7 @@ function C = minverse(H, varargin)
     H - hodlr
         Matrix in HODLR format - hodlr class.
     
+
     oformat - str, default = 'hodlr'
         The format of returns.
         
@@ -131,21 +132,21 @@ function C = minverse_hodlr(H)
     C = H;
     if isempty(H.D)
         X22 = minverse_hodlr(H.A22);
-        A12 = mchop(mchop(H.U1) * mchop(H.V2));
-        A21 = mchop(mchop(H.U2) * mchop(H.V1));
+        % A12 = mchop(mchop(H.U1) * mchop(H.V2));
+        % A21 = mchop(mchop(H.U2) * mchop(H.V1));
         
-        C.A11  = minverse_hodlr(hadd(H.A11, mhdot_dense(hdot(A12, X22), A21), '-'));
-    
-        [C.U1, C.V2] = compress_m(mhdot_dense(mhdot_dense(C.A11, -A12), X22), H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
-        C.U1 = mchop(C.U1);
-        C.V2 = mchop(C.V2);
+        C.A11  = minverse_hodlr(mhadd(H.A11, mhdot_dense(mhdot(H.U1, mhdot(H.V2, X22)), H.U2) * H.V1, '-'));
+        CA11A12 = mhdot_dense(C.A11, -H.U1) * H.V2;
+        CA11A12X22 = mhdot_dense(CA11A12, X22);
 
-        C21 = mchop(-mhdot_dense(mhdot_dense(X22, A21), C.A11));
-        [C.U2, C.V1] = compress_m(C21, H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
-        C.U2 = mchop(C.U2);
-        C.V1 = mchop(C.V1);
-        XX = mchop(mhdot_dense(mchop(mchop(C21) * mchop(A12)), X22));
-        C.A22 = hadd(X22, XX, '-');
+        [C.U1, C.V2] = mp_compress_m(CA11A12X22, H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
+        C21 = -mhdot_dense(mhdot_dense(X22, H.U2) * H.V1, C.A11);
+        [C.U2, C.V1] = mp_compress_m(C21, H.method, H.vareps, H.max_rnk, H.trun_norm_tp, H.issparse);
+
+        % C.U2 = mchop(C.U2); 
+        % C.V1 = mchop(C.V1); 
+        XX = mhdot_dense((C21 * H.U1) * H.V2, X22);
+        C.A22 = mhadd(X22, XX, '-');
     else
         C.D = mchop(inv(mchop(H.D)));
     end

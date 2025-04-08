@@ -31,10 +31,14 @@ disp(norm(hdot(hA, iA, 'hodlr').dense - eye(50), 'fro'))
 disp(norm(hdot(hA, iA.dense, 'dense') - eye(50), 'fro'))
 disp(norm(hdot(hA.dense, iA, 'hodlr').dense - eye(50), 'fro'))
 
-iA = inverse(hA, 'dense');  % return an the inverse in dense format
+iA = inverse(hA, 'dense', 1);  % return an the inverse in dense format
 disp(norm(iA * A - eye(50), 'fro'))
-
 disp(norm(hadd(hA.transpose(), A', '-', 'dense'), 'fro'))
+
+iA = inverse(hA, 'dense', 1);  % return an the inverse in dense format
+disp(norm(iA * A - eye(50), 'fro'))
+disp(norm(hadd(hA.transpose(), A', '-', 'dense'), 'fro'))
+
 
 % mixed precision
 u = precision('s');

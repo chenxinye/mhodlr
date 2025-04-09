@@ -1,0 +1,1 @@
+rm -rf exps/*.csv

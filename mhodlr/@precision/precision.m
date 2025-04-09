@@ -9,6 +9,7 @@ classdef precision
        'q52', 'fp8-e5m2'       - NVIDIA quarter precision (5 exponent bits,
                                  2 significand bits),
        'b', 'bfloat16'         - bfloat16,
+       't', 'tf32', 'tensorfloat32'         - bfloat16,
        'h', 'half', 'fp16'     - IEEE half precision (the default),
        's', 'single', 'fp32'   - IEEE single precision,
        'd', 'double', 'fp64'   - IEEE double precision,
@@ -195,8 +196,8 @@ classdef precision
                     obj.t = varargin{1}(1);
                     obj.emax = varargin{1}(2);
                     
-                elseif ismember(varargin{1},  {'h','half','fp16','b','bfloat16','s', ...
-                    'single','fp32','d','double','fp64',...
+                elseif ismember(varargin{1},  {'h','half','fp16','b','bfloat16', ...
+                    't', 'tf32', 'tensorfloat32', 's', 'single','fp32','d','double','fp64',...
                     'q43','fp8-e4m3','q52','fp8-e5m2'})
 
                     [t, emax] = base(varargin{1});

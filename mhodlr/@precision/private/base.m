@@ -12,6 +12,9 @@ function [t, emax] = base(prec)
     elseif ismember(prec, {'b','bfloat16'})
         t = 8;
         emax = 127;  
+    elseif ismember(prec, {'t','tf32', 'tensorfloat32'})
+        t = 11;
+        emax = 127;  
     elseif ismember(prec, {'s','single','fp32'})
         t = 24;
         emax = 127;

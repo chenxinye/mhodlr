@@ -26,13 +26,13 @@ function [L, U] = mhlu(H, varargin)
     end
     
 
-    if nargin == 2
+    if nargin == 1
         oformat = 'hodlr';
         vareps = H.vareps;
-    elseif nargin == 3 
+    elseif nargin == 2 
         oformat = varargin{1};
         vareps = H.vareps;
-    elseif nargin > 3 
+    else
         oformat = varargin{1};
         vareps = varargin{2};
     end 

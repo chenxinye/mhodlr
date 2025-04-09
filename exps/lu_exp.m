@@ -1,34 +1,30 @@
-% Add mhodlr to path
+
 addpath("../mhodlr/");
 
-% Set random seed for reproducibility
-rng(2025);
+rng(0);
 
-% Parameters
-n = 100; % Matrix size
+n = 200; % Matrix size
 depths = [3, 8]; % Depths to test
 vareps_values = [1e-4, 1e-8, 1e-12]; % Approximation tolerances
-precisions = {'s', 'h', 't', 'b'}; % Precision types (fp32, half)
-precision_labels = {'fp32', 'half', 'tf32', 'b'}; % For CSV column headers
+precisions = {'s', 'h', 'b'}; % Precision types (fp32, half, b)
+precision_labels = {'fp32', 'half', 'b'}; % For CSV column headers
 min_block_size = 10; % Minimum block size
 method = 'svd'; % Compression method
 matrix_names = {'mat-1', 'mat-2', 'mat-3', 'mat-4'}; % Kernel matrix labels
+lambda = 1; % Initial diagonal shift for SPD enforcement
 
 % Generate point sets
-% s1: 1D uniform grid [0, 1]
-s1 = linspace(0, 1, n);
-
-% s2: 2D uniform grid [-1, 1] x [-1, 1], approximately 2000 points
+s1 = linspace(0, 1, n); % 1D uniform grid [0, 1]
 grid_size = ceil(sqrt(n)); % e.g., 45 for n=2000
 [x, y] = meshgrid(linspace(-1, 1, grid_size), linspace(-1, 1, grid_size));
-s2 = [x(:), y(:)]; % Flatten to list of points
-s2 = s2(1:n, :); % Trim to exactly 2000 points
+s2 = [x(:), y(:)]; % 2D uniform grid [-1, 1] x [-1, 1]
+s2 = s2(1:n, :); % Trim to 2000 points
 
 % Function to generate kernel matrices
 generate_kernel = @(type, points, h) generate_kernel_matrix(type, points, h);
 
-% Initialize storage for all matrices
-errors = cell(length(matrix_names), length(depths)); % Matrix x Depth
+% Initialize storage
+errors = cell(length(matrix_names), length(depths));
 for m = 1:length(matrix_names)
     for d = 1:length(depths)
         errors{m, d} = zeros(length(vareps_values), length(precisions));
@@ -41,22 +37,40 @@ for m = 1:length(matrix_names)
     
     % Generate kernel matrix
     try
-        if m == 1 % mat-1: Kernel (i) on s1
+        if m == 1 % mat-1: Modified Kernel (i) on s1
             A = generate_kernel(1, s1, []);
+            fprintf('  Note: mat-1 modified to be SPD.\n');
         elseif m == 2 % mat-2: Kernel (ii) on s2
             A = generate_kernel(2, s2, []);
+            fprintf('  Note: mat-2 shifted to be SPD.\n');
         elseif m == 3 % mat-3: Kernel (iii) on s2, h=1
             A = generate_kernel(3, s2, 1);
+            fprintf('  Note: mat-3 is naturally SPD.\n');
         elseif m == 4 % mat-4: Kernel (iii) on s2, h=20
             A = generate_kernel(3, s2, 20);
+            fprintf('  Note: mat-4 is naturally SPD.\n');
         end
         
-        % Check for NaN in A
-        if any(isnan(A(:)))
-            error('NaN detected in kernel matrix');
+        if any(isnan(A(:))) || any(isinf(A(:)))
+            error('NaN or Inf detected in kernel matrix');
         end
         
-        % Compute norm of A for relative error
+        % Enforce SPD with diagonal shift
+        shift = lambda;
+        A = A + shift * eye(n); % Add initial shift
+        spd_verified = false;
+        while ~spd_verified
+            try
+                chol(A); % Test if SPD
+                spd_verified = true;
+            catch
+                fprintf('  %s not SPD with shift %f, increasing shift\n', matrix_names{m}, shift);
+                shift = shift * 10;
+                A = A - (shift/10) * eye(n) + shift * eye(n);
+            end
+        end
+        fprintf('  %s made SPD with shift %f\n', matrix_names{m}, shift);
+        
         norm_A = norm(A, 'fro');
         if isnan(norm_A) || isinf(norm_A)
             error('Invalid norm of A');
@@ -64,9 +78,9 @@ for m = 1:length(matrix_names)
     catch e
         fprintf('Error generating %s: %s\n', matrix_names{m}, e.message);
         for d = 1:length(depths)
-            errors{m, d}(:) = -1; % Set all errors to -1 if matrix generation fails
+            errors{m, d}(:) = -1;
         end
-        continue; % Skip to next matrix
+        continue;
     end
     
     % Loop over depths
@@ -78,7 +92,6 @@ for m = 1:length(matrix_names)
         for v = 1:length(vareps_values)
             vareps = vareps_values(v);
             
-            % Construct HODLR matrix with exception handling
             try
                 hA = hodlr(A, depth, min_block_size, method, vareps);
             catch e
@@ -91,15 +104,15 @@ for m = 1:length(matrix_names)
             for p = 1:length(precisions)
                 prec = precisions{p};
                 try
-                    if strcmp(prec, 's') % fp32: use full precision hlu
+                    if strcmp(prec, 's') % Full precision for fp32
                         [L, U] = hlu(hA);
-                    else % half: use mixed-precision mhlu
+                    else % Mixed precision for half, b
                         u = precision(prec);
                         set_prec(u);
                         [L, U] = mhlu(hA);
                     end
                     
-                    % Compute relative error with checks
+                    % Compute relative error
                     LU_product = hdot(L, U, 'dense');
                     if any(isnan(LU_product(:))) || any(isinf(LU_product(:)))
                         error('NaN or Inf in LU product');
@@ -111,7 +124,7 @@ for m = 1:length(matrix_names)
                 catch e
                     fprintf('    vareps %e, precision %s: Error (%s)\n', ...
                         vareps, precision_labels{p}, e.message);
-                    error = -1; % Set to -1 on failure
+                    error = -1;
                 end
                 errors{m, d}(v, p) = error;
                 fprintf('    vareps %e, precision %s: relative error = %e\n', ...
@@ -124,31 +137,28 @@ end
 % Save results to CSV files
 for m = 1:length(matrix_names)
     for d = 1:length(depths)
-        % Create table with vareps as rows and precisions as columns
         T = array2table(errors{m, d}, 'VariableNames', precision_labels);
-        T.vareps = vareps_values'; % Add vareps as a column
-        T = movevars(T, 'vareps', 'Before', 1); % Move vareps to first column
-        
-        % Save to CSV
-        filename = sprintf('%s_depth%d.csv', matrix_names{m}, depths(d));
+        T.vareps = vareps_values';
+        T = movevars(T, 'vareps', 'Before', 1);
+        filename = sprintf('%s_depth%d_lu.csv', matrix_names{m}, depths(d));
         writetable(T, filename);
         fprintf('Saved results to %s\n', filename);
     end
 end
 
-% Helper function to generate kernel matrices
+% Helper function to generate kernel matrices (modified for SPD)
 function A = generate_kernel_matrix(type, points, h)
     n = size(points, 1);
     A = zeros(n, n);
     
-    if type == 1 % Kernel (i): 1/(x - y)
-        x = points(:); % 1D points
+    if type == 1 % Modified Kernel (i): 1/|x - y|
+        x = points(:);
         for i = 1:n
             for j = 1:n
                 if i == j
                     A(i, j) = 1;
                 else
-                    A(i, j) = 1 / (x(i) - x(j));
+                    A(i, j) = 1 / abs(x(i) - x(j)); % Symmetric
                 end
             end
         end

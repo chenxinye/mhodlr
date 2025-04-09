@@ -1,10 +1,7 @@
-% Add mhodlr to path
 addpath("../mhodlr/");
 
-% Set random seed for reproducibility
 rng(0);
 
-% Parameters
 n = 200; % Matrix size
 depths = [3, 8]; % Depths to test
 vareps_values = [1e-4, 1e-8, 1e-12]; % Approximation tolerances
@@ -37,7 +34,7 @@ end
 for m = 1:length(matrix_names)
     fprintf('Processing %s\n', matrix_names{m});
     
-    % Generate kernel matrix and true inverse
+    % Generate kernel matrix and random vector
     try
         if m == 1 % mat-1: Modified Kernel (i) on s1
             A = generate_kernel(1, s1, []);
@@ -67,17 +64,18 @@ for m = 1:length(matrix_names)
                 spd_verified = true;
             catch
                 fprintf('  %s not SPD with shift %f, increasing shift\n', matrix_names{m}, shift);
-                shift = shift * 10;
-                A = A - (shift/10) * eye(n) + shift * eye(n);
+                shift = shift * 10; % Increase shift if not SPD
+                A = A - (shift/10) * eye(n) + shift * eye(n); % Update with larger shift
             end
         end
         fprintf('  %s made SPD with shift %f\n', matrix_names{m}, shift);
         
-        % Compute true inverse
-        A_inv = inv(A);
-        norm_A_inv = norm(A_inv, 'fro');
-        if isnan(norm_A_inv) || isinf(norm_A_inv)
-            error('Invalid norm of inverse A');
+        % Generate random vector and true product
+        x = rand(n, 1);
+        Ax = A * x;
+        norm_Ax = norm(Ax, 'fro');
+        if isnan(norm_Ax) || isinf(norm_Ax)
+            error('Invalid norm of A*x');
         end
     catch e
         fprintf('Error generating %s: %s\n', matrix_names{m}, e.message);
@@ -110,14 +108,13 @@ for m = 1:length(matrix_names)
                 try
                     u = precision(prec);
                     set_prec(u);
-                    iA = minverse(hA); % HODLR inverse
+                    b = hdot(hA, x, 'dense'); % HODLR matrix-vector product
                     
                     % Compute relative error
-                    iA_dense = iA.todense();
-                    if any(isnan(iA_dense(:))) || any(isinf(iA_dense(:)))
-                        error('NaN or Inf in inverse dense matrix');
+                    if any(isnan(b(:))) || any(isinf(b(:)))
+                        error('NaN or Inf in hA*x');
                     end
-                    error = norm(iA_dense - A_inv, 'fro') / norm_A_inv;
+                    error = norm(b - Ax, 'fro') / norm_Ax;
                     if isnan(error) || isinf(error)
                         error('Invalid error value');
                     end
@@ -140,7 +137,7 @@ for m = 1:length(matrix_names)
         T = array2table(errors{m, d}, 'VariableNames', precision_labels);
         T.vareps = vareps_values';
         T = movevars(T, 'vareps', 'Before', 1);
-        filename = sprintf('%s_depth%d_inverse.csv', matrix_names{m}, depths(d));
+        filename = sprintf('mv_%s_depth%d_matvec.csv', matrix_names{m}, depths(d));
         writetable(T, filename);
         fprintf('Saved results to %s\n', filename);
     end
@@ -156,7 +153,7 @@ function A = generate_kernel_matrix(type, points, h)
         for i = 1:n
             for j = 1:n
                 if i == j
-                    A(i, j) = 1;
+                    A(i, j) = 1; % Keep diagonal as 1
                 else
                     A(i, j) = 1 / abs(x(i) - x(j)); % Symmetric
                 end

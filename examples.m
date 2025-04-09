@@ -295,6 +295,8 @@ set_prec(u);
 disp(norm(Q.dense*R.dense - A))
 [Q, R] = mhqr(hA, 'lt2');
 disp(norm(Q.dense*R.dense - A))
+[Q, R] = mhqr(hA, 'kd');
+disp(norm(Q.dense*R.dense - A))
 
 
 

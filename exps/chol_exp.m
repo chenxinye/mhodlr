@@ -1,7 +1,6 @@
-% Add mhodlr to path
+
 addpath("../mhodlr/");
 
-% Set random seed for reproducibility
 rng(0);
 
 % Parameters
@@ -37,20 +36,16 @@ end
 for m = 1:length(matrix_names)
     fprintf('Processing %s\n', matrix_names{m});
     
-    % Generate kernel matrix and true inverse
+    % Generate kernel matrix
     try
         if m == 1 % mat-1: Modified Kernel (i) on s1
             A = generate_kernel(1, s1, []);
-            fprintf('  Note: mat-1 modified to be SPD.\n');
         elseif m == 2 % mat-2: Kernel (ii) on s2
             A = generate_kernel(2, s2, []);
-            fprintf('  Note: mat-2 shifted to be SPD.\n');
         elseif m == 3 % mat-3: Kernel (iii) on s2, h=1
             A = generate_kernel(3, s2, 1);
-            fprintf('  Note: mat-3 is naturally SPD.\n');
         elseif m == 4 % mat-4: Kernel (iii) on s2, h=20
             A = generate_kernel(3, s2, 20);
-            fprintf('  Note: mat-4 is naturally SPD.\n');
         end
         
         if any(isnan(A(:))) || any(isinf(A(:)))
@@ -67,17 +62,15 @@ for m = 1:length(matrix_names)
                 spd_verified = true;
             catch
                 fprintf('  %s not SPD with shift %f, increasing shift\n', matrix_names{m}, shift);
-                shift = shift * 10;
-                A = A - (shift/10) * eye(n) + shift * eye(n);
+                shift = shift * 10; % Increase shift if not SPD
+                A = A - (shift/10) * eye(n) + shift * eye(n); % Update with larger shift
             end
         end
         fprintf('  %s made SPD with shift %f\n', matrix_names{m}, shift);
         
-        % Compute true inverse
-        A_inv = inv(A);
-        norm_A_inv = norm(A_inv, 'fro');
-        if isnan(norm_A_inv) || isinf(norm_A_inv)
-            error('Invalid norm of inverse A');
+        norm_A = norm(A, 'fro');
+        if isnan(norm_A) || isinf(norm_A)
+            error('Invalid norm of A');
         end
     catch e
         fprintf('Error generating %s: %s\n', matrix_names{m}, e.message);
@@ -108,16 +101,20 @@ for m = 1:length(matrix_names)
             for p = 1:length(precisions)
                 prec = precisions{p};
                 try
-                    u = precision(prec);
-                    set_prec(u);
-                    iA = minverse(hA); % HODLR inverse
+                    if strcmp(prec, 's') % Full precision for fp32
+                        R = hchol(hA); % HODLR Cholesky
+                    else % Mixed precision for half, b
+                        u = precision(prec);
+                        set_prec(u);
+                        R = mhchol(hA); % Mixed-precision HODLR Cholesky
+                    end
                     
                     % Compute relative error
-                    iA_dense = iA.todense();
-                    if any(isnan(iA_dense(:))) || any(isinf(iA_dense(:)))
-                        error('NaN or Inf in inverse dense matrix');
+                    RTR = hdot(R.transpose(), R, 'dense');
+                    if any(isnan(RTR(:))) || any(isinf(RTR(:)))
+                        error('NaN or Inf in R^T R');
                     end
-                    error = norm(iA_dense - A_inv, 'fro') / norm_A_inv;
+                    error = norm(RTR - A, 'fro') / norm_A;
                     if isnan(error) || isinf(error)
                         error('Invalid error value');
                     end
@@ -140,7 +137,7 @@ for m = 1:length(matrix_names)
         T = array2table(errors{m, d}, 'VariableNames', precision_labels);
         T.vareps = vareps_values';
         T = movevars(T, 'vareps', 'Before', 1);
-        filename = sprintf('%s_depth%d_inverse.csv', matrix_names{m}, depths(d));
+        filename = sprintf('chol_%s_depth%d_cholesky.csv', matrix_names{m}, depths(d));
         writetable(T, filename);
         fprintf('Saved results to %s\n', filename);
     end
@@ -156,7 +153,7 @@ function A = generate_kernel_matrix(type, points, h)
         for i = 1:n
             for j = 1:n
                 if i == j
-                    A(i, j) = 1;
+                    A(i, j) = 1; % Keep diagonal as 1
                 else
                     A(i, j) = 1 / abs(x(i) - x(j)); % Symmetric
                 end

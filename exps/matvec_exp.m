@@ -5,8 +5,8 @@ rng(0);
 n = 200; % Matrix size
 depths = [3, 8]; % Depths to test
 vareps_values = [1e-4, 1e-8, 1e-12]; % Approximation tolerances
-precisions = {'s', 'h', 'b'}; % Precision types (fp32, half, b)
-precision_labels = {'fp32', 'half', 'b'}; % For CSV column headers
+precisions = {'s', 't', 'h', 'b'}; % Precision types (fp32, half, b)
+precision_labels = {'fp32', 'tf32', 'half', 'bf16'}; % For CSV column headers
 min_block_size = 10; % Minimum block size
 method = 'svd'; % Compression method
 matrix_names = {'mat-1', 'mat-2', 'mat-3', 'mat-4'}; % Kernel matrix labels
@@ -137,7 +137,7 @@ for m = 1:length(matrix_names)
         T = array2table(errors{m, d}, 'VariableNames', precision_labels);
         T.vareps = vareps_values';
         T = movevars(T, 'vareps', 'Before', 1);
-        filename = sprintf('mv_%s_depth%d_matvec.csv', matrix_names{m}, depths(d));
+        filename = sprintf('mv_%s_depth%d.csv', matrix_names{m}, depths(d));
         writetable(T, filename);
         fprintf('Saved results to %s\n', filename);
     end

@@ -1,12 +1,13 @@
 % Parameters
 matrix_names = {'mat-1', 'mat-2', 'mat-3', 'mat-4'};
 depths = [3, 8];
-vareps_values = [1e-4, 1e-8, 1e-12];
-precision_labels = {'fp32', 'tf32', 'half', 'bf16'}; % For CSV column headers
+vareps_values = [1e-2, 1e-5, 1e-8, 1e-11]; % Approximation tolerances
+precision_labels = {'fp32',  'fp16', 'bf16'}; % For CSV column headers
+
 operation = 'matvec'; % Specific to HODLR matrix-vector product
 
 % Colors for each vareps
-colors = {'b', 'g', 'r'}; % Blue, Green, Red for 1e-4, 1e-8, 1e-12
+colors = {'b', 'g', 'r', 'y'}; % Blue, Green, Red for 1e-4, 1e-8, 1e-12
 
 % Loop over matrices and depths
 for m = 1:length(matrix_names)

@@ -3,7 +3,7 @@ addpath("../mhodlr/");
 
 rng(0);
 
-n = 200; % Matrix size
+n = 2000; % Matrix size
 depths = [3, 8]; % Depths to test
 vareps_values = [1e-2, 1e-5, 1e-8, 1e-11]; % Approximation tolerances
 precisions = {'s', 'h', 'b'}; % Precision types (fp32, half, b)
@@ -59,6 +59,8 @@ for m = 1:length(matrix_names)
         shift = lambda;
         A = A + shift * eye(n); % Add initial shift
         spd_verified = false;
+        disp("rank:")
+        
         while ~spd_verified
             try
                 chol(A); % Test if SPD
@@ -100,6 +102,7 @@ for m = 1:length(matrix_names)
                 continue;
             end
             
+            disp(hA)
             % Loop over precisions
             for p = 1:length(precisions)
                 prec = precisions{p};

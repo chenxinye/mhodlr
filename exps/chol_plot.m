@@ -5,6 +5,8 @@ vareps_values = [1e-2, 1e-5, 1e-8, 1e-11];
 precision_labels = {'fp32', 'fp16', 'bf16'};
 operation = 'cholesky';
 
+
+
 % Colors for each vareps (RGB for consistency)
 colors = [
     0, 0, 1;    % Blue for 1e-2

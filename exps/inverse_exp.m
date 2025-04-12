@@ -4,7 +4,7 @@ addpath("../mhodlr/");
 % Set random seed for reproducibility
 rng(0);
 
-n = 2000; % Matrix size
+n = 500; % Matrix size
 depths = [3, 8]; % Depths to test
 vareps_values = [1e-2, 1e-5, 1e-8, 1e-11]; % Approximation tolerances
 precisions = {'s', 'h', 'b'}; % Precision types (fp32, half, b)

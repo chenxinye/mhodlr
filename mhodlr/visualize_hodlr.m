@@ -1,6 +1,6 @@
-function visualize_hodlr(H, colors)
+function visualize_hodlr(H, colors, output_filename)
 %{
-    VISUALIZE_HODLR - Visualize HODLR matrix partitions with dynamic colors
+    VISUALIZE_HODLR - Visualize HODLR matrix partitions with dynamic colors and save figure
         Parameters
         --------------------
         H - hodlr, mphodlr, and amphodlr
@@ -9,6 +9,8 @@ function visualize_hodlr(H, colors)
         colors - cell array
             optional cell array of color specs (e.g., {'r', 'g', 'b'}), defaults to auto-generated colors based on bottom_level
 
+        output_filename - string
+            optional filename for saving the figure (e.g., 'hodlr_plot.png'). If not provided, defaults to 'hodlr_visualization.png'.
 %}
    
     if ~is_hodlr_class(H)
@@ -31,12 +33,17 @@ function visualize_hodlr(H, colors)
                 length(colors), num_levels + 1);
     end
     
+    % Set default output filename if not provided
+    if nargin < 3 || isempty(output_filename)
+        output_filename = 'hodlr_visualization.png';
+    end
+    
     % Split colors: first num_levels for levels, last for dense blocks
     level_colors = colors(1:num_levels);  % Colors for each level (0 to bottom_level)
     dense_color = colors{end};            % Distinct color for dense blocks (D)
     
     % Ensure figure is ready
-    figure;
+    fig = figure;
     hold on;
     axis equal;
     axis off;
@@ -54,10 +61,13 @@ function visualize_hodlr(H, colors)
     ylim([0 m]);
     set(gca, 'YDir', 'reverse');  % Matrix convention: (0,0) at top-left
     hold off;
+    
+    % Save the figure to the current working directory
+    saveas(fig, fullfile(pwd, output_filename));
 end
 
 function plot_hodlr_block(H, x0, y0, m, n, level_colors, dense_color)
-    % PLOT_HODLR_BLOCK - Recursively plot HODLR blocks with D sizes matching actual shape
+    % PLOT_HODLR_BLOCK - Recursively plot HODLR blocks with corrected left-right orientation
     %   H: hodlr object
     %   x0, y0: bottom-left corner of current block
     %   m, n: rows and columns of current block
@@ -88,24 +98,24 @@ function plot_hodlr_block(H, x0, y0, m, n, level_colors, dense_color)
         m2 = m - su1;         % Rows of A22
         n2 = n - sv1;         % Columns of A22
         
-        % Plot A11 (top-left diagonal block)
-        plot_hodlr_block(H.A11, x0, y0 + m2, su1, sv1, level_colors, dense_color);
+        % Plot A11 (top-left diagonal block, adjust x0 to right for reversal)
+        plot_hodlr_block(H.A11, x0 + n2, y0 + m2, su1, sv1, level_colors, dense_color);
         
-        % Plot A22 (bottom-right diagonal block)
-        plot_hodlr_block(H.A22, x0 + sv1, y0, m2, n2, level_colors, dense_color);
+        % Plot A22 (bottom-right diagonal block, adjust x0 to left)
+        plot_hodlr_block(H.A22, x0, y0, m2, n2, level_colors, dense_color);
         
-        % Plot U1 V2 (top-right off-diagonal block)
-        rectangle('Position', [x0 + sv1, y0 + m2, n2, su1], ...
+        % Plot U1 V2 (top-right off-diagonal block, move to top-left)
+        rectangle('Position', [x0, y0 + m2, n2, su1], ...
                   'EdgeColor', block_color, 'LineWidth', 1.5, ...
                   'FaceColor', [block_color, 0.1]);
-        text(x0 + sv1 + n2/2, y0 + m2 + su1/2, 'U1 V2', ...
+        text(x0 + n2/2, y0 + m2 + su1/2, 'U1 V2', ...
              'HorizontalAlignment', 'center', 'Color', 'k');
         
-        % Plot U2 V1 (bottom-left off-diagonal block)
-        rectangle('Position', [x0, y0, sv1, m2], ...
+        % Plot U2 V1 (bottom-left off-diagonal block, move to bottom-right)
+        rectangle('Position', [x0 + n2, y0, sv1, m2], ...
                   'EdgeColor', block_color, 'LineWidth', 1.5, ...
                   'FaceColor', [block_color, 0.1]);
-        text(x0 + sv1/2, y0 + m2/2, 'U2 V1', ...
+        text(x0 + n2 + sv1/2, y0 + m2/2, 'U2 V1', ...
              'HorizontalAlignment', 'center', 'Color', 'k');
     end
 end

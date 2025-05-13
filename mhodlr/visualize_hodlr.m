@@ -1,6 +1,6 @@
 function visualize_hodlr(H, colors, output_filename)
 %{
-    VISUALIZE_HODLR - Visualize HODLR matrix partitions with dynamic colors and save figure
+    VISUALIZE_HODLR - Visualize HODLR matrix partitions with dynamic colors, save with tight layout
         Parameters
         --------------------
         H - hodlr, mphodlr, and amphodlr
@@ -60,10 +60,24 @@ function visualize_hodlr(H, colors, output_filename)
     xlim([0 n]);
     ylim([0 m]);
     set(gca, 'YDir', 'reverse');  % Matrix convention: (0,0) at top-left
+    
+    % Apply tight layout
+    set(gca, 'LooseInset', get(gca, 'TightInset'));  % Minimize margins around axes
+    set(gcf, 'PaperPositionMode', 'auto');  % Ensure figure size matches content
+    
     hold off;
     
-    % Save the figure to the current working directory
-    saveas(fig, fullfile(pwd, output_filename));
+    % Save the figure to the current working directory with tight layout
+    try
+        % Use exportgraphics for tight, high-quality output (MATLAB R2020a or later)
+        exportgraphics(fig, fullfile(pwd, output_filename), 'Resolution', 300);
+    catch
+        % Fallback to saveas for older MATLAB versions
+        saveas(fig, fullfile(pwd, output_filename));
+    end
+    
+    % Optional: Close the figure to avoid clutter
+    % close(fig);
 end
 
 function plot_hodlr_block(H, x0, y0, m, n, level_colors, dense_color)
@@ -98,20 +112,20 @@ function plot_hodlr_block(H, x0, y0, m, n, level_colors, dense_color)
         m2 = m - su1;         % Rows of A22
         n2 = n - sv1;         % Columns of A22
         
-        % Plot A11 (top-left diagonal block, adjust x0 to right for reversal)
+        % Plot A11 (top-right diagonal block)
         plot_hodlr_block(H.A11, x0 + n2, y0 + m2, su1, sv1, level_colors, dense_color);
         
-        % Plot A22 (bottom-right diagonal block, adjust x0 to left)
+        % Plot A22 (bottom-left diagonal block)
         plot_hodlr_block(H.A22, x0, y0, m2, n2, level_colors, dense_color);
         
-        % Plot U1 V2 (top-right off-diagonal block, move to top-left)
+        % Plot U1 V2 (top-left off-diagonal block)
         rectangle('Position', [x0, y0 + m2, n2, su1], ...
                   'EdgeColor', block_color, 'LineWidth', 1.5, ...
                   'FaceColor', [block_color, 0.1]);
         text(x0 + n2/2, y0 + m2 + su1/2, 'U1 V2', ...
              'HorizontalAlignment', 'center', 'Color', 'k');
         
-        % Plot U2 V1 (bottom-left off-diagonal block, move to bottom-right)
+        % Plot U2 V1 (bottom-right off-diagonal block)
         rectangle('Position', [x0 + n2, y0, sv1, m2], ...
                   'EdgeColor', block_color, 'LineWidth', 1.5, ...
                   'FaceColor', [block_color, 0.1]);

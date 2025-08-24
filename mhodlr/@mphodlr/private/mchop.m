@@ -4,6 +4,14 @@ function x = mchop(x)
     if isempty(opt)
         precision();
     end
+    
+    if opt.exp_bits <= 5 
+        xmax =  calc_float_max(opt.exp_bits, opt.sig_bits);
+        alpha = max(abs(x), [], 'all');
+        mu = opt.theta * xmax / alpha;
+        [R, S] = two_sided_diagonal_scaling_sym(x);
+        x = mu * diag(R) * x * diag(S);
+    end
 
     if opt.built_in
         switch(opt.ftp)
@@ -94,6 +102,10 @@ function x = mchop(x)
                     x(k_small) = 0;
             end
         end
+    end
+    
+    if opt.exp_bits <= 5 
+        x = diag(1 ./ R) * (double(x) / mu) * diag(1 ./ S);
     end
 end
 

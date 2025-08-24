@@ -85,6 +85,7 @@ classdef precision
         bits
         ftp = 'custom'
         built_in = false
+        theta = 0.8 % for squeeze
     end
 
     methods

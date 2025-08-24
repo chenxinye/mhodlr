@@ -12,4 +12,7 @@ function opt = set_prec(prec)
     opt.randfunc = prec.randfunc;
     opt.built_in = prec.built_in;
     opt.ftp = prec.ftp;
+    opt.theta = prec.theta;
+    opt.exp_bits = log2(opt.emax+1) + 1;
+    opt.sig_bits = opt.t - 1;
 end

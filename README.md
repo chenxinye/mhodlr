@@ -156,7 +156,7 @@ authority can be held responsible for them.
 
 ## References
 
-[1] C. Erin, X. Chen and X. Liu, Mixed precision HODLR matrices, arXiv:2407.21637, (2024), https://doi.org/10.48550/arXiv.2407.21637.
+[1] C. Erin, X. Chen and X. Liu, Mixed precision HODLR matrices, SIAM J. Sci. Comput., (2024), pp. A1408-A1435, https://doi.org/10.48550/arXiv.2407.21637.
 
 [2] S. B¨orm, L. Grasedyck, and W. Hackbusch, Introduction to hierarchical matrices with
  applications, Eng. Anal. Bound. Elem., 27 (2003), pp. 405–422, https://doi.org/10.1016/S0955-7997(02)00152-2.
@@ -168,3 +168,4 @@ authority can be held responsible for them.
 License
 
 This project is licensed under the terms of the [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause).
+

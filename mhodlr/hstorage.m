@@ -42,12 +42,12 @@ function y = hstorage(obj, varargin)
             end
 
             [m, k] = size(obj.U1);
-            [n, k] = size(obj.V2);
+            [k, n] = size(obj.V2);
             
             y = y + (m + n) * k * bits;
 
             [m, k] = size(obj.U2);
-            [n, k] = size(obj.V1);
+            [k, n] = size(obj.V1);
             
             y = y + (m + n) * k * bits;
             y = y + hstorage(obj.A11, level+1);
@@ -74,12 +74,12 @@ function y = hstorage(obj, varargin)
             end
 
             [m, k] = size(obj.U1);
-            [n, k] = size(obj.V2);
+            [k, n] = size(obj.V2);
             
             y = y + (m + n) * k * bits;
 
             [m, k] = size(obj.U2);
-            [n, k] = size(obj.V1);
+            [k, n] = size(obj.V1);
             
             y = y + (m + n) * k * bits;
             y = y + hstorage(obj.A11, level+1);
@@ -106,12 +106,12 @@ function y = hstorage(obj, varargin)
             end
 
             [m, k] = size(obj.U1);
-            [n, k] = size(obj.V2);
+            [k, n] = size(obj.V2);
             
             y = y + (m + n) * k * bits;
 
             [m, k] = size(obj.U2);
-            [n, k] = size(obj.V1);
+            [k, n] = size(obj.V1);
             
             y = y + (m + n) * k * bits;
             y = y + hstorage(obj.A11, level+1);
@@ -119,3 +119,4 @@ function y = hstorage(obj, varargin)
         end
     end
 end
+

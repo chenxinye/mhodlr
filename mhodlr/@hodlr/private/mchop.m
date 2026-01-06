@@ -4,7 +4,11 @@ function x = mchop(x)
     if isempty(opt)
         precision();
     end
-
+    
+    if isempty(x)
+        return;
+    end
+    
     if opt.built_in
         switch(opt.ftp)
             case {'h','half','fp16'}

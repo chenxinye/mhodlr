@@ -5,6 +5,10 @@ function x = mchop(x)
         precision();
     end
     
+    if isempty(x)
+        return;
+    end
+    
     if opt.exp_bits <= 5 
         xmax =  calc_float_max(opt.exp_bits, opt.sig_bits);
         alpha = max(abs(x), [], 'all');
@@ -171,3 +175,4 @@ function y = roundit(x)
        end
     end
 end
+

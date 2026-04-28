@@ -187,33 +187,23 @@ classdef amphodlr
                     obj.max_level = max_level;
                 end
 
+                % precIndex(Bool) are the same for all levels in the
+                % cluster tree - don't assign them to any obj yet
+                precIndex = ones(1, obj.max_level);
+                precIndexBool = zeros(1, obj.max_level);
                 obj.normOrder = zeros(1, obj.max_level+1);
-                obj.precIndex = ones(1, obj.max_level);
-                obj.precIndexBool = zeros(1, obj.max_level);
                 obj.normOrder(1) = sum(A.^2, 'all');
 
-                % the following 5 lines only build a correct precIndex for
-                % the current obj, which is the root node in the cluster
-                % tree: without additional code, the precIndex of all other
-                % nodes stays initialized to ones(1, obj.max_level)!
-                % (I verified it by debugging build_hodlr_mat(...))
-                
-                % --> this would lead to an incorrect storage calculation
-                % in hstorage.m
                 [obj, obj.normOrder] = initialize(obj, A, obj.level, obj.normOrder);
-                [obj, obj.precIndex, obj.precIndexBool] = build_hodlr_mat(obj, A, obj.level, ...
-                                                        obj.precIndex, obj.precIndexBool);
+                [obj, precIndex, precIndexBool] = build_hodlr_mat(obj, A, obj.level, ...
+                                                        precIndex, precIndexBool);
 
-                obj.precIndex = obj.precIndex(1: obj.bottom_level);
-                obj.precIndexBool = obj.precIndexBool(1: obj.bottom_level);
-                % now, obj.precIndex would be correct,
-                % but e.g. obj.A11.precIndex = ones(1, obj.max_level) which
-                % might be incorrect
-
-                % proposed solution: recursively copy the root node's
-                % precIndex (and precIndexBool) to all its descendants
-                % (requires only minimal code changes)
-                obj = update_precIndex_all_levels(obj, obj.precIndex, obj.precIndexBool);
+                precIndex = precIndex(1: obj.bottom_level);
+                precIndexBool = precIndexBool(1: obj.bottom_level);
+                
+                % recursively copy the "global" precIndex(Bool) to all
+                % nodes in the cluster tree
+                obj = update_precIndex_all_levels(obj, precIndex, precIndexBool);
             end
         end
 
@@ -483,18 +473,18 @@ classdef amphodlr
             obj.V2 = [];
         end
 
-        function obj = update_precIndex_all_levels(obj, top_precIndex, top_precIndexBool)
+        function obj = update_precIndex_all_levels(obj, precIndex, precIndexBool)
             % recursively update all the nodes in the cluster tree with
-            % precIndex and precIndexBool of the root node
-            obj.precIndex = top_precIndex;
-            obj.precIndexBool = top_precIndexBool;
+            % precIndex and precIndexBool
+            obj.precIndex = precIndex;
+            obj.precIndexBool = precIndexBool;
             if isempty(obj.D)
                 if isempty(obj.A11) || isempty(obj.A22)
                     error('broken amphodlr object: empty D and at least one of A11, A22');
                 else
                     % internal cluster tree node: we must also update its children
-                    obj.A11 = update_precIndex_all_levels(obj.A11, top_precIndex, top_precIndexBool);
-                    obj.A22 = update_precIndex_all_levels(obj.A22, top_precIndex, top_precIndexBool);
+                    obj.A11 = update_precIndex_all_levels(obj.A11, precIndex, precIndexBool);
+                    obj.A22 = update_precIndex_all_levels(obj.A22, precIndex, precIndexBool);
                 end
             end
         end

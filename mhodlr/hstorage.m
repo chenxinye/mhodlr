@@ -100,7 +100,7 @@ function y = hstorage(obj, varargin)
             return;
         else
             if obj.precIndex(level) ~= 0
-                bits = obj.prec_settings{obj.precIndex(level)}.bits;
+                bits = obj.prec_settings{obj.precIndex(level)+1}.bits; % compensating for the -1 in build_hodlr_mat(...)
             else 
                 bits = 64;
             end

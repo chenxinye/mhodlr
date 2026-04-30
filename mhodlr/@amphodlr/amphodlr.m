@@ -187,16 +187,23 @@ classdef amphodlr
                     obj.max_level = max_level;
                 end
 
+                % precIndex(Bool) are the same for all levels in the
+                % cluster tree - don't assign them to any obj yet
+                precIndex = ones(1, obj.max_level);
+                precIndexBool = zeros(1, obj.max_level);
                 obj.normOrder = zeros(1, obj.max_level+1);
-                obj.precIndex = ones(1, obj.max_level);
-                obj.precIndexBool = zeros(1, obj.max_level);
                 obj.normOrder(1) = sum(A.^2, 'all');
-                [obj, obj.normOrder] = initialize(obj, A, obj.level, obj.normOrder);
-                [obj, obj.precIndex, obj.precIndexBool] = build_hodlr_mat(obj, A, obj.level, ...
-                                                        obj.precIndex, obj.precIndexBool);
 
-                obj.precIndex = obj.precIndex(1: obj.bottom_level);
-                obj.precIndexBool = obj.precIndexBool(1: obj.bottom_level);
+                [obj, obj.normOrder] = initialize(obj, A, obj.level, obj.normOrder);
+                [obj, precIndex, precIndexBool] = build_hodlr_mat(obj, A, obj.level, ...
+                                                        precIndex, precIndexBool);
+
+                precIndex = precIndex(1: obj.bottom_level);
+                precIndexBool = precIndexBool(1: obj.bottom_level);
+                
+                % recursively copy the "global" precIndex(Bool) to all
+                % nodes in the cluster tree
+                obj = update_precIndex_all_levels(obj, precIndex, precIndexBool);
             end
         end
 
@@ -234,6 +241,7 @@ classdef amphodlr
             obj.shape(2) = colSize;
            
             if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
+                obj = clean_leaf_node(obj); % to avoid nonempty A11 and A22 objects in leaf nodes
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 return;
@@ -264,6 +272,7 @@ classdef amphodlr
             obj.shape(2) = colSize;
             
             if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
+                obj = clean_leaf_node(obj); % to avoid nonempty A11 and A22 objects in leaf nodes
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 return;
@@ -294,6 +303,7 @@ classdef amphodlr
             obj.shape(2) = colSize;
            
             if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
+                obj = clean_leaf_node(obj); % to avoid nonempty A11 and A22 objects in leaf nodes
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 return;
@@ -326,6 +336,7 @@ classdef amphodlr
             obj.shape(2) = colSize;
             
             if floor(rowSize / 2) < obj.min_block_size | floor(colSize / 2) < obj.min_block_size | level > obj.max_level
+                obj = clean_leaf_node(obj); % to avoid nonempty A11 and A22 objects in leaf nodes
                 obj.D = A;
                 obj.bottom_level = max(obj.bottom_level, level-1);
                 obj.max_rnk = min(rowSize, colSize);
@@ -346,7 +357,7 @@ classdef amphodlr
                         if ~isempty(find_u)
                             % disp('---------------------')
                             % disp(obj.level)
-                            precIndex(obj.level) = obj.sortIdx(find_u(end)) - 1;
+                            precIndex(obj.level) = obj.sortIdx(find_u(end)) - 1; % why is there a -1?
                             % disp(precIndex(obj.level))
                         else
                             error('Not available precision');
@@ -366,7 +377,7 @@ classdef amphodlr
 
                 obj.bottom_level = max(obj.A11.bottom_level, obj.A22.bottom_level);
 
-                set_prec(obj.prec_settings{precIndex(obj.level)+1});
+                set_prec(obj.prec_settings{precIndex(obj.level)+1}); % why is there a +1?
                 
                 [obj.U1, obj.V2, max_rnk1] = mp_compress(obj, A(1:rowSplit, colSplit+1:end));
                 [obj.U2, obj.V1, max_rnk2] = mp_compress(obj, A(rowSplit+1:end, 1:colSplit));
@@ -378,7 +389,7 @@ classdef amphodlr
                 end
             end
         end
-        
+
 
         function obj = transpose(obj)
             temp = obj.shape(1);
@@ -449,6 +460,33 @@ classdef amphodlr
         function [sortu, sortIdx] = sort_by_u(obj, u_chain)
             callCellFunc = cellfun(@(x)x.u, u_chain);
             [sortu, sortIdx] = sort(callCellFunc);
+        end
+
+        function obj = clean_leaf_node(obj)
+            % obj is an amphodlr leaf node; only obj.D should exist;
+            % none of the following should be initialized
+            obj.A11 = [];
+            obj.A22 = [];
+            obj.U1 = [];
+            obj.U2 = [];
+            obj.V1 = [];
+            obj.V2 = [];
+        end
+
+        function obj = update_precIndex_all_levels(obj, precIndex, precIndexBool)
+            % recursively update all the nodes in the cluster tree with
+            % precIndex and precIndexBool
+            obj.precIndex = precIndex;
+            obj.precIndexBool = precIndexBool;
+            if isempty(obj.D)
+                if isempty(obj.A11) || isempty(obj.A22)
+                    error('broken amphodlr object: empty D and at least one of A11, A22');
+                else
+                    % internal cluster tree node: we must also update its children
+                    obj.A11 = update_precIndex_all_levels(obj.A11, precIndex, precIndexBool);
+                    obj.A22 = update_precIndex_all_levels(obj.A22, precIndex, precIndexBool);
+                end
+            end
         end
     end
 end

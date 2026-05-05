@@ -27,7 +27,7 @@ The ``precIndex`` array, which stores the precision level used at each hierarchi
 
 **Problem 2: Array Indexing Inconsistency**
 
-There was an index offset mismatch between how ``precIndex`` values were stored in ``build_hodlr_mat`` (with ``-1`` offset) and how they were accessed in ``hstorage.m`` (without compensating ``+1``). This resulted in reading incorrect precision settings from the ``prec_settings`` array.
+There was an index offset mismatch between how ``precIndex`` values were stored in ``build_hodlr_mat`` (with ``-1`` offset) and how they were accessed in ``hstorage.m`` (without compensating ``+1``). This resulted in reading incorrect precision settings from the ``prec_settings`` array. So the storage result should be lower than previously presented.
 
 Technical Details
 -----------------

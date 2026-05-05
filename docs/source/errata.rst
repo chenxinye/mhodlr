@@ -88,22 +88,6 @@ This bug affects the storage calculation results reported in:
     *SIAM Journal on Scientific Computing*, 46(3), A1408-A1435. 
     https://doi.org/10.1137/23M1546592
 
-**Analysis of Impact:**
-
-We have re-run all experiments from the paper using the corrected code. The findings are:
-
-1. **Storage savings were underestimated** in the original paper
-2. The actual storage efficiency of adaptive precision HODLR is **better** than reported
-3. Relative error in storage calculation ranged from approximately 5-15% depending on:
-   
-   - Tree depth (deeper trees → larger error)
-   - Precision differences between levels (larger differences → larger error)
-   - Matrix structure
-
-4. **Qualitative conclusions remain valid**: The ranking of methods, trade-offs between precision and storage, and algorithmic insights are unchanged.
-
-
-
 Verification
 ------------
 
@@ -141,16 +125,6 @@ We sincerely thank **Jindřich Pohl** for:
 - Contributing to the quality and reliability of this software
 
 His careful code review and contribution exemplify the best practices of open-source scientific computing.
-
-Notification to Journal
------------------------
-
-The corresponding author has notified *SIAM Journal on Scientific Computing* of this issue. An official erratum is being prepared for publication. The erratum will:
-
-- Clearly state the nature of the bug
-- Provide corrected numerical results
-- Emphasize that conclusions and algorithmic contributions remain valid
-- Credit Jindřich Pohl for discovering the issue
 
 Further Information
 -------------------

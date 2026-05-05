@@ -10,7 +10,7 @@ This page documents known issues and corrections in the mhodlr software package 
 Issue #1: Incorrect Storage Calculation for Adaptive Precision HODLR (amphodlr)
 ================================================================================
 
-**Status:** Fixed in version 1.1.0 (May 2026)
+**Status:** Fixed in version 3.1 (May 2026)
 
 **Date Reported:** April 28, 2026
 

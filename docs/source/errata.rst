@@ -102,42 +102,7 @@ We have re-run all experiments from the paper using the corrected code. The find
 
 4. **Qualitative conclusions remain valid**: The ranking of methods, trade-offs between precision and storage, and algorithmic insights are unchanged.
 
-Corrected Results
------------------
 
-Updated numerical results are available in the GitHub repository:
-
-- **Repository:** https://github.com/chenxinye/mhodlr
-- **Branch:** ``corrected-results`` (will be merged to main)
-- **Directory:** ``errata/corrected_experiments/``
-
-Key updated figures and tables:
-
-- **Table 4** (Storage requirements): Corrected values show 8-12% improvement in storage efficiency
-- **Figure 7** (Storage vs. accuracy trade-off): Updated curves showing steeper efficiency gains
-- **Table 5** (Compression ratios): Improved by approximately 10-18%
-
-Resolution
-----------
-
-**Code Fix:**
-
-The fix, contributed by Jindřich Pohl, includes:
-
-1. **New method** ``update_precIndex_all_levels()`` in ``amphodlr.m`` to recursively propagate ``precIndex`` to all nodes
-2. **Index correction** in ``hstorage.m`` line 103 to properly access ``prec_settings`` array
-3. **Leaf node cleanup** via ``clean_leaf_node()`` to avoid uninitialized child objects
-
-**Commit Reference:**
-
-- Original fix: https://github.com/Jindrich455/mhodlr/commit/f024a02a531e3c0836b875626d21590ddc7ae5a9
-- Merged to main: [To be updated after merge]
-
-**Version Information:**
-
-- **Affected versions:** v1.0.0 and earlier
-- **Fixed in:** v1.1.0 (released May 2026)
-- **Recommended action:** Update to v1.1.0 or later
 
 Verification
 ------------

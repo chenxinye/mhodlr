@@ -31,12 +31,14 @@ Guide
    matrix_compute.rst
    precision.rst
    api_ref.rst
+    
 
 Others
 -------------
 .. toctree::
    :maxdepth: 2
-   
+
+   errata.rst
    teams.rst
    acknow.rst
    license.rst

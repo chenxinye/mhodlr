@@ -134,16 +134,6 @@ We thank **Ritesh Khan** from Charles University for:
 This type of careful code review helps ensure the software is maintainable and understandable by the broader community.
 
 
-Further Information
--------------------
-
-For questions or concerns regarding these issues, please contact:
-
-- **Email:** xinyechenai@gmail.com
-- **GitHub Issues:** https://github.com/chenxinye/mhodlr/issues
-- **Documentation:** https://mhodlr.readthedocs.io
-
-
 Issue 2: Incorrect Storage Calculation for Adaptive Precision HODLR (amphodlr)
 ================================================================================
 
